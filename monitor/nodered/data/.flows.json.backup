@@ -1,0 +1,850 @@
+[
+    {
+        "id": "4db9e93a234f8a01",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a928ba0.2d1f748",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "172.30.0.101",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0648859e6711c8f9",
+        "type": "ui_tab",
+        "name": "MQTT and COAP Sensors",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "ae2aceeadfb4b296",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "cd6116aa8b23d0c6",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "6043b1181f466e6d",
+        "type": "ui_tab",
+        "name": "SMART HOME MONITORING",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6ddbd751be509e35",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "InfluxDB",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://172.30.0.103:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "575f0b6b213a240c",
+        "type": "ui_group",
+        "name": "",
+        "tab": "6043b1181f466e6d",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "55277096f27f8c4f",
+        "type": "ui_group",
+        "name": "",
+        "tab": "6043b1181f466e6d",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "54bd2a451844028d",
+        "type": "mqtt in",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/SmartHomeD&G/Temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cd6116aa8b23d0c6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "093bb892abdb67ab",
+                "f7e79fe435f12d7d",
+                "00e48b4792b8898f"
+            ]
+        ]
+    },
+    {
+        "id": "093bb892abdb67ab",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "debug 26",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 20,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "88f0ed3698b1edbc",
+        "type": "mqtt in",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/SmartHomeD&G/Light",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cd6116aa8b23d0c6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 280,
+        "y": 200,
+        "wires": [
+            [
+                "ea853756785edabf",
+                "060b2c217808be1a",
+                "c0690acb69a59371"
+            ]
+        ]
+    },
+    {
+        "id": "571bdf8abababca2",
+        "type": "mqtt in",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/SmartHomeD&G/Energy",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cd6116aa8b23d0c6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 290,
+        "y": 340,
+        "wires": [
+            [
+                "52cb2a836c3adf1c",
+                "af39cc7a26d1cbba",
+                "121395698112140a"
+            ]
+        ]
+    },
+    {
+        "id": "7b97c339a4ceaeae",
+        "type": "mqtt in",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/SmartHomeD&G/FridgeTemp",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cd6116aa8b23d0c6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 300,
+        "y": 480,
+        "wires": [
+            [
+                "43c095561101804f",
+                "d4ee0270d575b41e",
+                "05d810412b0d1f91"
+            ]
+        ]
+    },
+    {
+        "id": "1297227d9452ef61",
+        "type": "mqtt in",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/SmartHomeD&G/FridgeLoad",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cd6116aa8b23d0c6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 300,
+        "y": 620,
+        "wires": [
+            [
+                "509a664b6b376ae4",
+                "23dbcdaf13b9a410",
+                "310a91a9b5871353"
+            ]
+        ]
+    },
+    {
+        "id": "ea853756785edabf",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "debug 27",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 160,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "52cb2a836c3adf1c",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "debug 28",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 300,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "43c095561101804f",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "debug 29",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 440,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "509a664b6b376ae4",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "debug 30",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 580,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "f7e79fe435f12d7d",
+        "type": "ui_gauge",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "group": "575f0b6b213a240c",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "TEMPERATURE",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "-10",
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 530,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "060b2c217808be1a",
+        "type": "ui_gauge",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "group": "575f0b6b213a240c",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "LIGHT",
+        "label": "LUX",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "400",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 490,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "af39cc7a26d1cbba",
+        "type": "ui_gauge",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "group": "55277096f27f8c4f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "ENERGY",
+        "label": "kWh",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "10000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 500,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "d4ee0270d575b41e",
+        "type": "ui_gauge",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "group": "575f0b6b213a240c",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "FRIDGE_TEMP",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "-10",
+        "max": "15",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 520,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "23dbcdaf13b9a410",
+        "type": "ui_gauge",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "group": "55277096f27f8c4f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "FRIDGE_LOAD",
+        "label": "Units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "150",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#2cec13"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 520,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "c70b0b477c7296c9",
+        "type": "inject",
+        "z": "4db9e93a234f8a01",
+        "name": "Test email data",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"_value\": 4500}, {\"_value\": 4600}]",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1340,
+        "wires": [
+            [
+                "479255cacf4380be",
+                "20d84b85bc3f8d6a"
+            ]
+        ]
+    },
+    {
+        "id": "479255cacf4380be",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "data/test",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 340,
+        "y": 1380,
+        "wires": []
+    },
+    {
+        "id": "00e48b4792b8898f",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/volts",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 490,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "c0690acb69a59371",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/current",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 500,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "121395698112140a",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/energy",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 500,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "05d810412b0d1f91",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/load",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 490,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "310a91a9b5871353",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/frequency",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 510,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "d148acebe67d37ab",
+        "type": "influxdb in",
+        "z": "4db9e93a234f8a01",
+        "influxdb": "6ddbd751be509e35",
+        "name": "Last hour energy consumption",
+        "query": "from(bucket: \"Iot-project\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"iot-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/energy\")\n  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Iot-23-24",
+        "x": 190,
+        "y": 1200,
+        "wires": [
+            [
+                "10055e607531e08a",
+                "20d84b85bc3f8d6a"
+            ]
+        ]
+    },
+    {
+        "id": "10055e607531e08a",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "debug 32",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 395,
+        "y": 1180,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "627b060f748654ad",
+        "type": "inject",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 150,
+        "y": 1140,
+        "wires": [
+            [
+                "d148acebe67d37ab"
+            ]
+        ]
+    },
+    {
+        "id": "20d84b85bc3f8d6a",
+        "type": "function",
+        "z": "4db9e93a234f8a01",
+        "name": "convert to ints",
+        "func": "let min = Math.round(msg.payload[0]._value);\nlet max = Math.round(msg.payload[1]._value);\nlet diff = max - min;\nlet payload = {\"min\": min, \"diff\": diff};\nlet msg2 = {\"payload\": payload};\nmsg = msg2;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1240,
+        "wires": [
+            [
+                "7bf2e6be7350b489",
+                "a422718f3e962b61"
+            ]
+        ]
+    },
+    {
+        "id": "7bf2e6be7350b489",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "debug 33",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 735,
+        "y": 1200,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "48c92e46fe60d816",
+        "type": "function",
+        "z": "4db9e93a234f8a01",
+        "name": "Format payload",
+        "func": "let topic = \"Hourly energy report from Node-RED\";\nlet body = msg.payload;\nmsg.topic = topic;\nmsg.payload = body;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 1340,
+        "wires": [
+            [
+                "8e7db5525cdf6fd3"
+            ]
+        ]
+    },
+    {
+        "id": "a422718f3e962b61",
+        "type": "template",
+        "z": "4db9e93a234f8a01",
+        "name": "Email template",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Hello!\nThis is your hourly energy consumption report.\n\n<ul>\n    <li>Total energy consumed thus far: {{payload.min}} kWh</li>\n    <li>Energy consumed in the last hour: {{payload.diff}} kWh</li>\n</ul>",
+        "output": "str",
+        "x": 620,
+        "y": 1280,
+        "wires": [
+            [
+                "48c92e46fe60d816",
+                "7bf2e6be7350b489"
+            ]
+        ]
+    },
+    {
+        "id": "8e7db5525cdf6fd3",
+        "type": "e-mail",
+        "z": "4db9e93a234f8a01",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": false,
+        "name": "dario.dercole@student.univaq.it",
+        "dname": "",
+        "x": 1010,
+        "y": 1260,
+        "wires": []
+    }
+]

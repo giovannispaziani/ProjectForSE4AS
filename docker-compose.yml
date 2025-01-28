@@ -1,0 +1,83 @@
+# Use root/example as user/password credentials
+version: '3.3'
+
+services:
+
+
+  node-red:
+    container_name: se4as-project-node-red
+    build:
+      context: ./monitor/nodered/
+      dockerfile: Dockerfile
+    image: nodered:latest
+    env_file:
+      - .env
+    ports:
+      - "1880:1880"
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.100
+    volumes:
+      - ./monitor/nodered/data:/data
+
+  mosquitto:
+    container_name: se4as-project-mosquitto
+    image: eclipse-mosquitto
+    volumes:
+      - ./broker/mosquitto/config:/mosquitto/config
+      - ./broker/mosquitto/log:/mosquitto/log
+      - ./broker/mosquitto/data/:/mosquitto/data
+    restart: always
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.101
+    ports:
+      - "1883:1883"
+#
+#  influxdb:
+#    container_name: se4as-project-influxdb
+#    image: influxdb:2.7.4
+#    env_file:
+#      - .env
+#    volumes:
+#    - $PWD/influxdb/data:/var/lib/influxdb2:rw
+#    ports:
+#       - 8086:8086
+#    networks:
+#       se4as-project-network:
+#         ipv4_address: 172.30.0.103
+#
+#  telegraf:
+#    restart: always
+#    container_name: se4as-project-telegraf
+#    image: telegraf:latest
+#    env_file:
+#      - .env
+#    volumes:
+#      - $PWD/telegraf/mqtt_client.conf:/etc/telegraf/telegraf.conf:ro
+#    depends_on:
+#      - influxdb
+#    networks:
+#      se4as-project-network:
+#        ipv4_address: 172.30.0.104
+#
+#  grafana:
+#    restart: always
+#    image: grafana/grafana-oss:latest
+#    container_name: se4as-project-grafana
+#    volumes:
+#      - $PWD/grafana/data:/var/lib/grafana:rw
+#    depends_on:
+#      - influxdb
+#    ports:
+#      - 3000:3000
+#    networks:
+#      se4as-project-network:
+#        ipv4_address: 172.30.0.105
+
+networks:
+  se4as-project-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
