@@ -3,7 +3,6 @@ version: '3.3'
 
 services:
 
-
   node-red:
     container_name: se4as-project-node-red
     build:
@@ -33,19 +32,20 @@ services:
         ipv4_address: 172.30.0.101
     ports:
       - "1883:1883"
-#
-#  influxdb:
-#    container_name: se4as-project-influxdb
-#    image: influxdb:2.7.4
-#    env_file:
-#      - .env
-#    volumes:
-#    - $PWD/influxdb/data:/var/lib/influxdb2:rw
-#    ports:
-#       - 8086:8086
-#    networks:
-#       se4as-project-network:
-#         ipv4_address: 172.30.0.103
+
+  influxdb:
+    container_name: se4as-project-influxdb
+    image: influxdb:2.7.4
+    env_file:
+      - .env
+    volumes:
+    - $PWD/knowledge/influxdb/data:/var/lib/influxdb2:rw
+    - $PWD/knowledge/influxdb/config:/etc/influxdb2:rw
+    ports:
+       - "8086:8086"
+    networks:
+       se4as-project-network:
+         ipv4_address: 172.30.0.103
 #
 #  telegraf:
 #    restart: always
