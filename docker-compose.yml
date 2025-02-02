@@ -16,15 +16,15 @@ services:
       se4as-project-network:
         ipv4_address: 172.30.0.100
     volumes:
-      - ./monitor/nodered/data:/data
+      - $PWD/monitor/nodered/data:/data
 
   mosquitto:
     container_name: se4as-project-mosquitto
     image: eclipse-mosquitto
     volumes:
-      - ./broker/mosquitto/config:/mosquitto/config
-      - ./broker/mosquitto/log:/mosquitto/log
-      - ./broker/mosquitto/data/:/mosquitto/data
+      - $PWD/broker/mosquitto/config:/mosquitto/config
+      - $PWD/broker/mosquitto/log:/mosquitto/log
+      - $PWD/broker/mosquitto/data/:/mosquitto/data
     restart: always
     networks:
       se4as-project-network:
@@ -65,7 +65,7 @@ services:
     image: grafana/grafana-oss:latest
     container_name: se4as-project-grafana
     volumes:
-      - $PWD/grafana/data:/var/lib/grafana:rw
+      - $PWD/monitor/grafana/data:/var/lib/grafana:rw
     depends_on:
       - influxdb
     ports:

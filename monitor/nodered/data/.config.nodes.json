@@ -760,5 +760,26 @@
                 "file": "/data/node_modules/node-red-node-mysql/68-mysql.js"
             }
         }
+    },
+    "node-red-node-email": {
+        "name": "node-red-node-email",
+        "version": "3.0.3",
+        "local": false,
+        "user": false,
+        "nodes": {
+            "email": {
+                "name": "email",
+                "types": [
+                    "e-mail",
+                    "e-mail in",
+                    "e-mail mta"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red-node-email",
+                "file": "/usr/src/node-red/node_modules/node-red-node-email/61-email.js"
+            }
+        }
     }
 }

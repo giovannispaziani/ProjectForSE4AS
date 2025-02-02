@@ -688,27 +688,6 @@
             }
         }
     },
-    "node-red-node-email": {
-        "name": "node-red-node-email",
-        "version": "3.0.3",
-        "local": true,
-        "user": true,
-        "nodes": {
-            "email": {
-                "name": "email",
-                "types": [
-                    "e-mail",
-                    "e-mail in",
-                    "e-mail mta"
-                ],
-                "enabled": true,
-                "local": true,
-                "user": false,
-                "module": "node-red-node-email",
-                "file": "/data/node_modules/node-red-node-email/61-email.js"
-            }
-        }
-    },
     "@terranlabs/email-nodes": {
         "name": "@terranlabs/email-nodes",
         "version": "2.0.1",
