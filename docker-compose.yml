@@ -1,5 +1,4 @@
-# Use root/example as user/password credentials
-version: '3.3'
+# Use root/example as user/password credentialsx
 
 services:
 
@@ -46,20 +45,20 @@ services:
     networks:
        se4as-project-network:
          ipv4_address: 172.30.0.103
-#
-#  telegraf:
-#    restart: always
-#    container_name: se4as-project-telegraf
-#    image: telegraf:latest
-#    env_file:
-#      - .env
-#    volumes:
-#      - $PWD/telegraf/mqtt_client.conf:/etc/telegraf/telegraf.conf:ro
-#    depends_on:
-#      - influxdb
-#    networks:
-#      se4as-project-network:
-#        ipv4_address: 172.30.0.104
+
+  telegraf:
+    restart: always
+    container_name: se4as-project-telegraf
+    image: telegraf:latest
+    env_file:
+      - .env
+    volumes:
+      - $PWD/telegraf/mqtt_client.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.104
 #
 #  grafana:
 #    restart: always
