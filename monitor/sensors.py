@@ -77,6 +77,8 @@ def update_sensors():
         fridge_temp += random.uniform(-0.1, 0.0)
         if fridge_temp <= 2.0:
             fridge_temp += random.uniform(0, 0.1)
+        if fridge_temp >= 10.0:
+            fridge_temp -= random.uniform(0, 0.2)
 
 
 def simulate_event():
