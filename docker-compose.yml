@@ -74,6 +74,17 @@ services:
       se4as-project-network:
         ipv4_address: 172.30.0.105
 
+  sensor:
+    container_name: se4as-project-sensor
+    build:
+      context: ./monitor/sensor/
+      dockerfile: Dockerfile
+    depends_on:
+      - mosquitto
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.106
+
 networks:
   se4as-project-network:
     driver: bridge

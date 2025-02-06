@@ -3,7 +3,7 @@ import time
 import paho.mqtt.client as mqtt
 
 # MQTT setup
-mqtt_server = "localhost"
+mqtt_server = "172.30.0.101"
 mqtt_port = 1883
 mqtt_topic_pub = "/SmartHomeD&G/Publish"
 mqtt_topic_sub = "/SmartHomeD&G/Subscribe"
