@@ -852,7 +852,6 @@
         "id": "088289c5dc9f4b3b",
         "type": "e-mail",
         "z": "4db9e93a234f8a01",
-        "d": true,
         "server": "smtp.gmail.com",
         "port": "465",
         "authtype": "BASIC",
@@ -865,5 +864,355 @@
         "x": 1050,
         "y": 1360,
         "wires": []
+    },
+    {
+        "id": "ca4458bc8df72570",
+        "type": "influxdb in",
+        "z": "4db9e93a234f8a01",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last temperature",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"float_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/float/temperature\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 920,
+        "y": 100,
+        "wires": [
+            [
+                "c43d7a270d692200",
+                "fc1e26a577cba378"
+            ]
+        ]
+    },
+    {
+        "id": "84129ef5751e25ce",
+        "type": "inject",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "props": [],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "3",
+        "topic": "",
+        "x": 750,
+        "y": 220,
+        "wires": [
+            [
+                "ca4458bc8df72570",
+                "bfbdcd71aa534e76",
+                "670f235ba51309e3",
+                "93f30c8ee6685412",
+                "7c46cf32b370a1c8"
+            ]
+        ]
+    },
+    {
+        "id": "c43d7a270d692200",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1045,
+        "y": 80,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "fc1e26a577cba378",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/smart/analyzer/float/temperature",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1160,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "bfbdcd71aa534e76",
+        "type": "influxdb in",
+        "z": "4db9e93a234f8a01",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last fridge temp",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"float_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/float/fridge_temp\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 920,
+        "y": 200,
+        "wires": [
+            [
+                "bb451577300bc345",
+                "c267472f19bbf70b"
+            ]
+        ]
+    },
+    {
+        "id": "bb451577300bc345",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1045,
+        "y": 180,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "c267472f19bbf70b",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/smart/analyzer/float/fridge_temp",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1160,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "670f235ba51309e3",
+        "type": "influxdb in",
+        "z": "4db9e93a234f8a01",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last light",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/light\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 940,
+        "y": 320,
+        "wires": [
+            [
+                "26a79bf23194b860",
+                "1ebc8bdb8176f1bd"
+            ]
+        ]
+    },
+    {
+        "id": "26a79bf23194b860",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1045,
+        "y": 300,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "1ebc8bdb8176f1bd",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/smart/analyzer/int/light",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1130,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "93f30c8ee6685412",
+        "type": "influxdb in",
+        "z": "4db9e93a234f8a01",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last energy",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/energy\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 930,
+        "y": 420,
+        "wires": [
+            [
+                "a08135548f4908d6",
+                "112349671b8ecb20"
+            ]
+        ]
+    },
+    {
+        "id": "a08135548f4908d6",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1045,
+        "y": 400,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "112349671b8ecb20",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/smart/analyzer/int/energy",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1130,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "7c46cf32b370a1c8",
+        "type": "influxdb in",
+        "z": "4db9e93a234f8a01",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last fridge load",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/fridge_load\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 920,
+        "y": 520,
+        "wires": [
+            [
+                "36abb2ee22b1c8c5",
+                "0cf256e9b5013043"
+            ]
+        ]
+    },
+    {
+        "id": "36abb2ee22b1c8c5",
+        "type": "debug",
+        "z": "4db9e93a234f8a01",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1045,
+        "y": 500,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "0cf256e9b5013043",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/smart/analyzer/int/fridge_load",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1150,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "146a22164d2ee47f",
+        "type": "mqtt out",
+        "z": "4db9e93a234f8a01",
+        "name": "",
+        "topic": "/smart/analyzer/config/temperature_analyzer",
+        "qos": "",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1190,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "bbb179e746dfcbf4",
+        "type": "inject",
+        "z": "4db9e93a234f8a01",
+        "name": "temperature analyzer configuration",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"configuration\":{\"min_temp\":21,\"working_threshold\":1}}",
+        "payloadType": "json",
+        "x": 820,
+        "y": 700,
+        "wires": [
+            [
+                "146a22164d2ee47f"
+            ]
+        ]
     }
 ]

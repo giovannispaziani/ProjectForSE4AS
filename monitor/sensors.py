@@ -54,7 +54,11 @@ def publish_data():
 def update_sensors():
     global temperature, light_intensity, fridge_temp, fridge_load, previous_fridge_time
     # Update temperature
-    temperature += random.uniform(-1.0, 1.0) * 0.1
+    temperature += random.uniform(-0.1, 0.1)
+    if temperature >= 25.0:
+        temperature += random.uniform(-0.2, 0.0)
+    elif temperature <= 15.0:
+        temperature += random.uniform(0.0, 0.2)
 
     # Update light intensity randomly (simulate dark room)
     if random.randint(0, 100) > 4:
@@ -78,7 +82,7 @@ def update_sensors():
         if fridge_temp <= 2.0:
             fridge_temp += random.uniform(0, 0.1)
         if fridge_temp >= 10.0:
-            fridge_temp -= random.uniform(0, 0.2)
+            fridge_temp += random.uniform(-0.2, 0.0)
 
 
 def simulate_event():
