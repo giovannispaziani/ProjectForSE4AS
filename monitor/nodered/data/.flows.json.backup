@@ -852,7 +852,6 @@
         "id": "088289c5dc9f4b3b",
         "type": "e-mail",
         "z": "4db9e93a234f8a01",
-        "d": true,
         "server": "smtp.gmail.com",
         "port": "465",
         "authtype": "BASIC",

@@ -10,10 +10,17 @@ mqtt_topic_sub = "/SmartHomeD&G/Subscribe"
 
 # Simulated sensor data
 temperature = 22.0  # Temperature sensor (thermostat)
-light_intensity = 300  # Light sensor (photodetector)
-energy = 4455  # Energy consumption sensor
+light_intensity = 0  # Light intensity based on lamps
+energy = 0.0  # Total energy consumed in kWh
 fridge_temp = 4.0  # Refrigerator sensor
 fridge_load = 50  # Refrigerator load
+
+# Power consumption of each device in Watts
+fridge_power = 150  # Fridge (150 W)
+dishwasher_power = random.randint(800, 1200)  # Dishwasher (800-1200 W range for variability)
+thermostat_power = 2  # Thermostat (2 W)
+lamp_power = 8  # Each lamp power (8 W per lamp)
+active_lamps = 5  # Number of lamps initially active
 
 # Time intervals (milliseconds)
 update_interval = 0.5  # Update every 500ms
@@ -29,12 +36,10 @@ previous_fridge_time = fridge_interval
 # MQTT client setup
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
-
 def connect_mqtt():
     client.connect(mqtt_server, mqtt_port, 60)
     print("Connected to MQTT broker")
     client.subscribe(mqtt_topic_sub)
-
 
 def publish_data():
     global temperature, light_intensity, energy, fridge_temp, fridge_load
@@ -43,24 +48,26 @@ def publish_data():
     # Publish light intensity
     client.publish("/SmartHomeD&G/Light", str(light_intensity))
     # Publish energy consumption
-    client.publish("/SmartHomeD&G/Energy", str(energy))
+    client.publish("/SmartHomeD&G/Energy", str(round(energy, 1)))  # Energy in kWh
     # Publish fridge temperature and load
     client.publish("/SmartHomeD&G/FridgeTemp", str(round(fridge_temp, 1)))
     client.publish("/SmartHomeD&G/FridgeLoad", str(fridge_load))
     print(
-        f"Temperature: {round(temperature, 1)}, Light: {light_intensity}, Energy: {energy}, Fridge Temp: {round(fridge_temp, 1)}, Fridge Load: {fridge_load}")
+        f"Temperature: {round(temperature, 1)}, Light: {light_intensity}, "
+        f"Energy: {round(energy, 1)} kWh, Fridge Temp: {round(fridge_temp, 1)}, "
+        f"Fridge Load: {fridge_load}"
+    )
 
-
-def update_sensors():
-    global temperature, light_intensity, fridge_temp, fridge_load, previous_fridge_time
+def update_sensors(elapsed_time):
+    global temperature, light_intensity, fridge_temp, fridge_load, previous_fridge_time, active_lamps
     # Update temperature
     temperature += random.uniform(-1.0, 1.0) * 0.1
 
-    # Update light intensity randomly (simulate dark room)
-    if random.randint(0, 100) > 4:
-        light_intensity = random.randint(50, 300)
-    else:
-        print("Room is in the dark.")
+    # Simulate lamp behavior (randomly turn lamps on/off)
+    active_lamps = random.randint(0, 5)
+    light_intensity = active_lamps * 60  # Each lamp adds 60 lux
+    if active_lamps == 0:
+        print("House is in the dark.")
         light_intensity = 10
 
     # Update fridge temperature and load
@@ -80,12 +87,18 @@ def update_sensors():
         if fridge_temp >= 10.0:
             fridge_temp -= random.uniform(0, 0.2)
 
-
 def simulate_event():
-    global energy, previous_publish_time
-    print("Energy consumption increased")
-    energy += 1
+    global energy
+    # Calculate energy consumption in kWh based on power ratings and elapsed time
+    fridge_energy = (fridge_power * event_interval) / 3600  # kWh for fridge
+    dishwasher_energy = (random.randint(800, 1200) * event_interval) / 3600  # kWh for dishwasher (random range)
+    thermostat_energy = (thermostat_power * event_interval) / 3600  # kWh for thermostat
+    lamp_energy = (lamp_power * active_lamps * event_interval) / 3600  # kWh for lamps
 
+    total_energy = fridge_energy + dishwasher_energy + thermostat_energy + lamp_energy
+    energy += total_energy
+
+    print(f"Energy consumption increased by {total_energy:.1f} kWh")
 
 def main():
     connect_mqtt()
@@ -98,7 +111,7 @@ def main():
 
         # Update sensor values
         if current_time - previous_update_time >= update_interval:
-            update_sensors()
+            update_sensors(update_interval)
             previous_update_time = current_time
 
         # Publish data every 2 seconds

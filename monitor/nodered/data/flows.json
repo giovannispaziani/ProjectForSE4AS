@@ -647,7 +647,7 @@
         "type": "mqtt out",
         "z": "4db9e93a234f8a01",
         "name": "",
-        "topic": "/smart/int/energy",
+        "topic": "/smart/float/energy",
         "qos": "",
         "retain": "",
         "respTopic": "",
