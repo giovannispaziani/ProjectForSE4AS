@@ -61,7 +61,11 @@ def publish_data():
 def update_sensors(elapsed_time):
     global temperature, light_intensity, fridge_temp, fridge_load, previous_fridge_time, active_lamps
     # Update temperature
-    temperature += random.uniform(-1.0, 1.0) * 0.1
+    temperature += random.uniform(-0.1, 0.1)
+    if temperature >= 25.0:
+        temperature += random.uniform(-0.2, 0.0)
+    elif temperature <= 15.0:
+        temperature += random.uniform(0.0, 0.2)
 
     # Simulate lamp behavior (randomly turn lamps on/off)
     active_lamps = random.randint(0, 5)
@@ -85,7 +89,7 @@ def update_sensors(elapsed_time):
         if fridge_temp <= 2.0:
             fridge_temp += random.uniform(0, 0.1)
         if fridge_temp >= 10.0:
-            fridge_temp -= random.uniform(0, 0.2)
+            fridge_temp += random.uniform(-0.2, 0.0)
 
 def simulate_event():
     global energy
