@@ -52,6 +52,10 @@ def publish_data():
     # Publish fridge temperature and load
     client.publish("/SmartHomeD&G/FridgeTemp", str(round(fridge_temp, 1)))
     client.publish("/SmartHomeD&G/FridgeLoad", str(fridge_load))
+    # Publish energy for dishwasher, fridge and lamp
+    client.publish("/SmartHomeD&G/DishwasherPower", str(dishwasher_power))
+    client.publish("/SmartHomeD&G/FridgePower", str(fridge_power))
+    client.publish("/SmartHomeD&G/LampPower", str(lamp_power))
     print(
         f"Temperature: {round(temperature, 1)}, Light: {light_intensity}, "
         f"Energy: {round(energy, 1)} kWh, Fridge Temp: {round(fridge_temp, 1)}, "
