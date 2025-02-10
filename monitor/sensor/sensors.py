@@ -25,7 +25,7 @@ active_lamps = 5  # Number of lamps initially active
 # Time intervals (milliseconds)
 update_interval = 0.5  # Update every 500ms
 fridge_interval = 10.0  # Fridge every 10s
-publish_interval = 4.0  # Publish every 2s
+publish_interval = 4.0  # Publish every 4s
 event_interval = 5  # Energy event every 5s
 
 last_msg_time = 0
@@ -35,6 +35,7 @@ previous_fridge_time = fridge_interval
 
 # MQTT client setup
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+#client = mqtt.Client()
 
 def connect_mqtt():
     client.connect(mqtt_server, mqtt_port, 60)
@@ -42,7 +43,7 @@ def connect_mqtt():
     client.subscribe(mqtt_topic_sub)
 
 def publish_data():
-    global temperature, light_intensity, energy, fridge_temp, fridge_load
+    global temperature, light_intensity, energy, fridge_temp, fridge_load, dishwasher_power, fridge_power, lamp_power
     # Publish temperature
     client.publish("/SmartHomeD&G/Temperature", str(round(temperature, 1)))
     # Publish light intensity
@@ -57,13 +58,13 @@ def publish_data():
     client.publish("/SmartHomeD&G/FridgePower", str(fridge_power))
     client.publish("/SmartHomeD&G/LampPower", str(lamp_power))
     print(
-        f"Temperature: {round(temperature, 1)}, Light: {light_intensity}, "
-        f"Energy: {round(energy, 1)} kWh, Fridge Temp: {round(fridge_temp, 1)}, "
-        f"Fridge Load: {fridge_load}"
+        f"Temperature: {round(temperature, 1)} °C, Light: {light_intensity} lux, "
+        f"Energy: {round(energy, 1)} kWh, Fridge Temp: {round(fridge_temp, 1)} °C, "
+        f"Fridge Load: {fridge_load} q., Dishwasher Power: {dishwasher_power} watt, Fridge Power: {fridge_power} watt, Lamp Power: {lamp_power} watt."
     )
 
 def update_sensors(elapsed_time):
-    global temperature, light_intensity, fridge_temp, fridge_load, previous_fridge_time, active_lamps
+    global temperature, light_intensity, fridge_temp, fridge_load, previous_fridge_time, active_lamps, dishwasher_power, fridge_power, lamp_power, thermostat_power
     # Update temperature
     temperature += random.uniform(-0.1, 0.1)
     if temperature >= 25.0:
@@ -95,6 +96,13 @@ def update_sensors(elapsed_time):
         if fridge_temp >= 10.0:
             fridge_temp += random.uniform(-0.2, 0.0)
 
+    # Update power values
+    fridge_power = random.randint(140, 160)  # Changes in the value of the power output by the refrigerator
+    dishwasher_power = random.randint(800, 1200)  # Changes in the value of the power output by the dishwasher
+    thermostat_power = random.choice([1, 2, 3])  # Changes in the value of the power output by the thermostat
+    lamp_power = random.randint(7, 10)  # Changes in the value of the power output by the lamp
+
+
 def simulate_event():
     global energy
     # Calculate energy consumption in kWh based on power ratings and elapsed time
@@ -106,7 +114,7 @@ def simulate_event():
     total_energy = fridge_energy + dishwasher_energy + thermostat_energy + lamp_energy
     energy += total_energy
 
-    print(f"Energy consumption increased by {total_energy:.1f} kWh")
+    print(f"Energy consumption increased by {total_energy:.1f} kWh.")
 
 def main():
     connect_mqtt()
