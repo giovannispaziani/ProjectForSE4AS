@@ -53,6 +53,14 @@ class Analyzer:
         parsed = json.loads(decoded) #parse json string into a dict
         return parsed
 
+    def encode_json_to_message(self, value, dictionary=None):
+        if not dictionary is None:
+            json_string = json.dumps(dictionary)
+        else:
+            json_string = json.dumps({'value' : value})
+        encoded = json_string.encode('utf-8')
+        return encoded
+
     def extract_values_from_message(self, mqtt_message):
         # extract the json
         payload = self.parse_json_from_message(mqtt_message)
@@ -63,8 +71,7 @@ class Analyzer:
         values = {}
         for name,metric in payload.items():
             values[name] = [entry['_value'] for entry in metric]
-            return values
-        raise ValueError(f'Unable to extract values from message:\n{payload}')
+        return values
 
 
 class TemperatureAnalyzer(Analyzer):
@@ -82,7 +89,7 @@ class TemperatureAnalyzer(Analyzer):
         super().start() # connect to broker, retrieve config and subscribe to topics
 
         #initialize topics
-        self.client.publish(self.topic_pub + "/increase_temperature", False, retain=True)
+        self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(False), retain=True)
 
         self.loop()
 
@@ -100,9 +107,9 @@ class TemperatureAnalyzer(Analyzer):
             temperature = values['temperature']
             if temperature[-1] <= self.configuration['min_temp']:
                 # tell planner to increase temperature
-                self.client.publish(self.topic_pub + "/increase_temperature", True, retain=True)
+                self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(True), retain=True)
             elif temperature[-1] >= self.configuration['min_temp'] + self.configuration['working_threshold']:
-                self.client.publish(self.topic_pub + "/increase_temperature", False, retain=True)
+                self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(False), retain=True)
 
 # class LightAnalyzer(Analyzer):
 #     def __init__(self, client_id="light_analyzer", server="localhost", port=1883):
@@ -144,7 +151,7 @@ class EnergyAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self.on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/int/energy"
+        self.topic_sub = self.topic_sub + "/float/energy/#"
 
         # analyzer specific fields
         self.energy_level = Level.NORMAL
@@ -155,7 +162,7 @@ class EnergyAnalyzer(Analyzer):
         super().start()
 
         # initialize topics
-        self.client.publish(self.topic_pub + "/energy_level", str(self.energy_level), retain=True) #0: OK, 1: high, 2: above limit
+        self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(self.energy_level)), retain=True) #0: OK, 1: high, 2: above limit
 
         self.loop()
 
@@ -173,15 +180,15 @@ class EnergyAnalyzer(Analyzer):
             total_kw = values['energy']
             if total_kw[-1] <= self.configuration['warning_threshold_kw']:
                 if self.energy_level != Level.NORMAL:
-                    self.client.publish(self.topic_pub + "/energy_level", str(Level.NORMAL), retain=True)
+                    self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.NORMAL)), retain=True)
                     self.energy_level = Level.NORMAL
             elif total_kw[-1] <= self.configuration['max_total_kw']:
                 if self.energy_level != Level.WARNING:
-                    self.client.publish(self.topic_pub + "/energy_level", str(Level.WARNING), retain=True)
+                    self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.WARNING)), retain=True)
                     self.energy_level = Level.WARNING
             else:
                 if self.energy_level != Level.CRITICAL:
-                    self.client.publish(self.topic_pub + "/energy_level", str(Level.CRITICAL), retain=True)
+                    self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.CRITICAL)), retain=True)
                     self.energy_level = Level.CRITICAL
 # class FridgeLoadAnalyzer(Analyzer):
 #     def __init__(self, client_id="fridge_load_analyzer", server="localhost", port=1883):
