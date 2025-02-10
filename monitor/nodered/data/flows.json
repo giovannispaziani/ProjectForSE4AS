@@ -40,12 +40,24 @@
             "d42e1a5fcbc5259b",
             "554be1a8bce11545",
             "dcb66fe337292b34",
-            "b6b8fe3787b34f56"
+            "b6b8fe3787b34f56",
+            "c08c409a7ec9bb3f",
+            "6446f91eeac9f98e",
+            "e6c01f95a6387805",
+            "976e90f77194fa82",
+            "3030d27fb717c3f1",
+            "8f8329f17eca6354",
+            "52f30fdfa8455b3d",
+            "4390dd8ee8bcc70c",
+            "708ce20633e474fa",
+            "aa8db65cf8d49931",
+            "9da49b95aeeae627",
+            "8e10011ddb497877"
         ],
-        "x": 734,
-        "y": 79,
-        "w": 932,
-        "h": 662
+        "x": 694,
+        "y": 19,
+        "w": 1012,
+        "h": 1142
     },
     {
         "id": "c46509ea1b2d8f12",
@@ -75,12 +87,24 @@
             "ac516eacc063dd16",
             "843f1870068bea7a",
             "0ffca6d7cc17dcee",
-            "9df29bcec682b86d"
+            "9df29bcec682b86d",
+            "edcd452354fbaf31",
+            "53b79310569204a0",
+            "e273b5831dc89801",
+            "66d260cd7d4019fe",
+            "6bf77038ef82b3e3",
+            "bcad8237e12390b8",
+            "30951266efd5c437",
+            "a2df48a9a3a614ce",
+            "0daf42dd905f4843",
+            "1f9bfee05a6a9ae7",
+            "774aed2d8aeb26e7",
+            "473c15259d1b41d7"
         ],
-        "x": 154,
+        "x": 94,
         "y": 19,
-        "w": 532,
-        "h": 722
+        "w": 612,
+        "h": 1142
     },
     {
         "id": "a928ba0.2d1f748",
@@ -302,7 +326,7 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 310,
+        "x": 270,
         "y": 100,
         "wires": [
             [
@@ -345,7 +369,7 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 280,
+        "x": 300,
         "y": 240,
         "wires": [
             [
@@ -393,7 +417,7 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 300,
+        "x": 280,
         "y": 520,
         "wires": [
             [
@@ -417,7 +441,7 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 300,
+        "x": 280,
         "y": 660,
         "wires": [
             [
@@ -670,7 +694,7 @@
         "payload": "[{\"_value\": 4500}, {\"_value\": 4600}]",
         "payloadType": "json",
         "x": 160,
-        "y": 1340,
+        "y": 1460,
         "wires": [
             [
                 "7cf77d0392859c23",
@@ -693,7 +717,7 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 340,
-        "y": 1380,
+        "y": 1500,
         "wires": []
     },
     {
@@ -803,7 +827,7 @@
         "retentionPolicy": "",
         "org": "Iot-23-24",
         "x": 190,
-        "y": 1200,
+        "y": 1320,
         "wires": [
             [
                 "6ec8c9bf04165dde",
@@ -824,7 +848,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 395,
-        "y": 1180,
+        "y": 1300,
         "wires": [],
         "l": false
     },
@@ -840,7 +864,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 150,
-        "y": 1140,
+        "y": 1260,
         "wires": [
             [
                 "87fdd9a04115344d"
@@ -860,7 +884,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 1240,
+        "y": 1360,
         "wires": [
             [
                 "8ac1a2f68bd47fcc",
@@ -881,7 +905,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 735,
-        "y": 1200,
+        "y": 1320,
         "wires": [],
         "l": false
     },
@@ -898,7 +922,7 @@
         "finalize": "",
         "libs": [],
         "x": 780,
-        "y": 1340,
+        "y": 1460,
         "wires": [
             [
                 "3829096d8cc5e9e4",
@@ -918,7 +942,7 @@
         "template": "Hello!\nThis is your hourly energy consumption report.\n\n<ul>\n    <li>Total energy consumed thus far: {{payload.min}} kWh</li>\n    <li>Energy consumed in the last hour: {{payload.diff}} kWh</li>\n</ul>",
         "output": "str",
         "x": 620,
-        "y": 1280,
+        "y": 1400,
         "wires": [
             [
                 "953790de6e536d24",
@@ -941,7 +965,7 @@
         "name": "dario.dercole@student.univaq.it",
         "dname": "",
         "x": 1030,
-        "y": 1280,
+        "y": 1400,
         "wires": []
     },
     {
@@ -959,7 +983,7 @@
         "name": "giovanni.spaziani@student.univaq.it",
         "dname": "",
         "x": 1050,
-        "y": 1360,
+        "y": 1480,
         "wires": []
     },
     {
@@ -975,7 +999,7 @@
         "retentionPolicy": "",
         "org": "Se4as-24-25",
         "x": 1000,
-        "y": 120,
+        "y": 60,
         "wires": [
             [
                 "1b810b41ede51439",
@@ -995,15 +1019,18 @@
         "once": true,
         "onceDelay": "3",
         "topic": "",
-        "x": 830,
-        "y": 240,
+        "x": 790,
+        "y": 460,
         "wires": [
             [
                 "b451db19bfc01ed5",
                 "cc579c99656587a2",
                 "41196dbe13b86f19",
                 "d851253f6d300a27",
-                "d8a11832b26a4ae8"
+                "d8a11832b26a4ae8",
+                "c08c409a7ec9bb3f",
+                "3030d27fb717c3f1",
+                "708ce20633e474fa"
             ]
         ]
     },
@@ -1022,7 +1049,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1065,
-        "y": 160,
+        "y": 100,
         "wires": [],
         "l": false
     },
@@ -1032,7 +1059,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "",
-        "topic": "/smart/analyzer/float/temperature",
+        "topic": "/smart/analyzer/temperature",
         "qos": "",
         "retain": "",
         "respTopic": "",
@@ -1041,8 +1068,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1500,
-        "y": 120,
+        "x": 1480,
+        "y": 60,
         "wires": []
     },
     {
@@ -1058,7 +1085,7 @@
         "retentionPolicy": "",
         "org": "Se4as-24-25",
         "x": 1000,
-        "y": 220,
+        "y": 160,
         "wires": [
             [
                 "aab0a8695c7fe9d0",
@@ -1081,7 +1108,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1065,
-        "y": 260,
+        "y": 200,
         "wires": [],
         "l": false
     },
@@ -1091,7 +1118,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "",
-        "topic": "/smart/analyzer/float/fridge_temp",
+        "topic": "/smart/analyzer/fridge_temp",
         "qos": "",
         "retain": "",
         "respTopic": "",
@@ -1100,8 +1127,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1500,
-        "y": 220,
+        "x": 1480,
+        "y": 160,
         "wires": []
     },
     {
@@ -1117,7 +1144,7 @@
         "retentionPolicy": "",
         "org": "Se4as-24-25",
         "x": 1020,
-        "y": 320,
+        "y": 260,
         "wires": [
             [
                 "4eddf091a0f1456a",
@@ -1140,7 +1167,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1065,
-        "y": 360,
+        "y": 300,
         "wires": [],
         "l": false
     },
@@ -1150,7 +1177,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "",
-        "topic": "/smart/analyzer/int/light",
+        "topic": "/smart/analyzer/light",
         "qos": "",
         "retain": "",
         "respTopic": "",
@@ -1159,8 +1186,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1470,
-        "y": 320,
+        "x": 1460,
+        "y": 260,
         "wires": []
     },
     {
@@ -1176,7 +1203,7 @@
         "retentionPolicy": "",
         "org": "Se4as-24-25",
         "x": 1010,
-        "y": 420,
+        "y": 360,
         "wires": [
             [
                 "a59bdda345f82565",
@@ -1199,7 +1226,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1065,
-        "y": 460,
+        "y": 400,
         "wires": [],
         "l": false
     },
@@ -1209,7 +1236,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "",
-        "topic": "/smart/analyzer/float/energy/total",
+        "topic": "/smart/analyzer/energy/total",
         "qos": "",
         "retain": "",
         "respTopic": "",
@@ -1218,8 +1245,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1490,
-        "y": 420,
+        "x": 1480,
+        "y": 360,
         "wires": []
     },
     {
@@ -1235,7 +1262,7 @@
         "retentionPolicy": "",
         "org": "Se4as-24-25",
         "x": 1000,
-        "y": 520,
+        "y": 460,
         "wires": [
             [
                 "6ec0ec73dd7e47ac",
@@ -1258,7 +1285,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1065,
-        "y": 560,
+        "y": 500,
         "wires": [],
         "l": false
     },
@@ -1268,7 +1295,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "",
-        "topic": "/smart/analyzer/int/fridge_load",
+        "topic": "/smart/analyzer/fridge_load",
         "qos": "",
         "retain": "",
         "respTopic": "",
@@ -1277,8 +1304,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1490,
-        "y": 520,
+        "x": 1480,
+        "y": 460,
         "wires": []
     },
     {
@@ -1297,7 +1324,7 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 1370,
-        "y": 620,
+        "y": 1040,
         "wires": []
     },
     {
@@ -1323,7 +1350,7 @@
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
         "x": 980,
-        "y": 620,
+        "y": 1040,
         "wires": [
             [
                 "d08ef2268e982688"
@@ -1346,7 +1373,7 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 1360,
-        "y": 700,
+        "y": 1120,
         "wires": []
     },
     {
@@ -1372,7 +1399,7 @@
         "payload": "{\"configuration\":{\"max_total_kw\":3,\"warning_threshold_kw\":2.5}}",
         "payloadType": "json",
         "x": 990,
-        "y": 700,
+        "y": 1120,
         "wires": [
             [
                 "bdeb025c06e44332"
@@ -1393,71 +1420,10 @@
         "finalize": "",
         "libs": [],
         "x": 1230,
-        "y": 120,
+        "y": 60,
         "wires": [
             [
                 "3e300eaffa57511d"
-            ]
-        ]
-    },
-    {
-        "id": "86e74d5e5a8bfba4",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last fridge load",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"float_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/float/temperature\" or r[\"topic\"] == \"/smart/float/fridge_temp\")\n  |> aggregateWindow(every: 60s, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 960,
-        "y": 860,
-        "wires": [
-            [
-                "a997d5706191b3ea"
-            ]
-        ]
-    },
-    {
-        "id": "a997d5706191b3ea",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "name": "influx debug",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1105,
-        "y": 860,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "e4395e0c4a6e4cfc",
-        "type": "inject",
-        "z": "99285b04ab31eeb3",
-        "name": "",
-        "props": [
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 770,
-        "y": 860,
-        "wires": [
-            [
-                "86e74d5e5a8bfba4"
             ]
         ]
     },
@@ -1475,7 +1441,7 @@
         "finalize": "",
         "libs": [],
         "x": 1230,
-        "y": 220,
+        "y": 160,
         "wires": [
             [
                 "4d88e44a6c4385ba"
@@ -1496,7 +1462,7 @@
         "finalize": "",
         "libs": [],
         "x": 1230,
-        "y": 320,
+        "y": 260,
         "wires": [
             [
                 "f7e85569ce21407a"
@@ -1517,7 +1483,7 @@
         "finalize": "",
         "libs": [],
         "x": 1230,
-        "y": 420,
+        "y": 360,
         "wires": [
             [
                 "28d601ee22eb13f1"
@@ -1538,10 +1504,523 @@
         "finalize": "",
         "libs": [],
         "x": 1230,
-        "y": 520,
+        "y": 460,
         "wires": [
             [
                 "6a1fbbcceb5bb765"
+            ]
+        ]
+    },
+    {
+        "id": "edcd452354fbaf31",
+        "type": "mqtt in",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "topic": "/SmartHomeD&G/DishwasherPower",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "a928ba0.2d1f748",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 260,
+        "y": 800,
+        "wires": [
+            [
+                "53b79310569204a0",
+                "e273b5831dc89801",
+                "66d260cd7d4019fe"
+            ]
+        ]
+    },
+    {
+        "id": "53b79310569204a0",
+        "type": "debug",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 760,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "e273b5831dc89801",
+        "type": "ui_gauge",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "group": "55277096f27f8c4f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "DISHWASHER_POWER",
+        "label": "W",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1200",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#2cec13"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 550,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "66d260cd7d4019fe",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "topic": "/smart/int/dishwasher_power",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 560,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "6bf77038ef82b3e3",
+        "type": "mqtt in",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "topic": "/SmartHomeD&G/FridgePower",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "a928ba0.2d1f748",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 270,
+        "y": 940,
+        "wires": [
+            [
+                "bcad8237e12390b8",
+                "30951266efd5c437",
+                "a2df48a9a3a614ce"
+            ]
+        ]
+    },
+    {
+        "id": "bcad8237e12390b8",
+        "type": "debug",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 900,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "30951266efd5c437",
+        "type": "ui_gauge",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "group": "55277096f27f8c4f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "FRIDGE_POWER",
+        "label": "W",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1200",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#2cec13"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 530,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "a2df48a9a3a614ce",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "topic": "/smart/int/fridge_power",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 540,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "0daf42dd905f4843",
+        "type": "mqtt in",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "topic": "/SmartHomeD&G/LampPower",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "a928ba0.2d1f748",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 280,
+        "y": 1080,
+        "wires": [
+            [
+                "1f9bfee05a6a9ae7",
+                "774aed2d8aeb26e7",
+                "473c15259d1b41d7"
+            ]
+        ]
+    },
+    {
+        "id": "1f9bfee05a6a9ae7",
+        "type": "debug",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 455,
+        "y": 1040,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "774aed2d8aeb26e7",
+        "type": "ui_gauge",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "group": "575f0b6b213a240c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "LAMP_POWER",
+        "label": "Units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "150",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#2cec13"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 520,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "473c15259d1b41d7",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "",
+        "topic": "/smart/int/lamp_power",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 540,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "c08c409a7ec9bb3f",
+        "type": "influxdb in",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last dishwasher power",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/dishwasher_power\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 980,
+        "y": 560,
+        "wires": [
+            [
+                "6446f91eeac9f98e",
+                "976e90f77194fa82"
+            ]
+        ]
+    },
+    {
+        "id": "6446f91eeac9f98e",
+        "type": "debug",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1065,
+        "y": 600,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "e6c01f95a6387805",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "",
+        "topic": "/smart/analyzer/energy/dishwasher_power",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1520,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "976e90f77194fa82",
+        "type": "function",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "Tag json with metric name",
+        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1230,
+        "y": 560,
+        "wires": [
+            [
+                "e6c01f95a6387805"
+            ]
+        ]
+    },
+    {
+        "id": "3030d27fb717c3f1",
+        "type": "influxdb in",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last fridge power",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/fridge_power\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 1000,
+        "y": 660,
+        "wires": [
+            [
+                "8f8329f17eca6354",
+                "4390dd8ee8bcc70c"
+            ]
+        ]
+    },
+    {
+        "id": "8f8329f17eca6354",
+        "type": "debug",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1065,
+        "y": 700,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "52f30fdfa8455b3d",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "",
+        "topic": "/smart/analyzer/energy/fridge_power",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1510,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "4390dd8ee8bcc70c",
+        "type": "function",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "Tag json with metric name",
+        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1230,
+        "y": 660,
+        "wires": [
+            [
+                "52f30fdfa8455b3d"
+            ]
+        ]
+    },
+    {
+        "id": "708ce20633e474fa",
+        "type": "influxdb in",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "influxdb": "6ddbd751be509e35",
+        "name": "last lamp power",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/lamp_power\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Se4as-24-25",
+        "x": 1000,
+        "y": 760,
+        "wires": [
+            [
+                "aa8db65cf8d49931",
+                "8e10011ddb497877"
+            ]
+        ]
+    },
+    {
+        "id": "aa8db65cf8d49931",
+        "type": "debug",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1065,
+        "y": 800,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "9da49b95aeeae627",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "",
+        "topic": "/smart/analyzer/energy/lamp_power",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1500,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "8e10011ddb497877",
+        "type": "function",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "Tag json with metric name",
+        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1230,
+        "y": 760,
+        "wires": [
+            [
+                "9da49b95aeeae627"
             ]
         ]
     }
