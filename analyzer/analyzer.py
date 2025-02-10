@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import IntEnum, StrEnum
 import json
 import time
 
@@ -14,6 +14,7 @@ class Analyzer:
     config_topic = "/smart/analyzer/config"
     topic_sub = "/smart/analyzer"
     topic_pub = "/smart/planner"
+    ANALYSIS_INTERVAL = 10.0 #seconds
 
     def __init__(self, client_id, server, port):
         # set up the mqtt client and other instance fields
@@ -22,11 +23,14 @@ class Analyzer:
         self.server = server
         self.port = port
         self.configuration = None
+        self.last_analysis_time = time.time()
 
     def start(self):
         # connect to the broker
         self.client.connect(self.server, self.port, 60)
         print("Connected to MQTT broker")
+
+        self.client.loop_start()
 
         # Retrieve configuration
         topic = self.config_topic + f"/{self.client_id}"
@@ -53,6 +57,14 @@ class Analyzer:
         parsed = json.loads(decoded) #parse json string into a dict
         return parsed
 
+    def encode_json_to_message(self, value, dictionary=None):
+        if not dictionary is None:
+            json_string = json.dumps(dictionary)
+        else:
+            json_string = json.dumps({'value' : value})
+        encoded = json_string.encode('utf-8')
+        return encoded
+
     def extract_values_from_message(self, mqtt_message):
         # extract the json
         payload = self.parse_json_from_message(mqtt_message)
@@ -63,8 +75,7 @@ class Analyzer:
         values = {}
         for name,metric in payload.items():
             values[name] = [entry['_value'] for entry in metric]
-            return values
-        raise ValueError(f'Unable to extract values from message:\n{payload}')
+        return values
 
 
 class TemperatureAnalyzer(Analyzer):
@@ -75,19 +86,35 @@ class TemperatureAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self.on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/float/temperature"
+        self.topic_sub = self.topic_sub + "/temperature"
         self.start()
+
+        #analyzer specific fields
+        self.temperature = 0.0
 
     def start(self):
         super().start() # connect to broker, retrieve config and subscribe to topics
 
         #initialize topics
-        self.client.publish(self.topic_pub + "/increase_temperature", False, retain=True)
+        self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(False), retain=True)
 
         self.loop()
 
     def loop(self):
-        self.client.loop_start()
+        current_time = time.time()
+        # TODO: Controllare perchè l'analysis di temperature non avviene sempre ogni 10 secondi
+        if current_time - self.last_analysis_time >= self.ANALYSIS_INTERVAL:
+            self.analyze()
+            self.last_analysis_time = current_time
+
+    def analyze(self):
+        if self.temperature <= self.configuration['min_temp']:
+            # tell planner to increase temperature
+            self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(True),
+                                retain=True)
+        elif self.temperature >= self.configuration['min_temp'] + self.configuration['working_threshold']:
+            self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(False),
+                                retain=True)
 
     def on_message(self, client, user_data, message):
         super().on_message(client, user_data, message)
@@ -97,12 +124,7 @@ class TemperatureAnalyzer(Analyzer):
             self.configuration = values['configuration']
             return
         if values: # check if new data is received (payload may be empty if sensors are not sending data)
-            temperature = values['temperature']
-            if temperature[-1] <= self.configuration['min_temp']:
-                # tell planner to increase temperature
-                self.client.publish(self.topic_pub + "/increase_temperature", True, retain=True)
-            elif temperature[-1] >= self.configuration['min_temp'] + self.configuration['working_threshold']:
-                self.client.publish(self.topic_pub + "/increase_temperature", False, retain=True)
+            self.temperature = values['temperature'][-1]
 
 # class LightAnalyzer(Analyzer):
 #     def __init__(self, client_id="light_analyzer", server="localhost", port=1883):
@@ -137,6 +159,12 @@ class TemperatureAnalyzer(Analyzer):
 #         if values:  # check if new data is received (payload may be empty if sensors are not sending data)
 #             return
 
+class EnergyMetric(StrEnum):
+    TOTAL = 'energy'
+    DISHWASHER = 'dishwasher_power'
+    FRIDGE = 'fridge_power'
+    LAMP = 'lamp_power'
+
 class EnergyAnalyzer(Analyzer):
 
     def __init__(self, client_id="energy_analyzer", server="localhost", port=1883):
@@ -144,10 +172,12 @@ class EnergyAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self.on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/int/energy"
+        self.topic_sub = self.topic_sub + "/energy/#"
 
         # analyzer specific fields
         self.energy_level = Level.NORMAL
+        self.last_values = {}
+        self.last_values['power'] = {}
 
         self.start()
 
@@ -155,12 +185,31 @@ class EnergyAnalyzer(Analyzer):
         super().start()
 
         # initialize topics
-        self.client.publish(self.topic_pub + "/energy_level", str(self.energy_level), retain=True) #0: OK, 1: high, 2: above limit
+        self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(self.energy_level)), retain=True) #0: OK, 1: high, 2: above limit
 
         self.loop()
 
     def loop(self):
-        self.client.loop_start()
+        current_time = time.time()
+        if current_time - self.last_analysis_time >= self.ANALYSIS_INTERVAL:
+            self.analyze()
+            self.last_analysis_time = current_time
+
+    def analyze(self):
+        # check current total kw
+        current_total_power = sum(self.last_values['power'].values())
+        if current_total_power <= self.configuration['warning_threshold_kw']:
+            self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.NORMAL)),
+                                retain=True)
+            self.energy_level = Level.NORMAL
+        elif current_total_power <= self.configuration['max_total_kw']:
+            self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.WARNING)),
+                                retain=True)
+            self.energy_level = Level.WARNING
+        else:
+            self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.CRITICAL)),
+                                retain=True)
+            self.energy_level = Level.CRITICAL
 
     def on_message(self, client, user_data, message):
         super().on_message(client, user_data, message)
@@ -169,20 +218,13 @@ class EnergyAnalyzer(Analyzer):
             self.configuration = values['configuration']
             return
         if values: # check if new data is received (payload may be empty if sensors are not sending data)
-            # check current total kw
-            total_kw = values['energy']
-            if total_kw[-1] <= self.configuration['warning_threshold_kw']:
-                if self.energy_level != Level.NORMAL:
-                    self.client.publish(self.topic_pub + "/energy_level", str(Level.NORMAL), retain=True)
-                    self.energy_level = Level.NORMAL
-            elif total_kw[-1] <= self.configuration['max_total_kw']:
-                if self.energy_level != Level.WARNING:
-                    self.client.publish(self.topic_pub + "/energy_level", str(Level.WARNING), retain=True)
-                    self.energy_level = Level.WARNING
-            else:
-                if self.energy_level != Level.CRITICAL:
-                    self.client.publish(self.topic_pub + "/energy_level", str(Level.CRITICAL), retain=True)
-                    self.energy_level = Level.CRITICAL
+            # Check what metric has been received
+            for k,v in values.items():
+                if k == EnergyMetric.TOTAL.value:
+                    self.last_values[k] = v[-1]
+                else:
+                    self.last_values['power'][k] = v[-1]
+
 # class FridgeLoadAnalyzer(Analyzer):
 #     def __init__(self, client_id="fridge_load_analyzer", server="localhost", port=1883):
 #         super().__init__(client_id, server, port)
@@ -251,6 +293,8 @@ def main():
     # fridge_temp_analyzer = FridgeTempAnalyzer()
 
     while True:
+        temp_analyzer.loop()
+        energy_analyzer.loop()
         time.sleep(0.1)
 
 if __name__ == "__main__":
