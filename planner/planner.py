@@ -62,11 +62,14 @@ class Planner:
         parsed = json.loads(decoded) #parse json string into a dict
         return parsed
 
-    def _encode_json_to_message(self, value, dictionary=None):
+    def _encode_json_to_message(self, value=None, dictionary=None):
         if not dictionary is None:
             json_string = json.dumps(dictionary)
         else:
-            json_string = json.dumps({'value' : value})
+            if not value is None:
+                json_string = json.dumps({'value' : value})
+            else:
+                raise ValueError('Either value or dictionary must be provided')
         encoded = json_string.encode('utf-8')
         return encoded
 
@@ -127,6 +130,54 @@ class TemperaturePlanner(Planner):
             else: # increase temperature = False
                 self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, self._encode_json_to_message(False), retain=True)
                 self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, self._encode_json_to_message(str(Shutters.ANY)), retain=True)
+
+class EnergyPlanner(Planner):
+
+    TOPIC_SUB = "/energy/#"
+    TOPIC_PUB = "/energy"
+    SWITCHES_SUBTOPIC = "/switch"
+    SHUTTERS_SUBTOPIC = "/shutters"
+
+    def __init__(self, client_id="energy_planner", server="localhost", port=1883):
+        super().__init__(client_id, server, port) # setup mqtt client and instance fields
+
+        # set up callbacks and topic strings
+        self.client.on_message = self._on_message
+        self.client.on_subscribe = self._on_subscribe
+        self.client.on_publish = self._on_publish
+        self.topic_sub = self.topic_sub + self.TOPIC_SUB
+        self.topic_pub = self.topic_pub + self.TOPIC_PUB
+
+        # planner specific fields
+
+        # this will contain states of all smart switches that turn on/off the connected apparels.
+        # The actual effect depends on wether the apparel can be regulated like wash machines and fridges or just turned on/off like lights
+        # TODO: Una volta che avremo gli actuators, rendere il settaggio di questo oggetto automatico
+        self.switches = {
+            'wash_machine': True,
+            'fridge': True,
+            'lights': True,
+            'heating': True
+        }
+
+    def start(self):
+        super().start() # connect to broker, retrieve config and subscribe to topics
+
+        #initialize topics
+        self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, self._encode_json_to_message(dictionary=self.switches), retain=True)
+        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, self._encode_json_to_message(str(Shutters.ANY)), retain=True)
+
+
+    def _on_message(self, client, user_data, message):
+        super()._on_message(client, user_data, message)
+        values = self._extract_values_from_message(message)
+
+        if 'configuration' in values:
+            self.configuration = values['configuration']
+            return
+        if values: # check if new data is received (also if it's true)
+            # TODO: logica del energy planner, inoltre bisogna pensare a come gestire conflitti tra i piani dati da planner diversi.
+            print('fa qualcosa')
 
 def main():
     temp_planner = TemperaturePlanner()
