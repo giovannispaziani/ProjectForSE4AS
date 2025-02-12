@@ -54,7 +54,7 @@
             "9da49b95aeeae627",
             "8e10011ddb497877"
         ],
-        "x": 694,
+        "x": 714,
         "y": 19,
         "w": 1012,
         "h": 1142
@@ -309,6 +309,28 @@
         "order": 2,
         "disp": true,
         "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d80d5173b7311e0a",
+        "type": "ui_group",
+        "name": "",
+        "tab": "6043b1181f466e6d",
+        "order": 3,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "76abae67c4b97895",
+        "type": "ui_group",
+        "name": "",
+        "tab": "6043b1181f466e6d",
+        "order": 4,
+        "disp": true,
+        "width": 6,
         "collapse": false,
         "className": ""
     },
@@ -571,7 +593,7 @@
         "label": "LUX",
         "format": "{{value}}",
         "min": 0,
-        "max": "400",
+        "max": "300",
         "colors": [
             "#00b500",
             "#e6e600",
@@ -620,7 +642,7 @@
         "z": "99285b04ab31eeb3",
         "g": "c46509ea1b2d8f12",
         "name": "",
-        "group": "575f0b6b213a240c",
+        "group": "55277096f27f8c4f",
         "order": 10,
         "width": 0,
         "height": 0,
@@ -649,13 +671,13 @@
         "z": "99285b04ab31eeb3",
         "g": "c46509ea1b2d8f12",
         "name": "",
-        "group": "55277096f27f8c4f",
+        "group": "d80d5173b7311e0a",
         "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
         "title": "FRIDGE_LOAD",
-        "label": "Units",
+        "label": "Groceries",
         "format": "{{value}}",
         "min": 0,
         "max": "150",
@@ -693,8 +715,8 @@
         "topic": "",
         "payload": "[{\"_value\": 4500}, {\"_value\": 4600}]",
         "payloadType": "json",
-        "x": 160,
-        "y": 1460,
+        "x": 420,
+        "y": 1280,
         "wires": [
             [
                 "7cf77d0392859c23",
@@ -716,8 +738,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 340,
-        "y": 1500,
+        "x": 600,
+        "y": 1280,
         "wires": []
     },
     {
@@ -826,8 +848,8 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Iot-23-24",
-        "x": 190,
-        "y": 1320,
+        "x": 370,
+        "y": 1240,
         "wires": [
             [
                 "6ec8c9bf04165dde",
@@ -847,8 +869,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 395,
-        "y": 1300,
+        "x": 555,
+        "y": 1200,
         "wires": [],
         "l": false
     },
@@ -863,8 +885,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 150,
-        "y": 1260,
+        "x": 170,
+        "y": 1240,
         "wires": [
             [
                 "87fdd9a04115344d"
@@ -883,8 +905,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 440,
-        "y": 1360,
+        "x": 620,
+        "y": 1240,
         "wires": [
             [
                 "8ac1a2f68bd47fcc",
@@ -904,8 +926,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 735,
-        "y": 1320,
+        "x": 865,
+        "y": 1240,
         "wires": [],
         "l": false
     },
@@ -921,8 +943,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 780,
-        "y": 1460,
+        "x": 980,
+        "y": 1280,
         "wires": [
             [
                 "3829096d8cc5e9e4",
@@ -941,8 +963,8 @@
         "syntax": "mustache",
         "template": "Hello!\nThis is your hourly energy consumption report.\n\n<ul>\n    <li>Total energy consumed thus far: {{payload.min}} kWh</li>\n    <li>Energy consumed in the last hour: {{payload.diff}} kWh</li>\n</ul>",
         "output": "str",
-        "x": 620,
-        "y": 1400,
+        "x": 780,
+        "y": 1280,
         "wires": [
             [
                 "953790de6e536d24",
@@ -964,8 +986,8 @@
         "tls": false,
         "name": "dario.dercole@student.univaq.it",
         "dname": "",
-        "x": 1030,
-        "y": 1400,
+        "x": 1210,
+        "y": 1260,
         "wires": []
     },
     {
@@ -982,8 +1004,8 @@
         "tls": false,
         "name": "giovanni.spaziani@student.univaq.it",
         "dname": "",
-        "x": 1050,
-        "y": 1480,
+        "x": 1230,
+        "y": 1300,
         "wires": []
     },
     {
@@ -998,7 +1020,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1000,
+        "x": 1020,
         "y": 60,
         "wires": [
             [
@@ -1019,7 +1041,7 @@
         "once": true,
         "onceDelay": "3",
         "topic": "",
-        "x": 790,
+        "x": 810,
         "y": 460,
         "wires": [
             [
@@ -1048,7 +1070,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 100,
         "wires": [],
         "l": false
@@ -1068,7 +1090,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1480,
+        "x": 1500,
         "y": 60,
         "wires": []
     },
@@ -1084,7 +1106,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1000,
+        "x": 1020,
         "y": 160,
         "wires": [
             [
@@ -1107,7 +1129,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 200,
         "wires": [],
         "l": false
@@ -1127,7 +1149,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1480,
+        "x": 1500,
         "y": 160,
         "wires": []
     },
@@ -1143,7 +1165,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1020,
+        "x": 1040,
         "y": 260,
         "wires": [
             [
@@ -1166,7 +1188,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 300,
         "wires": [],
         "l": false
@@ -1186,7 +1208,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1460,
+        "x": 1480,
         "y": 260,
         "wires": []
     },
@@ -1202,7 +1224,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1010,
+        "x": 1030,
         "y": 360,
         "wires": [
             [
@@ -1225,7 +1247,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 400,
         "wires": [],
         "l": false
@@ -1245,7 +1267,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1480,
+        "x": 1500,
         "y": 360,
         "wires": []
     },
@@ -1261,7 +1283,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1000,
+        "x": 1020,
         "y": 460,
         "wires": [
             [
@@ -1284,7 +1306,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 500,
         "wires": [],
         "l": false
@@ -1304,7 +1326,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1480,
+        "x": 1500,
         "y": 460,
         "wires": []
     },
@@ -1323,7 +1345,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1370,
+        "x": 1390,
         "y": 1040,
         "wires": []
     },
@@ -1349,7 +1371,7 @@
         "topic": "",
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
-        "x": 980,
+        "x": 1000,
         "y": 1040,
         "wires": [
             [
@@ -1372,7 +1394,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1360,
+        "x": 1380,
         "y": 1120,
         "wires": []
     },
@@ -1398,7 +1420,7 @@
         "topic": "",
         "payload": "{\"configuration\":{\"max_total_kw\":3,\"warning_threshold_kw\":2.5}}",
         "payloadType": "json",
-        "x": 990,
+        "x": 1010,
         "y": 1120,
         "wires": [
             [
@@ -1419,7 +1441,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 60,
         "wires": [
             [
@@ -1440,7 +1462,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 160,
         "wires": [
             [
@@ -1461,7 +1483,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 260,
         "wires": [
             [
@@ -1482,7 +1504,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 360,
         "wires": [
             [
@@ -1503,7 +1525,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 460,
         "wires": [
             [
@@ -1560,16 +1582,16 @@
         "z": "99285b04ab31eeb3",
         "g": "c46509ea1b2d8f12",
         "name": "",
-        "group": "55277096f27f8c4f",
+        "group": "d80d5173b7311e0a",
         "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
         "title": "DISHWASHER_POWER",
-        "label": "W",
+        "label": "Watt",
         "format": "{{value}}",
         "min": 0,
-        "max": "1200",
+        "max": "1500",
         "colors": [
             "#00b500",
             "#e6e600",
@@ -1651,16 +1673,16 @@
         "z": "99285b04ab31eeb3",
         "g": "c46509ea1b2d8f12",
         "name": "",
-        "group": "55277096f27f8c4f",
+        "group": "76abae67c4b97895",
         "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
         "title": "FRIDGE_POWER",
-        "label": "W",
+        "label": "Watt",
         "format": "{{value}}",
         "min": 0,
-        "max": "1200",
+        "max": "300",
         "colors": [
             "#00b500",
             "#e6e600",
@@ -1742,13 +1764,13 @@
         "z": "99285b04ab31eeb3",
         "g": "c46509ea1b2d8f12",
         "name": "",
-        "group": "575f0b6b213a240c",
+        "group": "76abae67c4b97895",
         "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
         "title": "LAMP_POWER",
-        "label": "Units",
+        "label": "Watt",
         "format": "{{value}}",
         "min": 0,
         "max": "150",
@@ -1796,7 +1818,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 980,
+        "x": 1000,
         "y": 560,
         "wires": [
             [
@@ -1819,7 +1841,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 600,
         "wires": [],
         "l": false
@@ -1839,7 +1861,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1520,
+        "x": 1540,
         "y": 560,
         "wires": []
     },
@@ -1856,7 +1878,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 560,
         "wires": [
             [
@@ -1876,7 +1898,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1000,
+        "x": 1020,
         "y": 660,
         "wires": [
             [
@@ -1899,7 +1921,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 700,
         "wires": [],
         "l": false
@@ -1919,7 +1941,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1510,
+        "x": 1530,
         "y": 660,
         "wires": []
     },
@@ -1936,7 +1958,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 660,
         "wires": [
             [
@@ -1956,7 +1978,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1000,
+        "x": 1020,
         "y": 760,
         "wires": [
             [
@@ -1979,7 +2001,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1065,
+        "x": 1085,
         "y": 800,
         "wires": [],
         "l": false
@@ -1999,7 +2021,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1500,
+        "x": 1520,
         "y": 760,
         "wires": []
     },
@@ -2016,7 +2038,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1250,
         "y": 760,
         "wires": [
             [

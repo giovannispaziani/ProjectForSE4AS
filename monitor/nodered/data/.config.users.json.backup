@@ -17,7 +17,8 @@
             },
             "dialog": {
                 "export": {
-                    "pretty": false
+                    "pretty": false,
+                    "json-view": true
                 }
             }
         },
@@ -25,6 +26,6 @@
             "filter": "filterAll"
         },
         "menu-menu-item-palette": true,
-        "menu-menu-item-sidebar": true
+        "menu-menu-item-sidebar": false
     }
 }

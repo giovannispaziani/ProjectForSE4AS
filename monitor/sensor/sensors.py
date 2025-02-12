@@ -17,7 +17,7 @@ fridge_load = 50  # Refrigerator load
 
 # Power consumption of each device in Watts
 fridge_power = 150  # Fridge (150 W)
-dishwasher_power = random.randint(800, 1200)  # Dishwasher (800-1200 W range for variability)
+dishwasher_power = 1000  # Dishwasher (1000 W)
 thermostat_power = 2  # Thermostat (2 W)
 lamp_power = 8  # Each lamp power (8 W per lamp)
 active_lamps = 5  # Number of lamps initially active
@@ -97,10 +97,10 @@ def update_sensors(elapsed_time):
             fridge_temp += random.uniform(-0.2, 0.0)
 
     # Update power values
-    fridge_power = random.randint(140, 160)  # Changes in the value of the power output by the refrigerator
-    dishwasher_power = random.randint(800, 1200)  # Changes in the value of the power output by the dishwasher
-    thermostat_power = random.choice([1, 2, 3])  # Changes in the value of the power output by the thermostat
-    lamp_power = random.randint(7, 10)  # Changes in the value of the power output by the lamp
+    fridge_power = random.randint(100, 300)  # Changes in the value of the power output by the refrigerator
+    dishwasher_power = random.randint(800, 1500)  # Changes in the value of the power output by the dishwasher
+    thermostat_power = random.randint(1, 5)  # Changes in the value of the power output by the thermostat
+    lamp_power = random.randint(7, 15)  # Changes in the value of the power output by the lamp
 
 
 def simulate_event():
@@ -114,7 +114,7 @@ def simulate_event():
     total_energy = fridge_energy + dishwasher_energy + thermostat_energy + lamp_energy
     energy += total_energy
 
-    print(f"Energy consumption increased by {total_energy:.1f} kWh.")
+    print(f"The value of the energy consumption is: {total_energy:.1f} kWh.")
 
 def main():
     connect_mqtt()
