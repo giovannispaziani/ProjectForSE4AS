@@ -10,11 +10,36 @@ class Level(IntEnum):
     WARNING = 1
     CRITICAL = 2
 
+class WindowState(IntEnum):
+    NOT_TRACKED = -1
+    CLOSED = 0
+    OPEN = 1
+
+class Automation(IntEnum):
+    DISABLED = 0
+    ENABLED = 1
+
 class Shutters(IntEnum):
     ANY = 0 # means we are not requiring a position for them
     SHUT = 1
     PARTIALLY_OPEN = 2
     OPEN = 3
+
+# TODO: Mettere su nodered lo switch manuale/automatico delle tapparelle
+shutters_configuration = {
+    'livingroom_1': Automation.ENABLED,
+    'livingroom_2': Automation.ENABLED,
+    'bedroom_1_1': Automation.ENABLED,
+    'bathroom_1_1': Automation.ENABLED,
+}
+
+# TODO: Aggiungere sensore per il balcone
+windows_state = {
+    'livingroom_1': WindowState.CLOSED, # with balcony
+    'livingroom_2': WindowState.CLOSED, # no balcony
+    'bedroom_1_1' : WindowState.CLOSED, # no balcony
+    'bathroom_1_1' : WindowState.CLOSED, # no balcony
+}
 
 class Planner:
     client_id = None
@@ -114,6 +139,7 @@ class TemperaturePlanner(Planner):
 
         if 'configuration' in values:
             self.configuration = values['configuration']
+            self.configuration['automation'] = shutters_configuration # TODO: togliere dopo aver spostato su nodered
             return
         if values: # check if new data is received (also if it's true)
             self.increase_temp = values['value']
