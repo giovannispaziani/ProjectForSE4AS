@@ -26,6 +26,7 @@ class JsonProperties(StrEnum):
     STARTING_VALUE='starting_value',
     LUX_PER_LAMP='lux_per_lamp',
     LUX_FROM_SUN='lux_from_sun',
+    DATA_TYPE='data_type',
     SINGLE_VALUE='value',
     MULTIPLE_VALUES='values',
     VALUE_DELTA_RANGE='delta_range',
@@ -41,6 +42,8 @@ class JsonProperties(StrEnum):
     SMART_FRIDGE_REFILL_DELTA_RANGE='refill_delta_range'
     
 
+#Flags wether configuration was completed
+simulator_ready = False
 
 # Sensors data, this is the object to modify to add/remove sensors
 sensors_info = {}
@@ -59,7 +62,7 @@ state = {
         "bedroom_window_1" : {"room": "bedroom", "state": 0}
     },
     "lights": {
-        "livingroom_light_1" : {"room": "livingroom", "state": 0},
+        "livingroom_light_1" : {"room": "livingroom", "state": 1},
         "livingroom_light_2" : {"room": "livingroom", "state": 0},
         "kitchen_light_1" : {"room": "kitchen", "state": 0},
         "bathroom_light_1" : {"room": "bathroom", "state": 0},
@@ -121,8 +124,22 @@ previous_fridge_time = fridge_interval
 # MQTT client setup
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
+def connect_mqtt():
+    client.on_connect = lambda client, userdata, flags, rc, properties: print(f"Connection result: {rc}")
+    client.on_disconnect = lambda client, userdata, disconnect_flags, rc, properties: print(f"Disconnected: {rc}, flags: {disconnect_flags}")
+    client.connect(mqtt_server, mqtt_port, 60)
+    client.loop_start()
+    print("Connected to MQTT broker")
+    # setup callbacks
+    client.on_subscribe = on_subscribe
+    client.on_message = on_message
+    client.on_publish = on_publish
+
+    # subscribe to simulated state topic
+    client.subscribe(mqtt_topic_sub)
+
 def on_message(client, user_data, message):
-    global sensors_info
+    global sensors_info, simulator_ready
 
     print(f'Received message: ', message.payload.decode('utf-8'))
     payload = extract_values_from_message(message)
@@ -130,28 +147,75 @@ def on_message(client, user_data, message):
     if JsonProperties.SENSORS_ROOT.value in payload:
         sensors_info = payload[JsonProperties.SENSORS_ROOT.value]
         init()
-        loop() # start simulating
+        simulator_ready = True
     #TODO codice per il parsing di un messaggio mqtt con un nuovo stato
 
 def on_subscribe(client, userdata, mid, reason_code_list, properties):
     print(f'Subscribed successfully')
 
+def on_publish(client, userdata, mid, reason_code, properties):
+    print(f'Published successfully')
+
 def init():
+    # parse sensors info to force float typing on float values
+    for sensor_type, info in sensors_info.items():
+        if sensor_type == JsonProperties.SMART_APPLIANCE.value:
+            for name, appliance in info.items():  # array
+                for current_key, current_value in sensors_info[sensor_type][name][JsonProperties.MULTIPLE_VALUES].items():
+                    data_type = current_value[JsonProperties.DATA_TYPE.value]
+                    # enforce correct data type
+                    if data_type == 'float':
+                        for key,value in current_value.items():
+                            if key != JsonProperties.DATA_TYPE.value:
+                                if type(value) == int:
+                                    current_value[key] = float(value)
+                                if type(value) == list:
+                                    #iterate array and convert
+                                    for i in range(len(value)):
+                                        if type(value[i]) == int:
+                                            current_value[key][i] = float(value[i])
+        else:
+            for name, sensor in info.items():
+                data_type = sensor[JsonProperties.DATA_TYPE.value]
+                # enforce correct data type
+                if data_type == 'float':
+                    for key, value in sensor.items():
+                        if key != JsonProperties.DATA_TYPE.value and key != JsonProperties.ROOM.value:
+                            if type(value) == int:
+                                sensor[key] = float(value)
+                            if type(value) == list:
+                                # iterate array and convert
+                                for i in range(len(value)):
+                                    if type(value[i]) == int:
+                                        sensor[key][i] = float(value[i])
+
+
+    # create sensors object
     for sensor_type,info in sensors_info.items():
         sensors[sensor_type] = {} #{'sensor_name' : {...},...}
         if sensor_type == JsonProperties.SMART_APPLIANCE.value:
             for name,appliance in info.items(): #array
-                sensors[sensor_type][name] = {
-                    JsonProperties.ROOM.value: sensors_info[sensor_type][name][JsonProperties.ROOM.value],
-                    JsonProperties.MULTIPLE_VALUES.value : {current_key: current_value[JsonProperties.STARTING_VALUE.value] for current_key,current_value in sensors_info[sensor_type][name][JsonProperties.MULTIPLE_VALUES].items()}
-                }
+                sensors[sensor_type][name] = {JsonProperties.ROOM.value: sensors_info[sensor_type][name][JsonProperties.ROOM.value]}
+
+                values = {}
+
+                for current_key, current_value in sensors_info[sensor_type][name][JsonProperties.MULTIPLE_VALUES].items():
+                    values[current_key] = {}
+                    data_type = current_value[JsonProperties.DATA_TYPE.value]
+                    value = current_value[JsonProperties.STARTING_VALUE.value]
+                    values[current_key] = {
+                        JsonProperties.SINGLE_VALUE.value: value,
+                        JsonProperties.DATA_TYPE.value: data_type
+                    }
+                sensors[sensor_type][name][JsonProperties.MULTIPLE_VALUES.value] = values
         else:
             for name,sensor in info.items():
-                sensors[sensor_type][name] = {
-                    JsonProperties.ROOM.value: sensors_info[sensor_type][name][JsonProperties.ROOM.value],
-                    JsonProperties.SINGLE_VALUE.value: sensors_info[sensor_type][name][JsonProperties.STARTING_VALUE.value],
-                }
-    pretty(sensors,1)
+                sensors[sensor_type][name] = {JsonProperties.ROOM.value: sensors_info[sensor_type][name][JsonProperties.ROOM.value]}
+                data_type = sensor[JsonProperties.DATA_TYPE.value]
+                value = sensor[JsonProperties.STARTING_VALUE.value]
+                sensors[sensor_type][name][JsonProperties.DATA_TYPE.value] = data_type
+                sensors[sensor_type][name][JsonProperties.SINGLE_VALUE.value] = value
+    pretty(sensors_info,1)
 
 
 
@@ -179,45 +243,40 @@ def extract_values_from_message(mqtt_message):
     print('Nothing to read from message...')
     return None
 
-def connect_mqtt():
-    client.connect(mqtt_server, mqtt_port, 60)
-    print("Connected to MQTT broker")
-    # setup callbacks
-    client.on_subscribe = on_subscribe
-    client.on_message = on_message
-
-    # subscribe to simulated state topic
-    client.subscribe(mqtt_topic_sub)
 
 def publish_data():
-    global temperature, light_intensity, lifetime_energy, fridge_temp, fridge_load, dishwasher_power, fridge_power, lamp_power
-
-    temperature = None
-    light_intensity = None
-    fridge_temp = None
-    fridge_load = None
 
     # TODO: Pubblicare i dati iterando sui sensori e costruendo i topic (float/int + tipo + stanza + nome)
     # Iterate on the sensors
+    topic = None
+    value = None
+    for sensor_type,sensor_list in sensors.items():
+        if sensor_type == JsonProperties.SMART_APPLIANCE.value:
+            for appliance,appliance_properties in sensor_list.items():
+                # build the topic string
+                room = appliance_properties[JsonProperties.ROOM.value]
+                for value_name,value_properties in appliance_properties[JsonProperties.MULTIPLE_VALUES.value].items():
+                    data_type = value_properties[JsonProperties.DATA_TYPE.value]
+                    value = value_properties[JsonProperties.SINGLE_VALUE.value]
+                    if data_type == 'float':
+                        value = round(value, 1)
+                    topic = f'/{data_type}/{sensor_type}/{room}/{appliance}/{value_name}'
+                    publish_topic(topic, value)
+                    print(f'{appliance} {value_name}: {value}')
+        else: # this is not a smart appliance
+            for sensor, sensor_properties in sensor_list.items():
+                # build the topic string
+                room = sensor_properties[JsonProperties.ROOM.value]
+                data_type = sensor_properties[JsonProperties.DATA_TYPE.value]
+                value = sensor_properties[JsonProperties.SINGLE_VALUE.value]
+                if data_type == 'float':
+                    value = round(value, 1)
+                topic = f'/{data_type}/{sensor_type}/{room}/{sensor}'
+                publish_topic(topic, value)
+                print(f'{sensor} {sensor_type}: {value}')
 
-    # Publish temperature
-    client.publish("/SmartHomeD&G/Temperature", str(round(temperature, 1)))
-    # Publish light intensity
-    client.publish("/SmartHomeD&G/Light", str(light_intensity))
-    # Publish energy consumption
-    client.publish("/SmartHomeD&G/Energy", str(round(lifetime_energy, 1)))  # Energy in kWh
-    # Publish fridge temperature and load
-    client.publish("/SmartHomeD&G/FridgeTemp", str(round(fridge_temp, 1)))
-    client.publish("/SmartHomeD&G/FridgeLoad", str(fridge_load))
-    # Publish energy for dishwasher, fridge and lamp
-    client.publish("/SmartHomeD&G/DishwasherPower", str(dishwasher_power))
-    client.publish("/SmartHomeD&G/FridgePower", str(fridge_power))
-    client.publish("/SmartHomeD&G/LampPower", str(lamp_power))
-    print(
-        f"Temperature: {round(temperature, 1)} °C, Light: {light_intensity} lux, "
-        f"Energy: {round(lifetime_energy, 1)} kWh, Fridge Temp: {round(fridge_temp, 1)} °C, "
-        f"Fridge Load: {fridge_load} q., Dishwasher Power: {dishwasher_power} watt, Fridge Power: {fridge_power} watt, Lamp Power: {lamp_power} watt."
-    )
+def publish_topic(sub_topic, value):
+    client.publish(mqtt_topic_pub + sub_topic, encode_json_to_message(value))
 
 def update_sensors(elapsed_time):
     global sensors, state, previous_fridge_time
@@ -270,10 +329,6 @@ def update_sensors(elapsed_time):
     current_info = sensors_info[JsonProperties.ENERGY.value]
     for sensor in sensors[JsonProperties.ENERGY.value]:
         sensors[JsonProperties.ENERGY.value][sensor][JsonProperties.SINGLE_VALUE.value] = current_info[sensor][JsonProperties.STARTING_VALUE.value] + random.randint(current_info[sensor][JsonProperties.VALUE_DELTA_RANGE.value][0], current_info[sensor][JsonProperties.VALUE_DELTA_RANGE.value][1])
-        # fridge_power = nominal_fridge_power + random.randint(-50, 150)  # Changes in the value of the power output by the refrigerator
-        # dishwasher_power = nominal_dishwasher_power + random.randint(-200, 500)  # Changes in the value of the power output by the dishwasher
-        # thermostat_power = nominal_thermostat_power + random.randint(-1, 3)  # Changes in the value of the power output by the thermostat
-        # lamp_power = nominal_lamp_power + random.randint(-1, 7)  # Changes in the value of the power output by the lamp
 
     # Update fridge temperature and load
     current_time = time.time()
@@ -283,31 +338,35 @@ def update_sensors(elapsed_time):
     temp_info = sensors_info[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES.value][JsonProperties.SMART_FRIDGE_TEMPERATURE.value] #temperature infos
 
     #fetch the current simulated values
-    fridge_load = sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_LOAD.value]
-    fridge_temp = sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_TEMPERATURE.value]
+    fridge_load = sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_LOAD.value][JsonProperties.SINGLE_VALUE.value]
+    fridge_temp = sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_TEMPERATURE.value][JsonProperties.SINGLE_VALUE.value]
 
+    # Check wether simulating fridge being open or not
     if current_time - previous_fridge_time >= fridge_interval:
         print("Fridge opened.")
-        sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_LOAD.value] += random.randint(load_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][0], load_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][1])
+        fridge_load += random.randint(load_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][0], load_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][1])
+        # Check if we are simulating new groceries being put in the fridge
         if fridge_load < load_info[JsonProperties.SMART_FRIDGE_THRESHOLD.value]:
             fridge_load += random.randint(load_info[JsonProperties.SMART_FRIDGE_REFILL_DELTA_RANGE.value][0], load_info[JsonProperties.SMART_FRIDGE_REFILL_DELTA_RANGE.value][1])
             fridge_temp += random.uniform(temp_info[JsonProperties.SMART_FRIDGE_REFILL_DELTA_RANGE.value][0], temp_info[JsonProperties.SMART_FRIDGE_REFILL_DELTA_RANGE.value][1])
         fridge_temp += random.uniform(temp_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][0], temp_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][1])
         previous_fridge_time = current_time
-    else:
+    else: # fridge not open
         fridge_temp += random.uniform(temp_info[JsonProperties.VALUE_DELTA_RANGE.value][0], temp_info[JsonProperties.VALUE_DELTA_RANGE.value][1])
+        # apply correction if values gets too far
         if fridge_temp <= temp_info[JsonProperties.VALUE_LOWER_LIMIT.value]:
             fridge_temp += random.uniform(temp_info[JsonProperties.VALUE_LOWER_CORRECTION.value][0], temp_info[JsonProperties.VALUE_LOWER_CORRECTION.value][1])
         elif fridge_temp >= temp_info[JsonProperties.VALUE_UPPER_LIMIT.value]:
             fridge_temp += random.uniform(temp_info[JsonProperties.VALUE_UPPER_CORRECTION.value][0], temp_info[JsonProperties.VALUE_UPPER_CORRECTION.value][1])
 
-
+    sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_TEMPERATURE.value][JsonProperties.SINGLE_VALUE.value] = fridge_temp
+    sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_LOAD.value][JsonProperties.SINGLE_VALUE.value] = fridge_load
 
 def calculate_kwh():
     global lifetime_energy
     # Calculate energy consumption in kWh based on power ratings and elapsed time
     total_energy = 0.0
-    for name,energy_sensor in sensors[JsonProperties.ENERGY.value]:
+    for name,energy_sensor in sensors[JsonProperties.ENERGY.value].items():
         total_energy += energy_sensor[JsonProperties.SINGLE_VALUE.value] * energy_reading_interval / 3600
     # fridge_energy = (fridge_power * event_interval) / 3600  # kWh for fridge
     # dishwasher_energy = (random.randint(800, 1200) * event_interval) / 3600  # kWh for dishwasher (random range)
@@ -330,23 +389,25 @@ def loop():
             update_sensors(sensors_update_interval)
             previous_sensors_update_time = current_time
 
-        # Publish data every
-        if current_time - last_publish_time > publish_interval:
-            publish_data()
-            last_publish_time = current_time
-
         # Update energy readings
         if current_time - previous_energy_reading_time >= energy_reading_interval:
             calculate_kwh()
             previous_energy_reading_time = current_time
 
+        # Publish data
+        if current_time - last_publish_time > publish_interval:
+            publish_data()
+            last_publish_time = current_time
+
+
         time.sleep(0.1)
 
 def main():
     connect_mqtt()
-    client.loop_start()
 
     while True:
+        if simulator_ready:
+            loop()  # start simulating
         time.sleep(0.1)
 
 def pretty(d, indent=0):
