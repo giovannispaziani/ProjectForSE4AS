@@ -54,7 +54,7 @@
             "9da49b95aeeae627",
             "8e10011ddb497877"
         ],
-        "x": 714,
+        "x": 1174,
         "y": 19,
         "w": 1012,
         "h": 1142
@@ -70,10 +70,6 @@
         "nodes": [
             "4ec86d32c18d72a7",
             "eaf74ef210b83cc2",
-            "5b46401d22c6d9b1",
-            "835de6ae498d4423",
-            "c909674f140f236c",
-            "1b8eef526443c2ce",
             "4d985ed722db58ae",
             "75f6ddb81a3ff120",
             "303d99ce1ce38904",
@@ -88,23 +84,22 @@
             "843f1870068bea7a",
             "0ffca6d7cc17dcee",
             "9df29bcec682b86d",
-            "edcd452354fbaf31",
             "53b79310569204a0",
             "e273b5831dc89801",
             "66d260cd7d4019fe",
-            "6bf77038ef82b3e3",
             "bcad8237e12390b8",
             "30951266efd5c437",
             "a2df48a9a3a614ce",
-            "0daf42dd905f4843",
             "1f9bfee05a6a9ae7",
             "774aed2d8aeb26e7",
-            "473c15259d1b41d7"
+            "473c15259d1b41d7",
+            "51e59edd57f80611",
+            "39cad1b3de2f9502"
         ],
-        "x": 94,
-        "y": 19,
-        "w": 612,
-        "h": 1142
+        "x": 34,
+        "y": 59,
+        "w": 1012,
+        "h": 1102
     },
     {
         "id": "a928ba0.2d1f748",
@@ -340,21 +335,19 @@
         "z": "99285b04ab31eeb3",
         "g": "c46509ea1b2d8f12",
         "name": "",
-        "topic": "/SmartHomeD&G/Temperature",
-        "qos": "2",
-        "datatype": "auto-detect",
+        "topic": "/SmartHomeD&G/sensor/#",
+        "qos": "0",
+        "datatype": "json",
         "broker": "a928ba0.2d1f748",
         "nl": false,
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 270,
-        "y": 100,
+        "x": 170,
+        "y": 420,
         "wires": [
             [
-                "eaf74ef210b83cc2",
-                "3b035bcd0357046a",
-                "1a194a38b4f38873"
+                "39cad1b3de2f9502"
             ]
         ]
     },
@@ -372,111 +365,16 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
-        "y": 60,
+        "x": 575,
+        "y": 380,
         "wires": [],
         "l": false
-    },
-    {
-        "id": "5b46401d22c6d9b1",
-        "type": "mqtt in",
-        "z": "99285b04ab31eeb3",
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "topic": "/SmartHomeD&G/Light",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "a928ba0.2d1f748",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 300,
-        "y": 240,
-        "wires": [
-            [
-                "4d985ed722db58ae",
-                "45b88026b7b7ec79",
-                "ac516eacc063dd16"
-            ]
-        ]
-    },
-    {
-        "id": "835de6ae498d4423",
-        "type": "mqtt in",
-        "z": "99285b04ab31eeb3",
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "topic": "/SmartHomeD&G/Energy",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "a928ba0.2d1f748",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 290,
-        "y": 380,
-        "wires": [
-            [
-                "75f6ddb81a3ff120",
-                "b724841ba4d5d5c6",
-                "843f1870068bea7a"
-            ]
-        ]
-    },
-    {
-        "id": "c909674f140f236c",
-        "type": "mqtt in",
-        "z": "99285b04ab31eeb3",
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "topic": "/SmartHomeD&G/FridgeTemp",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "a928ba0.2d1f748",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 280,
-        "y": 520,
-        "wires": [
-            [
-                "303d99ce1ce38904",
-                "a4436ca70d42ed78",
-                "0ffca6d7cc17dcee"
-            ]
-        ]
-    },
-    {
-        "id": "1b8eef526443c2ce",
-        "type": "mqtt in",
-        "z": "99285b04ab31eeb3",
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "topic": "/SmartHomeD&G/FridgeLoad",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "a928ba0.2d1f748",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 280,
-        "y": 660,
-        "wires": [
-            [
-                "305f32c141b5aa2c",
-                "54c702c1e475a2ba",
-                "9df29bcec682b86d"
-            ]
-        ]
     },
     {
         "id": "4d985ed722db58ae",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "debug 27",
         "active": false,
@@ -487,7 +385,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
+        "x": 795,
         "y": 200,
         "wires": [],
         "l": false
@@ -496,6 +394,7 @@
         "id": "75f6ddb81a3ff120",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "debug 28",
         "active": false,
@@ -506,7 +405,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
+        "x": 795,
         "y": 340,
         "wires": [],
         "l": false
@@ -515,6 +414,7 @@
         "id": "303d99ce1ce38904",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "debug 29",
         "active": false,
@@ -525,7 +425,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
+        "x": 795,
         "y": 480,
         "wires": [],
         "l": false
@@ -534,6 +434,7 @@
         "id": "305f32c141b5aa2c",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "debug 30",
         "active": false,
@@ -544,7 +445,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
+        "x": 795,
         "y": 620,
         "wires": [],
         "l": false
@@ -553,6 +454,7 @@
         "id": "3b035bcd0357046a",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "575f0b6b213a240c",
@@ -574,7 +476,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 530,
+        "x": 870,
         "y": 100,
         "wires": []
     },
@@ -582,6 +484,7 @@
         "id": "45b88026b7b7ec79",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "575f0b6b213a240c",
@@ -603,7 +506,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 490,
+        "x": 830,
         "y": 240,
         "wires": []
     },
@@ -611,6 +514,7 @@
         "id": "b724841ba4d5d5c6",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "55277096f27f8c4f",
@@ -632,7 +536,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 500,
+        "x": 840,
         "y": 380,
         "wires": []
     },
@@ -640,6 +544,7 @@
         "id": "a4436ca70d42ed78",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "55277096f27f8c4f",
@@ -661,7 +566,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 520,
+        "x": 860,
         "y": 520,
         "wires": []
     },
@@ -669,6 +574,7 @@
         "id": "54c702c1e475a2ba",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "d80d5173b7311e0a",
@@ -690,7 +596,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 520,
+        "x": 860,
         "y": 660,
         "wires": []
     },
@@ -746,6 +652,7 @@
         "id": "1a194a38b4f38873",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/float/temperature",
@@ -757,7 +664,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 550,
+        "x": 890,
         "y": 140,
         "wires": []
     },
@@ -765,6 +672,7 @@
         "id": "ac516eacc063dd16",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/int/light",
@@ -776,7 +684,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 520,
+        "x": 860,
         "y": 280,
         "wires": []
     },
@@ -784,6 +692,7 @@
         "id": "843f1870068bea7a",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/float/energy",
@@ -795,7 +704,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 530,
+        "x": 870,
         "y": 420,
         "wires": []
     },
@@ -803,6 +712,7 @@
         "id": "0ffca6d7cc17dcee",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/float/fridge_temp",
@@ -814,7 +724,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 550,
+        "x": 890,
         "y": 560,
         "wires": []
     },
@@ -822,6 +732,7 @@
         "id": "9df29bcec682b86d",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/int/fridge_load",
@@ -833,7 +744,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 540,
+        "x": 880,
         "y": 700,
         "wires": []
     },
@@ -1020,7 +931,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1020,
+        "x": 1480,
         "y": 60,
         "wires": [
             [
@@ -1033,6 +944,7 @@
         "id": "820d0254027143de",
         "type": "inject",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "fb950f3a0b286899",
         "name": "",
         "props": [],
@@ -1041,7 +953,7 @@
         "once": true,
         "onceDelay": "3",
         "topic": "",
-        "x": 810,
+        "x": 1270,
         "y": 460,
         "wires": [
             [
@@ -1070,7 +982,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 100,
         "wires": [],
         "l": false
@@ -1090,7 +1002,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1500,
+        "x": 1960,
         "y": 60,
         "wires": []
     },
@@ -1106,7 +1018,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1020,
+        "x": 1480,
         "y": 160,
         "wires": [
             [
@@ -1129,7 +1041,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 200,
         "wires": [],
         "l": false
@@ -1149,7 +1061,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1500,
+        "x": 1960,
         "y": 160,
         "wires": []
     },
@@ -1165,7 +1077,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1040,
+        "x": 1500,
         "y": 260,
         "wires": [
             [
@@ -1188,7 +1100,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 300,
         "wires": [],
         "l": false
@@ -1208,7 +1120,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1480,
+        "x": 1940,
         "y": 260,
         "wires": []
     },
@@ -1224,7 +1136,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1030,
+        "x": 1490,
         "y": 360,
         "wires": [
             [
@@ -1247,7 +1159,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 400,
         "wires": [],
         "l": false
@@ -1267,7 +1179,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1500,
+        "x": 1960,
         "y": 360,
         "wires": []
     },
@@ -1283,7 +1195,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1020,
+        "x": 1480,
         "y": 460,
         "wires": [
             [
@@ -1306,7 +1218,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 500,
         "wires": [],
         "l": false
@@ -1326,7 +1238,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1500,
+        "x": 1960,
         "y": 460,
         "wires": []
     },
@@ -1345,7 +1257,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1390,
+        "x": 1850,
         "y": 1040,
         "wires": []
     },
@@ -1371,7 +1283,7 @@
         "topic": "",
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
-        "x": 1000,
+        "x": 1460,
         "y": 1040,
         "wires": [
             [
@@ -1394,7 +1306,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1380,
+        "x": 1840,
         "y": 1120,
         "wires": []
     },
@@ -1420,7 +1332,7 @@
         "topic": "",
         "payload": "{\"configuration\":{\"max_total_kw\":3,\"warning_threshold_kw\":2.5}}",
         "payloadType": "json",
-        "x": 1010,
+        "x": 1470,
         "y": 1120,
         "wires": [
             [
@@ -1441,7 +1353,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 60,
         "wires": [
             [
@@ -1462,7 +1374,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 160,
         "wires": [
             [
@@ -1483,7 +1395,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 260,
         "wires": [
             [
@@ -1504,7 +1416,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 360,
         "wires": [
             [
@@ -1525,7 +1437,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 460,
         "wires": [
             [
@@ -1534,33 +1446,10 @@
         ]
     },
     {
-        "id": "edcd452354fbaf31",
-        "type": "mqtt in",
-        "z": "99285b04ab31eeb3",
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "topic": "/SmartHomeD&G/DishwasherPower",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "a928ba0.2d1f748",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 260,
-        "y": 800,
-        "wires": [
-            [
-                "53b79310569204a0",
-                "e273b5831dc89801",
-                "66d260cd7d4019fe"
-            ]
-        ]
-    },
-    {
         "id": "53b79310569204a0",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "debug 1",
         "active": false,
@@ -1571,7 +1460,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
+        "x": 795,
         "y": 760,
         "wires": [],
         "l": false
@@ -1580,6 +1469,7 @@
         "id": "e273b5831dc89801",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "d80d5173b7311e0a",
@@ -1601,7 +1491,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 550,
+        "x": 890,
         "y": 800,
         "wires": []
     },
@@ -1609,6 +1499,7 @@
         "id": "66d260cd7d4019fe",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/int/dishwasher_power",
@@ -1620,38 +1511,15 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 560,
+        "x": 900,
         "y": 840,
         "wires": []
-    },
-    {
-        "id": "6bf77038ef82b3e3",
-        "type": "mqtt in",
-        "z": "99285b04ab31eeb3",
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "topic": "/SmartHomeD&G/FridgePower",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "a928ba0.2d1f748",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 270,
-        "y": 940,
-        "wires": [
-            [
-                "bcad8237e12390b8",
-                "30951266efd5c437",
-                "a2df48a9a3a614ce"
-            ]
-        ]
     },
     {
         "id": "bcad8237e12390b8",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "debug 2",
         "active": false,
@@ -1662,7 +1530,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
+        "x": 795,
         "y": 900,
         "wires": [],
         "l": false
@@ -1671,6 +1539,7 @@
         "id": "30951266efd5c437",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "76abae67c4b97895",
@@ -1692,7 +1561,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 530,
+        "x": 870,
         "y": 940,
         "wires": []
     },
@@ -1700,6 +1569,7 @@
         "id": "a2df48a9a3a614ce",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/int/fridge_power",
@@ -1711,38 +1581,15 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 540,
+        "x": 880,
         "y": 980,
         "wires": []
-    },
-    {
-        "id": "0daf42dd905f4843",
-        "type": "mqtt in",
-        "z": "99285b04ab31eeb3",
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "topic": "/SmartHomeD&G/LampPower",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "a928ba0.2d1f748",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 280,
-        "y": 1080,
-        "wires": [
-            [
-                "1f9bfee05a6a9ae7",
-                "774aed2d8aeb26e7",
-                "473c15259d1b41d7"
-            ]
-        ]
     },
     {
         "id": "1f9bfee05a6a9ae7",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "debug 3",
         "active": false,
@@ -1753,7 +1600,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 455,
+        "x": 795,
         "y": 1040,
         "wires": [],
         "l": false
@@ -1762,6 +1609,7 @@
         "id": "774aed2d8aeb26e7",
         "type": "ui_gauge",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "group": "76abae67c4b97895",
@@ -1783,7 +1631,7 @@
         "seg2": "",
         "diff": false,
         "className": "",
-        "x": 520,
+        "x": 860,
         "y": 1080,
         "wires": []
     },
@@ -1791,6 +1639,7 @@
         "id": "473c15259d1b41d7",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "d": true,
         "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/smart/int/lamp_power",
@@ -1802,7 +1651,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 540,
+        "x": 880,
         "y": 1120,
         "wires": []
     },
@@ -1818,7 +1667,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1000,
+        "x": 1460,
         "y": 560,
         "wires": [
             [
@@ -1841,7 +1690,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 600,
         "wires": [],
         "l": false
@@ -1861,7 +1710,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1540,
+        "x": 2000,
         "y": 560,
         "wires": []
     },
@@ -1878,7 +1727,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 560,
         "wires": [
             [
@@ -1898,7 +1747,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1020,
+        "x": 1480,
         "y": 660,
         "wires": [
             [
@@ -1921,7 +1770,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 700,
         "wires": [],
         "l": false
@@ -1941,7 +1790,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1530,
+        "x": 1990,
         "y": 660,
         "wires": []
     },
@@ -1958,7 +1807,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 660,
         "wires": [
             [
@@ -1978,7 +1827,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1020,
+        "x": 1480,
         "y": 760,
         "wires": [
             [
@@ -2001,7 +1850,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1085,
+        "x": 1545,
         "y": 800,
         "wires": [],
         "l": false
@@ -2021,7 +1870,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1520,
+        "x": 1980,
         "y": 760,
         "wires": []
     },
@@ -2038,7 +1887,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1710,
         "y": 760,
         "wires": [
             [
@@ -2065,10 +1914,10 @@
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"sensors\":{\"temperature\":{\"livingroom_temp_1\":{\"room\":\"livingroom\",\"starting_value\":22,\"data_type\":\"float\",\"delta_range\":[-0.1,0.1],\"lower_limit\":15,\"lower_limit_correction\":[0,0.2],\"upper_limit\":25,\"upper_limit_correction\":[-0.2,0]}},\"light\":{\"livingroom_light_1\":{\"room\":\"livingroom\",\"starting_value\":10,\"data_type\":\"int\",\"lux_per_lamp\":60,\"lux_from_sun\":10000},\"kitchen_light_1\":{\"room\":\"kitchen\",\"starting_value\":10,\"data_type\":\"int\",\"lux_per_lamp\":60,\"lux_from_sun\":9500},\"bathroom_light_1\":{\"room\":\"bathroom\",\"starting_value\":10,\"data_type\":\"int\",\"lux_per_lamp\":60,\"lux_from_sun\":7000},\"bedroom_light_1\":{\"room\":\"bedroom\",\"starting_value\":10,\"data_type\":\"int\",\"lux_per_lamp\":60,\"lux_from_sun\":7000}},\"energy\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"starting_value\":2,\"data_type\":\"int\",\"delta_range\":[-1,3]},\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"starting_value\":8,\"data_type\":\"int\",\"delta_range\":[-1,7]},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"starting_value\":8,\"data_type\":\"int\",\"delta_range\":[-1,7]},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"starting_value\":8,\"data_type\":\"int\",\"delta_range\":[-1,7]},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"starting_value\":8,\"data_type\":\"int\",\"delta_range\":[-1,7]},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"starting_value\":8,\"data_type\":\"int\",\"delta_range\":[-1,7]},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"starting_value\":1000,\"data_type\":\"int\",\"delta_range\":[-200,500]},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"starting_value\":150,\"data_type\":\"int\",\"delta_range\":[-50,150]}},\"smart_appliance\":{\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"values\":{\"load\":{\"starting_value\":50,\"data_type\":\"int\",\"open_delta_range\":[-3,3],\"refill_threshold\":7,\"refill_delta_range\":[3,46]},\"temp\":{\"starting_value\":4,\"data_type\":\"float\",\"delta_range\":[-0.1,0],\"open_delta_range\":[0,2],\"refill_threshold\":7,\"refill_delta_range\":[1,4],\"lower_limit\":2,\"lower_limit_correction\":[0,0.1],\"upper_limit\":10,\"upper_limit_correction\":[-0.2,0]}}}}}}",
+        "payload": "{\"sensors\":{\"temperature\":{\"livingroom_temp_1\":{\"room\":\"livingroom\",\"data_type\":\"float\",\"starting_value\":22,\"delta_range\":[-0.1,0.1],\"lower_limit\":15,\"lower_limit_correction\":[0,0.2],\"upper_limit\":25,\"upper_limit_correction\":[-0.2,0]}},\"light\":{\"livingroom_light_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":10000},\"kitchen_light_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":9500},\"bathroom_light_1\":{\"room\":\"bathroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":7000},\"bedroom_light_1\":{\"room\":\"bedroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":7000}},\"energy\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":2,\"delta_range\":[-1,3]},\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":1000,\"delta_range\":[-200,500]},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":150,\"delta_range\":[-50,150]}},\"smart_appliance\":{\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"values\":{\"load\":{\"data_type\":\"int\",\"starting_value\":50,\"open_delta_range\":[-3,3],\"refill_threshold\":7,\"refill_delta_range\":[3,46]},\"temp\":{\"data_type\":\"float\",\"starting_value\":4,\"delta_range\":[-0.1,0],\"open_delta_range\":[0,2],\"refill_threshold\":7,\"refill_delta_range\":[1,4],\"lower_limit\":2,\"lower_limit_correction\":[0,0.1],\"upper_limit\":10,\"upper_limit_correction\":[-0.2,0]}}}}}}",
         "payloadType": "json",
-        "x": 180,
-        "y": 1220,
+        "x": 200,
+        "y": 1200,
         "wires": [
             [
                 "c00e4019eed03f58"
@@ -2089,8 +1938,145 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 440,
-        "y": 1220,
+        "x": 460,
+        "y": 1200,
         "wires": []
+    },
+    {
+        "id": "6fa6df0967978f72",
+        "type": "inject",
+        "z": "99285b04ab31eeb3",
+        "name": "environment state",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"states\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1}}}}",
+        "payloadType": "json",
+        "x": 210,
+        "y": 1280,
+        "wires": [
+            [
+                "9e5ddaebea5cee5e"
+            ]
+        ]
+    },
+    {
+        "id": "9e5ddaebea5cee5e",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "name": "",
+        "topic": "/SmartHomeD&G/simulation/state",
+        "qos": "",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 460,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "6a417e5090fec8c4",
+        "type": "inject",
+        "z": "99285b04ab31eeb3",
+        "d": true,
+        "name": "sensor-state mappings",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"mappings\":{\"light\":{\"lux_per_lamp\":{\"link\":\"lamps\",\"type\":\"room\"},\"lux_from_sun\":{\"link\":\"shutters\",\"type\":\"room\"}}}}",
+        "payloadType": "json",
+        "x": 760,
+        "y": 1240,
+        "wires": [
+            [
+                "ae8c8098d444187f"
+            ]
+        ]
+    },
+    {
+        "id": "ae8c8098d444187f",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "d": true,
+        "name": "",
+        "topic": "/SmartHomeD&G/simulation/mappings",
+        "qos": "",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1050,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "51e59edd57f80611",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "Telegraf topics",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 640,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "39cad1b3de2f9502",
+        "type": "function",
+        "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
+        "name": "Build telegraf topic",
+        "func": "let sensor_topic = msg.topic;\nlet value = msg.payload['value'];\n\n//build the topic string\nsensor_topic = sensor_topic.replace('sensor','data');\nmsg.payload = value\nmsg.topic = sensor_topic\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 420,
+        "wires": [
+            [
+                "51e59edd57f80611",
+                "eaf74ef210b83cc2"
+            ]
+        ]
     }
 ]

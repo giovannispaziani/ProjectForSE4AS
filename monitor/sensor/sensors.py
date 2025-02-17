@@ -6,8 +6,8 @@ import paho.mqtt.client as mqtt
 from enum import StrEnum
 
 # MQTT setup
-#mqtt_server = "172.30.0.101"
-mqtt_server = "localhost"
+mqtt_server = "172.30.0.101"
+#mqtt_server = "localhost"
 mqtt_port = 1883
 mqtt_topic_pub = "/SmartHomeD&G/sensor"
 mqtt_topic_sub = "/SmartHomeD&G/simulation/#"
@@ -19,7 +19,7 @@ class JsonProperties(StrEnum):
     LIGHT='light',
     ENERGY='energy',
     SMART_APPLIANCE='smart_appliance',
-    LIGHT_LAMPS='lights',
+    LIGHT_LAMPS='lamps',
     WINDOWS='windows',
     SHUTTERS='shutters',
     ROOM='room',
@@ -40,10 +40,6 @@ class JsonProperties(StrEnum):
     SMART_FRIDGE_THRESHOLD='refill_threshold',
     SMART_FRIDGE_OPEN_DELTA_RANGE='open_delta_range',
     SMART_FRIDGE_REFILL_DELTA_RANGE='refill_delta_range'
-    
-
-#Flags wether configuration was completed
-simulator_ready = False
 
 # Sensors data, this is the object to modify to add/remove sensors
 sensors_info = {}
@@ -51,31 +47,11 @@ sensors_info = {}
 # This contains the list of simulated sensors with names and current value
 sensors = {}
 
-lifetime_energy = 0.0  # Total energy consumed in kWh (power-grid simulation)
 
 # Status of the home (lights, windows...)
-state = {
-    "windows": {
-        "livingroom_window_1" : {"room": "livingroom", "state": 0}, # with balcony
-        "kitchen_window_1" : {"room": "kitchen", "state": 0},
-        "bathroom_window_1" : {"room": "bathroom", "state": 0},
-        "bedroom_window_1" : {"room": "bedroom", "state": 0}
-    },
-    "lights": {
-        "livingroom_light_1" : {"room": "livingroom", "state": 1},
-        "livingroom_light_2" : {"room": "livingroom", "state": 0},
-        "kitchen_light_1" : {"room": "kitchen", "state": 0},
-        "bathroom_light_1" : {"room": "bathroom", "state": 0},
-        "bedroom_light_1" : {"room": "bedroom", "state": 0}
-    },
-    "shutters": {
-        "livingroom_shutter_1" : {"room": "livingroom", "state": 1.0}, # with balcony
-        "kitchen_shutter_1" : {"room": "kitchen", "state": 1.0},
-        "bathroom_shutter_1" : {"room": "bathroom", "state": 1.0},
-        "bedroom_shutter_1" : {"room": "bedroom", "state": 1.0}
-    }
-}
+state = {}
 
+lifetime_energy = 0.0  # Total energy consumed in kWh (power-grid simulation)
 
 # Simulated sensor data
 # temperature = 22.0  # Temperature sensor (thermostat)
@@ -139,7 +115,7 @@ def connect_mqtt():
     client.subscribe(mqtt_topic_sub)
 
 def on_message(client, user_data, message):
-    global sensors_info, simulator_ready
+    global sensors_info, state,sensor_state_mappings
 
     print(f'Received message: ', message.payload.decode('utf-8'))
     payload = extract_values_from_message(message)
@@ -147,14 +123,18 @@ def on_message(client, user_data, message):
     if JsonProperties.SENSORS_ROOT.value in payload:
         sensors_info = payload[JsonProperties.SENSORS_ROOT.value]
         init()
-        simulator_ready = True
-    #TODO codice per il parsing di un messaggio mqtt con un nuovo stato
+        if state:
+            setup_state()
+    if JsonProperties.STATE_ROOT.value in payload:
+        state = payload[JsonProperties.STATE_ROOT.value]
+        if sensors:
+            setup_state()
 
 def on_subscribe(client, userdata, mid, reason_code_list, properties):
     print(f'Subscribed successfully')
 
 def on_publish(client, userdata, mid, reason_code, properties):
-    print(f'Published successfully')
+    print(f'Publish: {reason_code}')
 
 def init():
     # parse sensors info to force float typing on float values
@@ -215,9 +195,17 @@ def init():
                 value = sensor[JsonProperties.STARTING_VALUE.value]
                 sensors[sensor_type][name][JsonProperties.DATA_TYPE.value] = data_type
                 sensors[sensor_type][name][JsonProperties.SINGLE_VALUE.value] = value
-    pretty(sensors_info,1)
 
-
+def setup_state():
+    '''links sensors to state elements by name'''
+    # parse sensors list to check if there are elements that are also in the state
+    for sensor_type, sensors_list in sensors.items():
+        for sensor_name, sensor_properties in sensors_list.items():
+            for state_group, group_list in state.items():
+                for state_name, state_properties in group_list.items():
+                    if sensor_name == state_name:
+                        sensor_properties['linked_state'] = state_properties
+    pretty(sensors, 1)
 
 def parse_json_from_message(mqtt_message):
     decoded = mqtt_message.payload.decode('utf-8')  # decode json string
@@ -237,16 +225,10 @@ def encode_json_to_message(value, dictionary=None):
 def extract_values_from_message(mqtt_message):
     # extract the json
     payload = parse_json_from_message(mqtt_message)
-    # check if it's the sensors initializer
-    if JsonProperties.SENSORS_ROOT.value in payload:
-        return payload
-    print('Nothing to read from message...')
-    return None
+    return payload
 
 
 def publish_data():
-
-    # TODO: Pubblicare i dati iterando sui sensori e costruendo i topic (float/int + tipo + stanza + nome)
     # Iterate on the sensors
     topic = None
     value = None
@@ -276,21 +258,21 @@ def publish_data():
                 print(f'{sensor} {sensor_type}: {value}')
 
 def publish_topic(sub_topic, value):
-    client.publish(mqtt_topic_pub + sub_topic, encode_json_to_message(value))
+    client.publish(mqtt_topic_pub + sub_topic, encode_json_to_message(value), 2)
 
 def update_sensors(elapsed_time):
     global sensors, state, previous_fridge_time
 
     # Update temperature sensors
     current_info = sensors_info[JsonProperties.TEMPERATURE.value]
-    for sensor in sensors[JsonProperties.TEMPERATURE.value]:
-        value = sensors[JsonProperties.TEMPERATURE.value][sensor][JsonProperties.SINGLE_VALUE.value]
-        value += random.uniform(current_info[sensor][JsonProperties.VALUE_DELTA_RANGE.value][0], current_info[sensor][JsonProperties.VALUE_DELTA_RANGE.value][1])
-        if value >= current_info[sensor][JsonProperties.VALUE_UPPER_LIMIT.value]:
-            value += random.uniform(current_info[sensor][JsonProperties.VALUE_UPPER_CORRECTION.value][0], current_info[sensor][JsonProperties.VALUE_UPPER_CORRECTION.value][1])
-        elif value <= current_info[sensor][JsonProperties.VALUE_LOWER_LIMIT.value]:
-            value += random.uniform(current_info[sensor][JsonProperties.VALUE_LOWER_CORRECTION.value][0], current_info[sensor][JsonProperties.VALUE_LOWER_CORRECTION.value][1])
-        sensors[JsonProperties.TEMPERATURE.value][sensor][JsonProperties.SINGLE_VALUE.value] = value
+    for sensor_name, sensor_properties in sensors[JsonProperties.TEMPERATURE.value].items():
+        value = sensor_properties[JsonProperties.SINGLE_VALUE.value]
+        value += random.uniform(current_info[sensor_name][JsonProperties.VALUE_DELTA_RANGE.value][0], current_info[sensor_name][JsonProperties.VALUE_DELTA_RANGE.value][1])
+        if value >= current_info[sensor_name][JsonProperties.VALUE_UPPER_LIMIT.value]:
+            value += random.uniform(current_info[sensor_name][JsonProperties.VALUE_UPPER_CORRECTION.value][0], current_info[sensor_name][JsonProperties.VALUE_UPPER_CORRECTION.value][1])
+        elif value <= current_info[sensor_name][JsonProperties.VALUE_LOWER_LIMIT.value]:
+            value += random.uniform(current_info[sensor_name][JsonProperties.VALUE_LOWER_CORRECTION.value][0], current_info[sensor_name][JsonProperties.VALUE_LOWER_CORRECTION.value][1])
+        sensor_properties[JsonProperties.SINGLE_VALUE.value] = value
 
     # Fetch lamps state
     lamps = state[JsonProperties.LIGHT_LAMPS.value]
@@ -301,11 +283,11 @@ def update_sensors(elapsed_time):
     #Update light sensors
     current_info = sensors_info[JsonProperties.LIGHT.value]
     total_lights_on = 0
-    for sensor in sensors[JsonProperties.LIGHT.value]:
+    for sensor_name,sensor_properties in sensors[JsonProperties.LIGHT.value].items():
 
-        value = sensors_info[JsonProperties.LIGHT.value][sensor][JsonProperties.STARTING_VALUE.value] # base lux value, without any lights
+        value = sensors_info[JsonProperties.LIGHT.value][sensor_name][JsonProperties.STARTING_VALUE.value] # base lux value, without any lights
 
-        room = sensors[JsonProperties.LIGHT.value][sensor][JsonProperties.ROOM.value]
+        room = sensor_properties[JsonProperties.ROOM.value]
         # fetch light states for this room
         room_light_states = [lamp_values[JsonProperties.STATE_VALUE.value] for lamp_name,lamp_values in lamps.items() if lamp_values[JsonProperties.ROOM.value] == room]
         room_shutter_states = [shutter_values[JsonProperties.STATE_VALUE.value] for shutter_name,shutter_values in shutters.items() if shutter_values[JsonProperties.ROOM.value] == room]
@@ -313,22 +295,27 @@ def update_sensors(elapsed_time):
         #lamps
         lights_on = sum(room_light_states)
         total_lights_on += lights_on
-        value += lights_on * current_info[sensor][JsonProperties.LUX_PER_LAMP.value]  # Each lamp adds 60 lux
+        value += lights_on * current_info[sensor_name][JsonProperties.LUX_PER_LAMP.value]  # Each lamp adds 60 lux
 
         #shutters
         current_hour = dt.datetime.now().hour
         if current_hour > 18 or current_hour < 9: # night time
             value += sum(room_shutter_states * 40) # indirect street lighting
         else: #day time
-            value += sum(room_shutter_states * current_info[sensor][JsonProperties.LUX_FROM_SUN.value]) # depends on the room
+            value += sum(room_shutter_states * current_info[sensor_name][JsonProperties.LUX_FROM_SUN.value]) # depends on the room
+        sensor_properties[JsonProperties.SINGLE_VALUE.value] = value
 
     if total_lights_on == 0:
         print("All lights are off.")
 
     # Update power values
     current_info = sensors_info[JsonProperties.ENERGY.value]
-    for sensor in sensors[JsonProperties.ENERGY.value]:
-        sensors[JsonProperties.ENERGY.value][sensor][JsonProperties.SINGLE_VALUE.value] = current_info[sensor][JsonProperties.STARTING_VALUE.value] + random.randint(current_info[sensor][JsonProperties.VALUE_DELTA_RANGE.value][0], current_info[sensor][JsonProperties.VALUE_DELTA_RANGE.value][1])
+    for sensor_name, sensor_properties in sensors[JsonProperties.ENERGY.value].items():
+        # check if there is a state attached to this sensor (on/off)
+        state_value = 1
+        if 'linked_state' in sensor_properties:
+            state_value = sensor_properties['linked_state'][JsonProperties.STATE_VALUE.value]
+        sensor_properties[JsonProperties.SINGLE_VALUE.value] = state_value * (current_info[sensor_name][JsonProperties.STARTING_VALUE.value] + random.randint(current_info[sensor_name][JsonProperties.VALUE_DELTA_RANGE.value][0], current_info[sensor_name][JsonProperties.VALUE_DELTA_RANGE.value][1]))
 
     # Update fridge temperature and load
     current_time = time.time()
@@ -406,7 +393,7 @@ def main():
     connect_mqtt()
 
     while True:
-        if simulator_ready:
+        if sensors and state:
             loop()  # start simulating
         time.sleep(0.1)
 
