@@ -16,48 +16,24 @@
             "label": true
         },
         "nodes": [
-            "b451db19bfc01ed5",
             "820d0254027143de",
-            "1b810b41ede51439",
-            "3e300eaffa57511d",
-            "cc579c99656587a2",
-            "aab0a8695c7fe9d0",
-            "4d88e44a6c4385ba",
-            "41196dbe13b86f19",
-            "4eddf091a0f1456a",
-            "f7e85569ce21407a",
-            "d851253f6d300a27",
-            "a59bdda345f82565",
-            "28d601ee22eb13f1",
-            "d8a11832b26a4ae8",
-            "6ec0ec73dd7e47ac",
-            "6a1fbbcceb5bb765",
-            "bdde9fdc9c7814a0",
             "d08ef2268e982688",
             "c9a71f1c79ee850e",
             "bdeb025c06e44332",
             "27fa2ccb71482fa2",
-            "d42e1a5fcbc5259b",
-            "554be1a8bce11545",
-            "dcb66fe337292b34",
-            "b6b8fe3787b34f56",
-            "c08c409a7ec9bb3f",
-            "6446f91eeac9f98e",
-            "e6c01f95a6387805",
-            "976e90f77194fa82",
-            "3030d27fb717c3f1",
-            "8f8329f17eca6354",
-            "52f30fdfa8455b3d",
-            "4390dd8ee8bcc70c",
             "708ce20633e474fa",
             "aa8db65cf8d49931",
             "9da49b95aeeae627",
-            "8e10011ddb497877"
+            "8e10011ddb497877",
+            "69a4edec5388ccba",
+            "4e4bc5e9bbd431f4",
+            "69346df0a8d62419",
+            "e9c565322b3d5627"
         ],
         "x": 974,
-        "y": 19,
-        "w": 1012,
-        "h": 1142
+        "y": 159,
+        "w": 962,
+        "h": 342
     },
     {
         "id": "c46509ea1b2d8f12",
@@ -79,12 +55,16 @@
             "30951266efd5c437",
             "774aed2d8aeb26e7",
             "51e59edd57f80611",
-            "39cad1b3de2f9502"
+            "39cad1b3de2f9502",
+            "30551fdae7dbe478",
+            "c00e4019eed03f58",
+            "6fa6df0967978f72",
+            "9e5ddaebea5cee5e"
         ],
         "x": 14,
         "y": 159,
         "w": 952,
-        "h": 362
+        "h": 382
     },
     {
         "id": "a928ba0.2d1f748",
@@ -725,327 +705,24 @@
         "wires": []
     },
     {
-        "id": "b451db19bfc01ed5",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last temperature",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"float_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/float/temperature\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 1280,
-        "y": 60,
-        "wires": [
-            [
-                "1b810b41ede51439",
-                "bdde9fdc9c7814a0"
-            ]
-        ]
-    },
-    {
         "id": "820d0254027143de",
         "type": "inject",
         "z": "99285b04ab31eeb3",
-        "d": true,
         "g": "fb950f3a0b286899",
         "name": "",
         "props": [],
-        "repeat": "3",
+        "repeat": "",
         "crontab": "",
-        "once": true,
+        "once": false,
         "onceDelay": "3",
         "topic": "",
         "x": 1070,
-        "y": 460,
+        "y": 220,
         "wires": [
             [
-                "b451db19bfc01ed5",
-                "cc579c99656587a2",
-                "41196dbe13b86f19",
-                "d851253f6d300a27",
-                "d8a11832b26a4ae8",
-                "c08c409a7ec9bb3f",
-                "3030d27fb717c3f1",
                 "708ce20633e474fa"
             ]
         ]
-    },
-    {
-        "id": "1b810b41ede51439",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1345,
-        "y": 100,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "3e300eaffa57511d",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/temperature",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1760,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "cc579c99656587a2",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last fridge temp",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"float_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/float/fridge_temp\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 1280,
-        "y": 160,
-        "wires": [
-            [
-                "aab0a8695c7fe9d0",
-                "d42e1a5fcbc5259b"
-            ]
-        ]
-    },
-    {
-        "id": "aab0a8695c7fe9d0",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1345,
-        "y": 200,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "4d88e44a6c4385ba",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/fridge_temp",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1760,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "41196dbe13b86f19",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last light",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/light\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 1300,
-        "y": 260,
-        "wires": [
-            [
-                "4eddf091a0f1456a",
-                "554be1a8bce11545"
-            ]
-        ]
-    },
-    {
-        "id": "4eddf091a0f1456a",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1345,
-        "y": 300,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "f7e85569ce21407a",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/light",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1740,
-        "y": 260,
-        "wires": []
-    },
-    {
-        "id": "d851253f6d300a27",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last energy",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"float_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/float/energy\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 1290,
-        "y": 360,
-        "wires": [
-            [
-                "a59bdda345f82565",
-                "dcb66fe337292b34"
-            ]
-        ]
-    },
-    {
-        "id": "a59bdda345f82565",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1345,
-        "y": 400,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "28d601ee22eb13f1",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/energy/total",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1760,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "d8a11832b26a4ae8",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last fridge load",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/fridge_load\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 1280,
-        "y": 460,
-        "wires": [
-            [
-                "6ec0ec73dd7e47ac",
-                "b6b8fe3787b34f56"
-            ]
-        ]
-    },
-    {
-        "id": "6ec0ec73dd7e47ac",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1345,
-        "y": 500,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "6a1fbbcceb5bb765",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/fridge_load",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1760,
-        "y": 460,
-        "wires": []
     },
     {
         "id": "d08ef2268e982688",
@@ -1063,7 +740,7 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 1690,
-        "y": 1040,
+        "y": 380,
         "wires": []
     },
     {
@@ -1089,7 +766,7 @@
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
         "x": 1260,
-        "y": 1040,
+        "y": 380,
         "wires": [
             [
                 "d08ef2268e982688"
@@ -1112,7 +789,7 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 1670,
-        "y": 1120,
+        "y": 460,
         "wires": []
     },
     {
@@ -1138,115 +815,10 @@
         "payload": "{\"configuration\":{\"max_total_kw\":3,\"warning_threshold_kw\":2.5}}",
         "payloadType": "json",
         "x": 1270,
-        "y": 1120,
-        "wires": [
-            [
-                "bdeb025c06e44332"
-            ]
-        ]
-    },
-    {
-        "id": "bdde9fdc9c7814a0",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
-        "y": 60,
-        "wires": [
-            [
-                "3e300eaffa57511d"
-            ]
-        ]
-    },
-    {
-        "id": "d42e1a5fcbc5259b",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
-        "y": 160,
-        "wires": [
-            [
-                "4d88e44a6c4385ba"
-            ]
-        ]
-    },
-    {
-        "id": "554be1a8bce11545",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
-        "y": 260,
-        "wires": [
-            [
-                "f7e85569ce21407a"
-            ]
-        ]
-    },
-    {
-        "id": "dcb66fe337292b34",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
-        "y": 360,
-        "wires": [
-            [
-                "28d601ee22eb13f1"
-            ]
-        ]
-    },
-    {
-        "id": "b6b8fe3787b34f56",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
         "y": 460,
         "wires": [
             [
-                "6a1fbbcceb5bb765"
+                "bdeb025c06e44332"
             ]
         ]
     },
@@ -1341,179 +913,19 @@
         "wires": []
     },
     {
-        "id": "c08c409a7ec9bb3f",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last dishwasher power",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/dishwasher_power\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 1260,
-        "y": 560,
-        "wires": [
-            [
-                "6446f91eeac9f98e",
-                "976e90f77194fa82"
-            ]
-        ]
-    },
-    {
-        "id": "6446f91eeac9f98e",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1345,
-        "y": 600,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "e6c01f95a6387805",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/energy/dishwasher_power",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1800,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "976e90f77194fa82",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
-        "y": 560,
-        "wires": [
-            [
-                "e6c01f95a6387805"
-            ]
-        ]
-    },
-    {
-        "id": "3030d27fb717c3f1",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "influxdb": "6ddbd751be509e35",
-        "name": "last fridge power",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/fridge_power\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Se4as-24-25",
-        "x": 1280,
-        "y": 660,
-        "wires": [
-            [
-                "8f8329f17eca6354",
-                "4390dd8ee8bcc70c"
-            ]
-        ]
-    },
-    {
-        "id": "8f8329f17eca6354",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1345,
-        "y": 700,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "52f30fdfa8455b3d",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/energy/fridge_power",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1790,
-        "y": 660,
-        "wires": []
-    },
-    {
-        "id": "4390dd8ee8bcc70c",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
-        "y": 660,
-        "wires": [
-            [
-                "52f30fdfa8455b3d"
-            ]
-        ]
-    },
-    {
         "id": "708ce20633e474fa",
         "type": "influxdb in",
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "influxdb": "6ddbd751be509e35",
-        "name": "last lamp power",
-        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"int_mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"se4as-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/smart/int/lamp_power\")\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+        "name": "fetch last minute values",
+        "query": "from(bucket: \"Se4as-project\")\n  |> range(start: -60s)\n  |> aggregateWindow(every: 60s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
         "rawOutput": false,
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1280,
-        "y": 760,
+        "x": 1290,
+        "y": 220,
         "wires": [
             [
                 "aa8db65cf8d49931",
@@ -1535,8 +947,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1345,
-        "y": 800,
+        "x": 1355,
+        "y": 260,
         "wires": [],
         "l": false
     },
@@ -1545,8 +957,8 @@
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
-        "name": "",
-        "topic": "/smart/analyzer/energy/lamp_power",
+        "name": "Analyzer topics",
+        "topic": "",
         "qos": "",
         "retain": "",
         "respTopic": "",
@@ -1555,8 +967,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1780,
-        "y": 760,
+        "x": 1820,
+        "y": 320,
         "wires": []
     },
     {
@@ -1564,19 +976,19 @@
         "type": "function",
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
-        "name": "Tag json with metric name",
-        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    let topic = element['topic'];\n    let metric = topic.split('/');\n    metric = metric[metric.length - 1];\n    if(!Object.hasOwn(new_payload, metric)){\n        new_payload[metric] = [];\n    }\n    new_payload[metric].push(element);\n}\nmsg.payload = new_payload;\nreturn msg;",
+        "name": "Process values",
+        "func": "const new_payload = {}\nfor (let index = 0; index < msg.payload.length; index++) {\n    const element = msg.payload[index];\n    const measurement = element['_measurement'];\n    if(!Object.hasOwn(new_payload, measurement)){\n        new_payload[measurement] = {};\n    }\n    const sensor = element['sensor']\n    if(measurement === 'smart_appliance'){\n        if(!Object.hasOwn(new_payload[measurement], sensor)){\n            new_payload[measurement][sensor] = {};\n        }\n        const value_name = element['value_name']\n        if (!Object.hasOwn(new_payload[measurement][sensor], value_name)) {\n            new_payload[measurement][sensor][value_name] = [];\n        }\n        new_payload[measurement][sensor][value_name].push(element);\n    }else{\n        if (!Object.hasOwn(new_payload[measurement], sensor)) {\n            new_payload[measurement][sensor] = [];\n        }\n        new_payload[measurement][sensor].push(element);\n    }\n}\nmsg.payload = new_payload;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1510,
-        "y": 760,
+        "x": 1540,
+        "y": 200,
         "wires": [
             [
-                "9da49b95aeeae627"
+                "69a4edec5388ccba"
             ]
         ]
     },
@@ -1584,6 +996,7 @@
         "id": "30551fdae7dbe478",
         "type": "inject",
         "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
         "name": "initial sensors",
         "props": [
             {
@@ -1602,7 +1015,7 @@
         "payload": "{\"sensors\":{\"temperature\":{\"livingroom_temp_1\":{\"room\":\"livingroom\",\"data_type\":\"float\",\"starting_value\":22,\"delta_range\":[-0.1,0.1],\"lower_limit\":15,\"lower_limit_correction\":[0,0.2],\"upper_limit\":25,\"upper_limit_correction\":[-0.2,0]}},\"light\":{\"livingroom_light_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":10000},\"kitchen_light_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":9500},\"bathroom_light_1\":{\"room\":\"bathroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":7000},\"bedroom_light_1\":{\"room\":\"bedroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":7000}},\"energy\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":2,\"delta_range\":[-1,3]},\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":1000,\"delta_range\":[-200,500]},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":150,\"delta_range\":[-50,150]}},\"smart_appliance\":{\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"values\":{\"load\":{\"data_type\":\"int\",\"starting_value\":50,\"open_delta_range\":[-3,3],\"refill_threshold\":7,\"refill_delta_range\":[3,46]},\"temp\":{\"data_type\":\"float\",\"starting_value\":4,\"delta_range\":[-0.1,0],\"open_delta_range\":[0,2],\"refill_threshold\":7,\"refill_delta_range\":[1,4],\"lower_limit\":2,\"lower_limit_correction\":[0,0.1],\"upper_limit\":10,\"upper_limit_correction\":[-0.2,0]}}}}}}",
         "payloadType": "json",
         "x": 200,
-        "y": 1200,
+        "y": 420,
         "wires": [
             [
                 "c00e4019eed03f58"
@@ -1613,6 +1026,7 @@
         "id": "c00e4019eed03f58",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/SmartHomeD&G/simulation/config",
         "qos": "",
@@ -1624,13 +1038,14 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 460,
-        "y": 1200,
+        "y": 420,
         "wires": []
     },
     {
         "id": "6fa6df0967978f72",
         "type": "inject",
         "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
         "name": "environment state",
         "props": [
             {
@@ -1649,7 +1064,7 @@
         "payload": "{\"states\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1}}}}",
         "payloadType": "json",
         "x": 210,
-        "y": 1280,
+        "y": 500,
         "wires": [
             [
                 "9e5ddaebea5cee5e"
@@ -1660,6 +1075,7 @@
         "id": "9e5ddaebea5cee5e",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "g": "c46509ea1b2d8f12",
         "name": "",
         "topic": "/SmartHomeD&G/simulation/state",
         "qos": "",
@@ -1671,56 +1087,7 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 460,
-        "y": 1280,
-        "wires": []
-    },
-    {
-        "id": "6a417e5090fec8c4",
-        "type": "inject",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "name": "sensor-state mappings",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"mappings\":{\"light\":{\"lux_per_lamp\":{\"link\":\"lamps\",\"type\":\"room\"},\"lux_from_sun\":{\"link\":\"shutters\",\"type\":\"room\"}}}}",
-        "payloadType": "json",
-        "x": 760,
-        "y": 1240,
-        "wires": [
-            [
-                "ae8c8098d444187f"
-            ]
-        ]
-    },
-    {
-        "id": "ae8c8098d444187f",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "name": "",
-        "topic": "/SmartHomeD&G/simulation/mappings",
-        "qos": "",
-        "retain": "true",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 1050,
-        "y": 1240,
+        "y": 500,
         "wires": []
     },
     {
@@ -1761,6 +1128,89 @@
             [
                 "51e59edd57f80611",
                 "eaf74ef210b83cc2"
+            ]
+        ]
+    },
+    {
+        "id": "69a4edec5388ccba",
+        "type": "split",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "Split by measurement",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": "2",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "property": "payload",
+        "x": 1740,
+        "y": 200,
+        "wires": [
+            [
+                "e9c565322b3d5627"
+            ]
+        ]
+    },
+    {
+        "id": "4e4bc5e9bbd431f4",
+        "type": "function",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "Build analyzer topic",
+        "func": "let topic = \"/SmartHomeD&G/analyzer\";\nconst keys = Object.keys(msg.payload);\nlet obj = msg.payload[keys[0]]\n//Perform depth-first search of the measurement name\nwhile(!Object.hasOwn(obj, '_measurement')){\n    const keys = Object.keys(obj);\n    obj = obj[keys[0]];\n}\ntopic = `${topic}/${obj['_measurement']}/${obj['room']}/${obj['sensor']}`;\n// if(obj['value_name']){\n//     topic = `${topic}/${obj['value_name']}`;\n// }\nmsg.topic = topic\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1730,
+        "y": 260,
+        "wires": [
+            [
+                "9da49b95aeeae627",
+                "69346df0a8d62419"
+            ]
+        ]
+    },
+    {
+        "id": "69346df0a8d62419",
+        "type": "debug",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "influx debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1875,
+        "y": 260,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "e9c565322b3d5627",
+        "type": "split",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "Split by sensor",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": "1",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "property": "payload",
+        "x": 1540,
+        "y": 260,
+        "wires": [
+            [
+                "4e4bc5e9bbd431f4"
             ]
         ]
     }
