@@ -12,9 +12,9 @@ class Level(IntEnum):
 
 class Analyzer:
     client_id = None
-    config_topic = "/smart/analyzer/config"
-    topic_sub = "/smart/analyzer"
-    topic_pub = "/smart/planner"
+    config_topic = "/SmartHomeD&G/analyzer/config"
+    topic_sub = "/SmartHomeD&G/analyzer"
+    topic_pub = "/SmartHomeD&G/planner"
     ANALYSIS_INTERVAL = 10.0 #seconds
 
     def __init__(self, client_id, server, port):
@@ -23,7 +23,7 @@ class Analyzer:
         self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, client_id=client_id)
         self.server = server
         self.port = port
-        self.configuration = None
+        self.configuration = {}
         self.last_analysis_time = time.time()
 
     def start(self):
@@ -51,7 +51,8 @@ class Analyzer:
         raise NotImplementedError # implement in subclasses
 
     def _on_message(self, client, user_data, message):
-        print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
+    #    print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
+        pass
 
     def on_subscribe(self, client, userdata, mid, reason_code_list, properties):
         print(f'({self.client_id}) Subscribed successfully')
@@ -72,13 +73,22 @@ class Analyzer:
     def extract_values_from_message(self, mqtt_message):
         # extract the json
         payload = self.parse_json_from_message(mqtt_message)
+        print("================")
+        print("Payload:", payload)
+        print("Type of payload:", type(payload))
+        for item in payload:
+            print("Item:", item, "| Type:", type(item))
+        print("================")
+
         # check if it's a configuration for the analyzer
         if 'configuration' in payload:
             return payload
         # extract the values (they are ordered from oldest to newest)
         values = {}
-        for name,metric in payload.items():
-            values[name] = [entry['_value'] for entry in metric]
+        for metric in payload:
+            name = metric['_measurement']
+            values[name] = []
+            values[name].append(metric['_value'])
         return values
 
 
@@ -90,7 +100,7 @@ class TemperatureAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self._on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/temperature"
+        self.topic_sub = self.topic_sub + "/temperature/#"
 
         #analyzer specific fields
         self.temperature = 0.0
@@ -126,7 +136,7 @@ class TemperatureAnalyzer(Analyzer):
             self.temperature = values['temperature'][-1]
 
 class EnergyMetric(StrEnum):
-    TOTAL = 'energy'
+    TOTAL = 'total_kw'
     DISHWASHER = 'dishwasher_power'
     FRIDGE = 'fridge_power'
     LAMP = 'lamp_power'
@@ -159,6 +169,8 @@ class EnergyAnalyzer(Analyzer):
     def _analyze(self):
         # check current total kw
         current_total_power = sum(self.last_values['power'].values())
+        for entry in self.last_values['power'].values():
+            print(entry)
         if current_total_power <= self.configuration['warning_threshold_kw']:
             self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.NORMAL)),
                                 retain=True)

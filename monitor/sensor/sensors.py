@@ -6,8 +6,8 @@ import paho.mqtt.client as mqtt
 from enum import StrEnum
 
 # MQTT setup
-mqtt_server = "172.30.0.101"
-#mqtt_server = "localhost"
+# = "172.30.0.101"
+mqtt_server = "localhost"
 mqtt_port = 1883
 mqtt_topic_pub = "/SmartHomeD&G/sensor"
 mqtt_topic_sub = "/SmartHomeD&G/simulation/#"
@@ -45,13 +45,21 @@ class JsonProperties(StrEnum):
 sensors_info = {}
 
 # This contains the list of simulated sensors with names and current value
-sensors = {}
+# we add the total energy consumption sensor directly here
+sensors = {
+    JsonProperties.ENERGY.value : {
+        'total_kw' : {
+            JsonProperties.SINGLE_VALUE.value : 0.0,
+            JsonProperties.DATA_TYPE.value : 'float'
+        }
+    }
+}
 
+total_kw = sensors[JsonProperties.ENERGY.value]['total_kw']  # Total energy consumed in kWh (power-grid simulation)
 
 # Status of the home (lights, windows...)
 state = {}
 
-lifetime_energy = 0.0  # Total energy consumed in kWh (power-grid simulation)
 
 # Simulated sensor data
 # temperature = 22.0  # Temperature sensor (thermostat)
@@ -172,7 +180,8 @@ def init():
 
     # create sensors object
     for sensor_type,info in sensors_info.items():
-        sensors[sensor_type] = {} #{'sensor_name' : {...},...}
+        if sensor_type not in sensors:
+            sensors[sensor_type] = {} #{'sensor_name' : {...},...}
         if sensor_type == JsonProperties.SMART_APPLIANCE.value:
             for name,appliance in info.items(): #array
                 sensors[sensor_type][name] = {JsonProperties.ROOM.value: sensors_info[sensor_type][name][JsonProperties.ROOM.value]}
@@ -248,12 +257,14 @@ def publish_data():
         else: # this is not a smart appliance
             for sensor, sensor_properties in sensor_list.items():
                 # build the topic string
-                room = sensor_properties[JsonProperties.ROOM.value]
+                room = None
+                if JsonProperties.ROOM.value in sensor_properties:
+                    room = sensor_properties[JsonProperties.ROOM.value]
                 data_type = sensor_properties[JsonProperties.DATA_TYPE.value]
                 value = sensor_properties[JsonProperties.SINGLE_VALUE.value]
                 if data_type == 'float':
                     value = round(value, 1)
-                topic = f'/{data_type}/{sensor_type}/{room}/{sensor}'
+                topic = f'/{data_type}/{sensor_type}{'/'+room if room else ''}/{sensor}'
                 publish_topic(topic, value)
                 print(f'{sensor} {sensor_type}: {value}')
 
@@ -311,6 +322,8 @@ def update_sensors(elapsed_time):
     # Update power values
     current_info = sensors_info[JsonProperties.ENERGY.value]
     for sensor_name, sensor_properties in sensors[JsonProperties.ENERGY.value].items():
+        if sensor_name == 'total_kw': #skip for the total energy sensor
+            continue
         # check if there is a state attached to this sensor (on/off)
         state_value = 1
         if 'linked_state' in sensor_properties:
@@ -349,21 +362,17 @@ def update_sensors(elapsed_time):
     sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_TEMPERATURE.value][JsonProperties.SINGLE_VALUE.value] = fridge_temp
     sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_LOAD.value][JsonProperties.SINGLE_VALUE.value] = fridge_load
 
-def calculate_kwh():
-    global lifetime_energy
+def calculate_kw():
+    global total_kw
     # Calculate energy consumption in kWh based on power ratings and elapsed time
     total_energy = 0.0
     for name,energy_sensor in sensors[JsonProperties.ENERGY.value].items():
-        total_energy += energy_sensor[JsonProperties.SINGLE_VALUE.value] * energy_reading_interval / 3600
-    # fridge_energy = (fridge_power * event_interval) / 3600  # kWh for fridge
-    # dishwasher_energy = (random.randint(800, 1200) * event_interval) / 3600  # kWh for dishwasher (random range)
-    # thermostat_energy = (thermostat_power * event_interval) / 3600  # kWh for thermostat
-    # lamp_energy = (lamp_power * active_lamps * event_interval) / 3600  # kWh for lamps
+        if name != 'total_kw':
+            total_energy += energy_sensor[JsonProperties.SINGLE_VALUE.value] / 1000.0
 
-    # total_energy = fridge_energy + dishwasher_energy + thermostat_energy + lamp_energy
-    lifetime_energy += total_energy
 
-    print(f"The value of the energy consumption is: {total_energy:.1f} kWh.")
+    total_kw[JsonProperties.SINGLE_VALUE.value] = total_energy
+    print(f"The value of the energy consumption is: {total_energy:.1f} kW.")
 
 def loop():
     global last_publish_time, previous_sensors_update_time, previous_energy_reading_time
@@ -378,7 +387,7 @@ def loop():
 
         # Update energy readings
         if current_time - previous_energy_reading_time >= energy_reading_interval:
-            calculate_kwh()
+            calculate_kw()
             previous_energy_reading_time = current_time
 
         # Publish data
