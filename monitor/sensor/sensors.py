@@ -48,14 +48,14 @@ sensors_info = {}
 # we add the total energy consumption sensor directly here
 sensors = {
     JsonProperties.ENERGY.value : {
-        'total_kwh' : {
+        'total_kw' : {
             JsonProperties.SINGLE_VALUE.value : 0.0,
             JsonProperties.DATA_TYPE.value : 'float'
         }
     }
 }
 
-lifetime_energy = sensors[JsonProperties.ENERGY.value]['total_kwh']  # Total energy consumed in kWh (power-grid simulation)
+total_kw = sensors[JsonProperties.ENERGY.value]['total_kw']  # Total energy consumed in kWh (power-grid simulation)
 
 # Status of the home (lights, windows...)
 state = {}
@@ -322,7 +322,7 @@ def update_sensors(elapsed_time):
     # Update power values
     current_info = sensors_info[JsonProperties.ENERGY.value]
     for sensor_name, sensor_properties in sensors[JsonProperties.ENERGY.value].items():
-        if sensor_name == 'total_kwh': #skip for the total energy sensor
+        if sensor_name == 'total_kw': #skip for the total energy sensor
             continue
         # check if there is a state attached to this sensor (on/off)
         state_value = 1
@@ -362,15 +362,17 @@ def update_sensors(elapsed_time):
     sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_TEMPERATURE.value][JsonProperties.SINGLE_VALUE.value] = fridge_temp
     sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_LOAD.value][JsonProperties.SINGLE_VALUE.value] = fridge_load
 
-def calculate_kwh():
-    global lifetime_energy
+def calculate_kw():
+    global total_kw
     # Calculate energy consumption in kWh based on power ratings and elapsed time
     total_energy = 0.0
     for name,energy_sensor in sensors[JsonProperties.ENERGY.value].items():
-        total_energy += energy_sensor[JsonProperties.SINGLE_VALUE.value] * energy_reading_interval / 3600
+        if name != 'total_kw':
+            total_energy += energy_sensor[JsonProperties.SINGLE_VALUE.value] / 1000.0
 
-    lifetime_energy[JsonProperties.SINGLE_VALUE.value] += total_energy
-    print(f"The value of the energy consumption is: {total_energy:.1f} kWh.")
+
+    total_kw[JsonProperties.SINGLE_VALUE.value] = total_energy
+    print(f"The value of the energy consumption is: {total_energy:.1f} kW.")
 
 def loop():
     global last_publish_time, previous_sensors_update_time, previous_energy_reading_time
@@ -385,7 +387,7 @@ def loop():
 
         # Update energy readings
         if current_time - previous_energy_reading_time >= energy_reading_interval:
-            calculate_kwh()
+            calculate_kw()
             previous_energy_reading_time = current_time
 
         # Publish data
