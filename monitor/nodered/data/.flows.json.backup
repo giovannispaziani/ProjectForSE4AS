@@ -32,7 +32,7 @@
         ],
         "x": 974,
         "y": 159,
-        "w": 952,
+        "w": 962,
         "h": 342
     },
     {
@@ -711,13 +711,13 @@
         "g": "fb950f3a0b286899",
         "name": "",
         "props": [],
-        "repeat": "",
+        "repeat": "3",
         "crontab": "",
         "once": false,
         "onceDelay": "3",
         "topic": "",
         "x": 1070,
-        "y": 200,
+        "y": 220,
         "wires": [
             [
                 "708ce20633e474fa"
@@ -925,7 +925,7 @@
         "retentionPolicy": "",
         "org": "Se4as-24-25",
         "x": 1290,
-        "y": 200,
+        "y": 220,
         "wires": [
             [
                 "aa8db65cf8d49931",
@@ -939,7 +939,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "influx debug",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -948,7 +948,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1355,
-        "y": 240,
+        "y": 260,
         "wires": [],
         "l": false
     },
@@ -967,8 +967,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1800,
-        "y": 260,
+        "x": 1820,
+        "y": 320,
         "wires": []
     },
     {
@@ -1144,8 +1144,8 @@
         "stream": false,
         "addname": "topic",
         "property": "payload",
-        "x": 1560,
-        "y": 240,
+        "x": 1740,
+        "y": 200,
         "wires": [
             [
                 "e9c565322b3d5627"
@@ -1165,8 +1165,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1570,
-        "y": 320,
+        "x": 1730,
+        "y": 260,
         "wires": [
             [
                 "9da49b95aeeae627",
@@ -1180,7 +1180,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "influx debug",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1188,8 +1188,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1715,
-        "y": 340,
+        "x": 1875,
+        "y": 260,
         "wires": [],
         "l": false
     },
@@ -1207,7 +1207,7 @@
         "addname": "topic",
         "property": "payload",
         "x": 1540,
-        "y": 280,
+        "y": 260,
         "wires": [
             [
                 "4e4bc5e9bbd431f4"

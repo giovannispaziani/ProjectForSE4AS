@@ -43,9 +43,11 @@ windows_state = {
 
 class Planner:
     client_id = None
-    config_topic = "/smart/planner/config"
-    topic_sub = "/smart/planner"
-    topic_pub = "/smart/executor"
+    config_topic = "/SmartHomeD&G/planner/config"
+    env_state_topic = "/SmartHomeD&G/simulation/state"
+    topic_sub = "/SmartHomeD&G/planner"
+    topic_pub = "/SmartHomeD&G/executor"
+    state = None # Tracks environment state
 
     def __init__(self, client_id, server, port):
         # set up the mqtt client and other instance fields
@@ -67,6 +69,10 @@ class Planner:
         self.client.subscribe(topic)
         print(f'({self.client_id}) Subscribing to topic: {topic}')
 
+        # Retrieve the environment state
+        self.client.subscribe(self.env_state_topic)
+        print(f'({self.client_id}) Subscribing to topic: {self.env_state_topic}')
+
         # subscribe to metrics
         print(f'({self.client_id}) Subscribing to topic: {self.topic_sub}')
         self.client.subscribe(self.topic_sub)
@@ -75,6 +81,13 @@ class Planner:
 
     def _on_message(self, client, user_data, message):
         print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
+        values = self._extract_values_from_message(message)
+        # update the state if the payload contains state info
+        if 'states' in values:
+            self.state = values['states']
+            return None # we consumed the message so return null to the subclasses
+        else:
+            return values
 
     def _on_subscribe(self, client, userdata, mid, reason_code_list, properties):
         print(f'({self.client_id}) Subscribed successfully')
@@ -101,16 +114,20 @@ class Planner:
     def _extract_values_from_message(self, mqtt_message):
         # extract the json
         payload = self._parse_json_from_message(mqtt_message)
-        if 'configuration' in payload:
-            print(f'({self.client_id}) Received configuration message')
+        print("================")
+        print("Payload:", payload)
+        print("Type of payload:", type(payload))
+        for item in payload:
+            print("Item:", item, "| Type:", type(item))
+        print("================")
         return payload
 
 class TemperaturePlanner(Planner):
 
-    TOPIC_SUB = "/temp/#"
-    TOPIC_PUB = "/temp"
-    HEATING_SUBTOPIC = "/heating"
-    SHUTTERS_SUBTOPIC = "/shutters"
+    TOPIC_SUB = "/increase_temperature"
+    TOPIC_PUB = "/temperature_plan"
+    HEATING_SUBTOPIC = "/enable_heating"
+    SHUTTERS_SUBTOPIC = "/shutters_position"
 
     def __init__(self, client_id="temperature_planner", server="localhost", port=1883):
         super().__init__(client_id, server, port) # setup mqtt client and instance fields
@@ -134,14 +151,13 @@ class TemperaturePlanner(Planner):
 
 
     def _on_message(self, client, user_data, message):
-        super()._on_message(client, user_data, message)
-        values = self._extract_values_from_message(message)
 
-        if 'configuration' in values:
-            self.configuration = values['configuration']
-            self.configuration['automation'] = shutters_configuration # TODO: togliere dopo aver spostato su nodered
-            return
+        values = super()._on_message(client, user_data, message)
+
         if values: # check if new data is received (also if it's true)
+            if 'configuration' in values:
+                self.configuration = values['configuration']
+                return
             self.increase_temp = values['value']
             if self.increase_temp: # increase temperature = True
                 # plan strategies for temperature increase
@@ -160,9 +176,9 @@ class TemperaturePlanner(Planner):
 class EnergyPlanner(Planner):
 
     TOPIC_SUB = "/energy/#"
-    TOPIC_PUB = "/energy"
-    SWITCHES_SUBTOPIC = "/switch"
-    SHUTTERS_SUBTOPIC = "/shutters"
+    TOPIC_PUB = "/energy_plan"
+    SWITCHES_SUBTOPIC = "/switches"
+    SHUTTERS_SUBTOPIC = "/shutters_position"
 
     def __init__(self, client_id="energy_planner", server="localhost", port=1883):
         super().__init__(client_id, server, port) # setup mqtt client and instance fields
@@ -180,10 +196,10 @@ class EnergyPlanner(Planner):
         # The actual effect depends on wether the apparel can be regulated like wash machines and fridges or just turned on/off like lights
         # TODO: Una volta che avremo gli actuators, rendere il settaggio di questo oggetto automatico
         self.switches = {
-            'wash_machine': True,
+            'dishwasher': True,
             'fridge': True,
             'lights': True,
-            'heating': True
+            'thermostat': True
         }
 
     def start(self):
@@ -195,22 +211,48 @@ class EnergyPlanner(Planner):
 
 
     def _on_message(self, client, user_data, message):
-        super()._on_message(client, user_data, message)
-        values = self._extract_values_from_message(message)
 
-        if 'configuration' in values:
-            self.configuration = values['configuration']
-            return
+        values = super()._on_message(client, user_data, message)
+
         if values: # check if new data is received (also if it's true)
-            # TODO: logica del energy planner, inoltre bisogna pensare a come gestire conflitti tra i piani dati da planner diversi.
-            print('fa qualcosa')
+            if 'configuration' in values:
+                self.configuration = values['configuration']
+                return
+            energy_level = Level(values['value'])
+            # Execute this block for WARNING and CRITICAL levels
+            if energy_level >= Level.WARNING:
+                print('warning/critical')
+                # 1: increase thermostat threeshold
+                self.switches['thermostat'] = False
+                # 2: turn off light lamps and open shutters if it's day time
+                current_hour = dt.datetime.now().hour
+                if current_hour >= 17 or current_hour < 9:  # night time
+                    # nothing to do
+                    pass
+                else:  # day time
+                    self.switches['lights'] = False
+                # if CRITICAL, also execute this block
+                if energy_level == Level.CRITICAL:
+                    print('critical')
+                    self.switches['dishwasher'] = False
+                    self.switches['fridge'] = False
+                self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, self._encode_json_to_message(dictionary=self.switches), retain=True)
+            else:
+                print('normal')
+                self.switches = {
+                    'dishwasher': True,
+                    'fridge': True,
+                    'lights': True,
+                    'thermostat': True
+                }
+            self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, self._encode_json_to_message(dictionary=self.switches), retain=True)
 
 def main():
     temp_planner = TemperaturePlanner()
-    #energy_planner = EnergyPlanner()
+    energy_planner = EnergyPlanner()
 
     temp_planner.start()
-    #energy_planner.start()
+    energy_planner.start()
 
     print('All done, listening...')
     while True:
