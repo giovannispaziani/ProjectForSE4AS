@@ -711,7 +711,7 @@
         "g": "fb950f3a0b286899",
         "name": "",
         "props": [],
-        "repeat": "",
+        "repeat": "3",
         "crontab": "",
         "once": false,
         "onceDelay": "3",
@@ -939,7 +939,7 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "influx debug",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1061,7 +1061,7 @@
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"states\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1}}}}",
+        "payload": "{\"states\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":0,\"automation_enabled\":1},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0,\"automation_enabled\":1},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0,\"automation_enabled\":1},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0,\"automation_enabled\":1}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0,\"automation_enabled\":1},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0,\"automation_enabled\":1},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0,\"automation_enabled\":1},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0,\"automation_enabled\":1},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0,\"automation_enabled\":1}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1,\"automation_enabled\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1,\"automation_enabled\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1,\"automation_enabled\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1,\"automation_enabled\":1}}}}",
         "payloadType": "json",
         "x": 210,
         "y": 500,
@@ -1211,6 +1211,53 @@
         "wires": [
             [
                 "4e4bc5e9bbd431f4"
+            ]
+        ]
+    },
+    {
+        "id": "274ac2c48bdcb6d5",
+        "type": "mqtt out",
+        "z": "99285b04ab31eeb3",
+        "name": "",
+        "topic": "/SmartHomeD&G/planner/config/temperature_planner",
+        "qos": "",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a928ba0.2d1f748",
+        "x": 1600,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "c260fb0e3295fd80",
+        "type": "inject",
+        "z": "99285b04ab31eeb3",
+        "name": "temperature planner configuration",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
+        "payloadType": "json",
+        "x": 1160,
+        "y": 620,
+        "wires": [
+            [
+                "274ac2c48bdcb6d5"
             ]
         ]
     }
