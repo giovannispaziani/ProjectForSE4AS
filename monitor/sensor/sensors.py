@@ -3,7 +3,7 @@ import random
 import time
 import json
 import paho.mqtt.client as mqtt
-from enum import StrEnum
+from utils.JsonProperties import JsonProperties
 
 # MQTT setup
 # = "172.30.0.101"
@@ -12,35 +12,6 @@ mqtt_port = 1883
 mqtt_topic_pub = "/SmartHomeD&G/sensor"
 mqtt_topic_sub = "/SmartHomeD&G/simulation/#"
 
-class JsonProperties(StrEnum):
-    SENSORS_ROOT='sensors',
-    STATE_ROOT='states',
-    TEMPERATURE='temperature',
-    LIGHT='light',
-    ENERGY='energy',
-    SMART_APPLIANCE='smart_appliance',
-    LIGHT_LAMPS='lamps',
-    WINDOWS='windows',
-    SHUTTERS='shutters',
-    ROOM='room',
-    STARTING_VALUE='starting_value',
-    LUX_PER_LAMP='lux_per_lamp',
-    LUX_FROM_SUN='lux_from_sun',
-    DATA_TYPE='data_type',
-    SINGLE_VALUE='value',
-    MULTIPLE_VALUES='values',
-    VALUE_DELTA_RANGE='delta_range',
-    VALUE_LOWER_LIMIT='lower_limit',
-    VALUE_UPPER_LIMIT='upper_limit',
-    VALUE_UPPER_CORRECTION='upper_limit_correction',
-    VALUE_LOWER_CORRECTION='lower_limit_correction',
-    STATE_VALUE='state',
-    SMART_FRIDGE_LOAD='load',
-    SMART_FRIDGE_TEMPERATURE='temp',
-    SMART_FRIDGE_THRESHOLD='refill_threshold',
-    SMART_FRIDGE_OPEN_DELTA_RANGE='open_delta_range',
-    SMART_FRIDGE_REFILL_DELTA_RANGE='refill_delta_range'
-
 # Sensors data, this is the object to modify to add/remove sensors
 sensors_info = {}
 
@@ -48,14 +19,14 @@ sensors_info = {}
 # we add the total energy consumption sensor directly here
 sensors = {
     JsonProperties.ENERGY.value : {
-        'total_kw' : {
+        JsonProperties.TOTAL_KW : {
             JsonProperties.SINGLE_VALUE.value : 0.0,
             JsonProperties.DATA_TYPE.value : 'float'
         }
     }
 }
 
-total_kw = sensors[JsonProperties.ENERGY.value]['total_kw']  # Total energy consumed in kWh (power-grid simulation)
+total_kw = sensors[JsonProperties.ENERGY.value][JsonProperties.TOTAL_KW]  # Total energy consumed in kWh (power-grid simulation)
 
 # Status of the home (lights, windows...)
 state = {}
@@ -322,7 +293,7 @@ def update_sensors(elapsed_time):
     # Update power values
     current_info = sensors_info[JsonProperties.ENERGY.value]
     for sensor_name, sensor_properties in sensors[JsonProperties.ENERGY.value].items():
-        if sensor_name == 'total_kw': #skip for the total energy sensor
+        if sensor_name == JsonProperties.TOTAL_KW: #skip for the total energy sensor
             continue
         # check if there is a state attached to this sensor (on/off)
         state_value = 1
@@ -367,7 +338,7 @@ def calculate_kw():
     # Calculate energy consumption in kWh based on power ratings and elapsed time
     total_energy = 0.0
     for name,energy_sensor in sensors[JsonProperties.ENERGY.value].items():
-        if name != 'total_kw':
+        if name != JsonProperties.TOTAL_KW:
             total_energy += energy_sensor[JsonProperties.SINGLE_VALUE.value] / 1000.0
 
 
