@@ -1,7 +1,7 @@
 {
     "node-red": {
         "name": "node-red",
-        "version": "4.0.8",
+        "version": "4.0.9",
         "local": false,
         "user": false,
         "nodes": {
@@ -685,6 +685,100 @@
                 "user": false,
                 "module": "node-red-contrib-influxdb",
                 "file": "/usr/src/node-red/node_modules/node-red-contrib-influxdb/influxdb.js"
+            }
+        }
+    },
+    "node-red-node-email": {
+        "name": "node-red-node-email",
+        "version": "3.0.3",
+        "local": false,
+        "user": false,
+        "nodes": {
+            "email": {
+                "name": "email",
+                "types": [
+                    "e-mail",
+                    "e-mail in",
+                    "e-mail mta"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red-node-email",
+                "file": "/usr/src/node-red/node_modules/node-red-node-email/61-email.js"
+            }
+        }
+    },
+    "@terranlabs/email-nodes": {
+        "name": "@terranlabs/email-nodes",
+        "version": "2.0.1",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "email": {
+                "name": "email",
+                "types": [
+                    "e-mail",
+                    "e-mail in",
+                    "e-mail mta"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "@terranlabs/email-nodes",
+                "file": "/data/node_modules/@terranlabs/email-nodes/61-email.js"
+            }
+        }
+    },
+    "node-red-contrib-coap": {
+        "name": "node-red-contrib-coap",
+        "version": "0.8.0",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "coap-in": {
+                "name": "coap-in",
+                "types": [
+                    "coap-server",
+                    "coap in",
+                    "coap response"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-coap",
+                "file": "/data/node_modules/node-red-contrib-coap/coap/coap-in.js"
+            },
+            "coap-request": {
+                "name": "coap-request",
+                "types": [
+                    "coap request"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-coap",
+                "file": "/data/node_modules/node-red-contrib-coap/coap/coap-request.js"
+            }
+        }
+    },
+    "node-red-node-mysql": {
+        "name": "node-red-node-mysql",
+        "version": "1.0.3",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "mysql": {
+                "name": "mysql",
+                "types": [
+                    "MySQLdatabase",
+                    "mysql"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-node-mysql",
+                "file": "/data/node_modules/node-red-node-mysql/68-mysql.js"
             }
         }
     }
