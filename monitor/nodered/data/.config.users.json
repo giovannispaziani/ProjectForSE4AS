@@ -14,12 +14,18 @@
             },
             "tours": {
                 "welcome": "4.0.8"
+            },
+            "dialog": {
+                "export": {
+                    "pretty": false,
+                    "json-view": true
+                }
             }
         },
         "debug": {
             "filter": "filterAll"
         },
-        "menu-menu-item-palette": false,
+        "menu-menu-item-palette": true,
         "menu-menu-item-sidebar": true
     }
 }

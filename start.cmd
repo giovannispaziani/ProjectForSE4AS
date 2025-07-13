@@ -1,2 +1,2 @@
 set PWD=%CD%
-docker compose up
+docker compose up -d
