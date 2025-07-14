@@ -4,6 +4,7 @@ import time
 import json
 import paho.mqtt.client as mqtt
 from utils.JsonProperties import JsonProperties
+from utils.JsonParsing import extract_values_from_message, encode_json_to_message
 
 # MQTT setup
 # = "172.30.0.101"
@@ -98,7 +99,7 @@ def on_message(client, user_data, message):
 
     print(f'Received message: ', message.payload.decode('utf-8'))
     payload = extract_values_from_message(message)
-    # setup initial sensors if it's initalizer
+    # setup initial sensors if it's initializer
     if JsonProperties.SENSORS_ROOT.value in payload:
         sensors_info = payload[JsonProperties.SENSORS_ROOT.value]
         init()
@@ -186,27 +187,6 @@ def setup_state():
                     if sensor_name == state_name:
                         sensor_properties['linked_state'] = state_properties
     pretty(sensors, 1)
-
-def parse_json_from_message(mqtt_message):
-    decoded = mqtt_message.payload.decode('utf-8')  # decode json string
-    parsed = json.loads(decoded)  # parse json string into a dict
-    return parsed
-
-
-def encode_json_to_message(value, dictionary=None):
-    if not dictionary is None:
-        json_string = json.dumps(dictionary)
-    else:
-        json_string = json.dumps({JsonProperties.SINGLE_VALUE.value: value})
-    encoded = json_string.encode('utf-8')
-    return encoded
-
-
-def extract_values_from_message(mqtt_message):
-    # extract the json
-    payload = parse_json_from_message(mqtt_message)
-    return payload
-
 
 def publish_data():
     # Iterate on the sensors

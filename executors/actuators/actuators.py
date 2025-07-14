@@ -4,6 +4,7 @@ from enum import IntEnum, StrEnum
 
 import paho.mqtt.client as mqtt
 from utils.JsonProperties import JsonProperties
+from utils.JsonParsing import extract_values_from_message
 
 # MQTT setup
 # = "172.30.0.101"
@@ -50,7 +51,7 @@ class Actuator:
 
     def _on_message(self, client, user_data, message):
         print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
-        values = _extract_values_from_message(message)
+        values = extract_values_from_message(message)
         # update the state if the payload contains state info
         return values
 
@@ -125,33 +126,6 @@ class SelectorSwitch(Actuator):
     def publish(self):
         self.client.publish(self.topic_pub, self.state, retain=True)
 
-def _parse_json_from_message(mqtt_message):
-    decoded = mqtt_message.payload.decode('utf-8')  # decode json string
-    parsed = json.loads(decoded)  # parse json string into a dict
-    return parsed
-
-def _encode_json_to_message(value=None, dictionary=None):
-    if not dictionary is None:
-        json_string = json.dumps(dictionary)
-    else:
-        if not value is None:
-            json_string = json.dumps({'value': value})
-        else:
-            raise ValueError('Either value or dictionary must be provided')
-    encoded = json_string.encode('utf-8')
-    return encoded
-
-def _extract_values_from_message(mqtt_message):
-    # extract the json
-    payload = _parse_json_from_message(mqtt_message)
-    print("================")
-    print("Payload:", payload)
-    print("Type of payload:", type(payload))
-    for item in payload:
-        print("Item:", item, "| Type:", type(item))
-    print("================")
-    return payload
-
 def update_actuators(state):
     global old_state, actuators
     # Crea le istanze delle classi (bisogna eliminare quelle che non sono più presenti nello stato)
@@ -171,7 +145,7 @@ def update_actuators(state):
 
 def update_actuators_state(mqtt_message):
     global state
-    state = _extract_values_from_message(mqtt_message)[JsonProperties.ACTUATORS_ROOT]
+    state = extract_values_from_message(mqtt_message)[JsonProperties.ACTUATORS_ROOT]
 
 def main():
     global state

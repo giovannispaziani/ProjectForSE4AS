@@ -3,6 +3,7 @@ import time
 import datetime as dt
 from enum import IntEnum
 from utils.JsonProperties import JsonProperties
+from utils.JsonParsing import extract_values_from_message, encode_json_to_message
 
 import paho.mqtt.client as mqtt
 
@@ -82,7 +83,7 @@ class Planner:
 
     def _on_message(self, client, user_data, message):
         print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
-        values = self._extract_values_from_message(message)
+        values = extract_values_from_message(message)
         # update the state if the payload contains state info
         if JsonProperties.STATE_ROOT in values:
             self.state = values[JsonProperties.STATE_ROOT]
@@ -95,33 +96,6 @@ class Planner:
 
     def _on_publish(self, client, userdata, mid, reason_code, properties):
         print(f'({self.client_id}) published')
-
-    def _parse_json_from_message(self, mqtt_message):
-        decoded = mqtt_message.payload.decode('utf-8') #decode json string
-        parsed = json.loads(decoded) #parse json string into a dict
-        return parsed
-
-    def _encode_json_to_message(self, value=None, dictionary=None):
-        if not dictionary is None:
-            json_string = json.dumps(dictionary)
-        else:
-            if not value is None:
-                json_string = json.dumps({'value' : value})
-            else:
-                raise ValueError('Either value or dictionary must be provided')
-        encoded = json_string.encode('utf-8')
-        return encoded
-
-    def _extract_values_from_message(self, mqtt_message):
-        # extract the json
-        payload = self._parse_json_from_message(mqtt_message)
-        print("================")
-        print("Payload:", payload)
-        print("Type of payload:", type(payload))
-        for item in payload:
-            print("Item:", item, "| Type:", type(item))
-        print("================")
-        return payload
 
 class TemperaturePlanner(Planner):
 
@@ -147,8 +121,8 @@ class TemperaturePlanner(Planner):
         super().start() # connect to broker, retrieve config and subscribe to topics
 
         #initialize topics
-        self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, self._encode_json_to_message(False), retain=True)
-        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, self._encode_json_to_message(str(Shutters.ANY)), retain=True)
+        self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, encode_json_to_message(False), retain=True)
+        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.ANY)), retain=True)
 
 
     def _on_message(self, client, user_data, message):
@@ -163,16 +137,16 @@ class TemperaturePlanner(Planner):
             if self.increase_temp: # increase temperature = True
                 # plan strategies for temperature increase
                 # 1. enable heating
-                self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, self._encode_json_to_message(True), retain=True)
+                self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, encode_json_to_message(True), retain=True)
                 # 2. open/close shutters depending on the time of the day
                 current_hour = dt.datetime.now().hour
                 if current_hour >= 17 or current_hour < 9: # night time
-                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, self._encode_json_to_message(str(Shutters.SHUT)), retain=True)
+                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.SHUT)), retain=True)
                 else: # day time
-                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, self._encode_json_to_message(str(Shutters.OPEN)), retain=True)
+                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.OPEN)), retain=True)
             else: # increase temperature = False
-                self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, self._encode_json_to_message(False), retain=True)
-                self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, self._encode_json_to_message(str(Shutters.ANY)), retain=True)
+                self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, encode_json_to_message(False), retain=True)
+                self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.ANY)), retain=True)
 
 class EnergyPlanner(Planner):
 
@@ -207,8 +181,8 @@ class EnergyPlanner(Planner):
         super().start() # connect to broker, retrieve config and subscribe to topics
 
         #initialize topics
-        self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, self._encode_json_to_message(dictionary=self.switches), retain=True)
-        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, self._encode_json_to_message(str(Shutters.ANY)), retain=True)
+        self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, encode_json_to_message(dictionary=self.switches), retain=True)
+        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.ANY)), retain=True)
 
 
     def _on_message(self, client, user_data, message):
@@ -237,7 +211,7 @@ class EnergyPlanner(Planner):
                     print('critical')
                     self.switches[JsonProperties.PLANNER_DISHWASHER_SWITCH] = False
                     self.switches[JsonProperties.PLANNER_FRIDGE_SWITCH] = False
-                self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, self._encode_json_to_message(dictionary=self.switches), retain=True)
+                self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, encode_json_to_message(dictionary=self.switches), retain=True)
             else:
                 print('normal')
                 self.switches = {
@@ -246,7 +220,7 @@ class EnergyPlanner(Planner):
                     JsonProperties.PLANNER_LIGHTS_SWITCH: True,
                     JsonProperties.PLANNER_THERMOSTAT_SWITCH: True
                 }
-            self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, self._encode_json_to_message(dictionary=self.switches), retain=True)
+            self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, encode_json_to_message(dictionary=self.switches), retain=True)
 
 def main():
     temp_planner = TemperaturePlanner()
