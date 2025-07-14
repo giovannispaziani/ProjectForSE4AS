@@ -17,7 +17,11 @@ The MAPE-K architecture is based on five main components: Monitor, Analyze, Plan
 
 During the project, various smart devices will be introduced and managed, including temperature and energy consumption sensors, actuators such as smart roller shutters and dish washer, and a smart refrigerator that helps optimize energy efficiency thanks to new integrated sensors. This project represents a concrete example of how autonomous systems can dynamically adapt to environmental conditions to improve efficiency and user comfort. 
 
+## Architecture diagram
 
+<p align="center">
+  <img src="Docs/Diagram.jpg" width="65%" alt="Diagram">
+</p>
 
 
 
