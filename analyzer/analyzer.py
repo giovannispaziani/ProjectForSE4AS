@@ -1,4 +1,5 @@
 from enum import IntEnum, StrEnum
+from utils.JsonProperties import JsonProperties
 import json
 import time
 import threading
@@ -86,9 +87,9 @@ class Analyzer:
         # extract the values (they are ordered from oldest to newest)
         values = {}
         for metric in payload:
-            name = metric['_measurement']
+            name = metric[JsonProperties.INFLUX_MEASUREMENT]
             values[name] = []
-            values[name].append(metric['_value'])
+            values[name].append(metric[JsonProperties.INFLUX_VALUE])
         return values
 
 
@@ -117,23 +118,23 @@ class TemperatureAnalyzer(Analyzer):
         threading.Timer(self.ANALYSIS_INTERVAL, self._schedule_analysis).start()
 
     def _analyze(self):
-        if self.temperature <= self.configuration['min_temp']:
+        if self.temperature <= self.configuration[JsonProperties.MIN_TEMPERATURE]:
             # tell planner to increase temperature
             self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(True), retain=True)
-        elif self.temperature >= self.configuration['min_temp'] + self.configuration['working_threshold']:
+        elif self.temperature >= self.configuration[JsonProperties.MIN_TEMPERATURE] + self.configuration[JsonProperties.WORKING_THRESHOLD]:
             self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(False), retain=True)
 
     def _on_message(self, client, user_data, message):
         super()._on_message(client, user_data, message)
         values = self.extract_values_from_message(message)
 
-        if 'configuration' in values:
-            self.configuration = values['configuration']
+        if JsonProperties.CONFIGURATION_ROOT in values:
+            self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
             # start the analysis loop
             self._schedule_analysis()
             return
         if values: # check if new data is received (payload may be empty if sensors are not sending data)
-            self.temperature = values['temperature'][-1]
+            self.temperature = values[JsonProperties.TEMPERATURE][-1]
 
 class EnergyMetric(StrEnum):
     TOTAL = 'total_kw'
