@@ -23,18 +23,58 @@ During the project, various smart devices will be introduced and managed, includ
   <img src="Docs/Diagram.jpg" width="65%" alt="Diagram">
 </p>
 
+## Prerequisites
 
+Before starting with the project setup, ensure the following prerequisites are met:
 
+- Docker.
+- Python.
 
+# Smart home monitoring project - Data Flow
 
+## 1. ![Python][Python.com]: Data Simulation
+<ins>Description</ins>: The flow begins with Python simulating everything, including sensors, actuators, executors etc. All these scripts are dockerized.
 
+<ins>Data generated</ins>: These devices generate data such as energy consumption, power, temperature, light and amount of food stored.
 
+## 2. ![MQTT][MQTT.com]: Communication Between Components
+<ins>Transport</ins>: MQTT, through a broker (e.g. Mosquitto, also dockerized), manages communication between the simulated devices and Node-RED.
 
+<ins>Function</ins>: Enables efficient data exchange using a publish/subscribe topic system.
 
+<ins>Efficiency</ins>: Lightweight and reliable, it's ideal for real-time data transfer in distributed environments.
 
+## 3. ![NodeRED][NodeRED.com]: Workflow Management
+<ins>Data Reception</ins>: The simulated data from Python is then sent to Node-RED.
 
+<ins>Function</ins>: Node-RED (also dockerized) manages and orchestrates the flow of this data.
 
+<ins>Processing</ins>: It processes and formats the data, preparing it for collection and strage.
 
+## 4. ![Telegraf][Telegraf.com]: Data Collection and Processing
+<ins>Collection</ins>: Telegraf, running in its own Docker's container, collects the processed data from Node-RED.
+
+<ins>Role</ins>: It acts as an agent that further processes and aggregates the data.
+
+<ins>Efficiency</ins>: Telegraf ensures efficient data handling before storage.
+
+## 5. ![InfluxDB][InfluxDB.com]: Data Storage
+<ins>Storage</ins>: The aggregated data is then stored in InfluxDB.
+
+<ins>Infrastructure</ins>: InfluxDB, dockerized for consistency and scalability, stores this time-series data.
+
+<ins>Retrieval</ins>: It facilitates efficient data retrieval for analysis and visualization.
+
+## 6. ![Grafana][Grafana.com]: Data Visualization
+<ins>Visualization</ins>: Finally, the data stored in InfluxDB is visualized using Grafana.
+
+<ins>Dashboard Creation</ins>: Grafana (also dockerized) creates interactive dashboards.
+
+<ins>Display</ins>: These dashboards display real-time data on current, power, voltage, frequency, and energy consumption.
+
+---
+
+<ins>**Note**: each component runs in a separate Docker container, which provides isolation, scalability, and easy deployment. The dockerization of each component also simplifies version control, dependency management, and environment consistency across different platforms.</ins>
 
 
 
