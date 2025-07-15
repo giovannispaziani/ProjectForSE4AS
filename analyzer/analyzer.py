@@ -1,10 +1,14 @@
 from enum import IntEnum, StrEnum
 from utils.JsonProperties import JsonProperties
+from utils.JsonParsing import extract_values_from_message, encode_json_to_message
 import json
 import time
 import threading
 
 import paho.mqtt.client as mqtt
+
+from utils.Topics import Topics
+
 
 class Level(IntEnum):
     NORMAL = 0
@@ -13,9 +17,9 @@ class Level(IntEnum):
 
 class Analyzer:
     client_id = None
-    config_topic = "/SmartHomeD&G/analyzer/config"
-    topic_sub = "/SmartHomeD&G/analyzer"
-    topic_pub = "/SmartHomeD&G/planner"
+    config_topic = Topics.ANALYZER_DATA + Topics.CONFIGURATION_SUBTOPIC
+    topic_sub = Topics.ANALYZER_DATA
+    topic_pub = Topics.PLANNER_DATA
     ANALYSIS_INTERVAL = 10.0 #seconds
 
     def __init__(self, client_id, server, port):
@@ -58,40 +62,6 @@ class Analyzer:
     def on_subscribe(self, client, userdata, mid, reason_code_list, properties):
         print(f'({self.client_id}) Subscribed successfully')
 
-    def parse_json_from_message(self, mqtt_message):
-        decoded = mqtt_message.payload.decode('utf-8') #decode json string
-        parsed = json.loads(decoded) #parse json string into a dict
-        return parsed
-
-    def encode_json_to_message(self, value, dictionary=None):
-        if not dictionary is None:
-            json_string = json.dumps(dictionary)
-        else:
-            json_string = json.dumps({'value' : value})
-        encoded = json_string.encode('utf-8')
-        return encoded
-
-    def extract_values_from_message(self, mqtt_message):
-        # extract the json
-        payload = self.parse_json_from_message(mqtt_message)
-        print("================")
-        print("Payload:", payload)
-        print("Type of payload:", type(payload))
-        for item in payload:
-            print("Item:", item, "| Type:", type(item))
-        print("================")
-
-        # check if it's a configuration for the analyzer
-        if 'configuration' in payload:
-            return payload
-        # extract the values (they are ordered from oldest to newest)
-        values = {}
-        for metric in payload:
-            name = metric[JsonProperties.INFLUX_MEASUREMENT]
-            values[name] = []
-            values[name].append(metric[JsonProperties.INFLUX_VALUE])
-        return values
-
 
 class TemperatureAnalyzer(Analyzer):
 
@@ -101,7 +71,7 @@ class TemperatureAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self._on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/temperature/#"
+        self.topic_sub = self.topic_sub + Topics.TEMPERATURE_SUBTOPIC + "/#"
 
         #analyzer specific fields
         self.temperature = 0.0
@@ -110,7 +80,7 @@ class TemperatureAnalyzer(Analyzer):
         super().start() # connect to broker, retrieve config and subscribe to topics
 
         #initialize topics
-        self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(False), retain=True)
+        self.client.publish(self.topic_pub + Topics.TEMPERATURE_INCREASE_SUBTOPIC, encode_json_to_message(False), retain=True)
 
     def _schedule_analysis(self):
         """Runs analyze() every 10 seconds in a separate thread."""
@@ -120,13 +90,13 @@ class TemperatureAnalyzer(Analyzer):
     def _analyze(self):
         if self.temperature <= self.configuration[JsonProperties.MIN_TEMPERATURE]:
             # tell planner to increase temperature
-            self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(True), retain=True)
+            self.client.publish(self.topic_pub + Topics.TEMPERATURE_INCREASE_SUBTOPIC, encode_json_to_message(True), retain=True)
         elif self.temperature >= self.configuration[JsonProperties.MIN_TEMPERATURE] + self.configuration[JsonProperties.WORKING_THRESHOLD]:
-            self.client.publish(self.topic_pub + "/increase_temperature", self.encode_json_to_message(False), retain=True)
+            self.client.publish(self.topic_pub + Topics.TEMPERATURE_INCREASE_SUBTOPIC, encode_json_to_message(False), retain=True)
 
     def _on_message(self, client, user_data, message):
         super()._on_message(client, user_data, message)
-        values = self.extract_values_from_message(message)
+        values = extract_values_from_message(message)
 
         if JsonProperties.CONFIGURATION_ROOT in values:
             self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
@@ -134,7 +104,7 @@ class TemperatureAnalyzer(Analyzer):
             self._schedule_analysis()
             return
         if values: # check if new data is received (payload may be empty if sensors are not sending data)
-            self.temperature = values[JsonProperties.TEMPERATURE][-1]
+            self.temperature = values[-1][JsonProperties.INFLUX_VALUE]
 
 class EnergyMetric(StrEnum):
     TOTAL = 'total_kw'
@@ -149,18 +119,17 @@ class EnergyAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self._on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/energy/#"
+        self.topic_sub = self.topic_sub + Topics.TOTAL_ENERGY_SUBTOPIC
 
         # analyzer specific fields
         self.energy_level = Level.NORMAL
-        self.last_values = {}
-        self.last_values['power'] = {}
+        self.total_power = 0.0 #kw
 
     def start(self):
         super().start()
 
         # initialize topics
-        self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(self.energy_level)), retain=True) #0: OK, 1: high, 2: above limit
+        self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(self.energy_level.value), retain=True) #0: OK, 1: high, 2: above limit
 
     def _schedule_analysis(self):
         """Runs analyze() every 10 seconds in a separate thread."""
@@ -168,39 +137,30 @@ class EnergyAnalyzer(Analyzer):
         threading.Timer(self.ANALYSIS_INTERVAL, self._schedule_analysis).start()
 
     def _analyze(self):
-        # check current total kw
-        current_total_power = sum(self.last_values['power'].values())
-        for entry in self.last_values['power'].values():
-            print(entry)
-        if current_total_power <= self.configuration['warning_threshold_kw']:
-            self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.NORMAL)),
+        if self.total_power <= self.configuration['warning_threshold_kw']:
+            self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.NORMAL.value),
                                 retain=True)
             self.energy_level = Level.NORMAL
-        elif current_total_power <= self.configuration['max_total_kw']:
-            self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.WARNING)),
+        elif self.total_power <= self.configuration['max_total_kw']:
+            self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.WARNING.value),
                                 retain=True)
             self.energy_level = Level.WARNING
         else:
-            self.client.publish(self.topic_pub + "/energy_level", self.encode_json_to_message(str(Level.CRITICAL)),
+            self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.CRITICAL.value),
                                 retain=True)
             self.energy_level = Level.CRITICAL
 
     def _on_message(self, client, user_data, message):
         super()._on_message(client, user_data, message)
-        values = self.extract_values_from_message(message)
+        values = extract_values_from_message(message, True)
         # Configuration message?
-        if 'configuration' in values:
-            self.configuration = values['configuration']
+        if JsonProperties.CONFIGURATION_ROOT in values:
+            self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
             # start the analysis loop
             self._schedule_analysis()
             return
         if values: # check if new data is received (payload may be empty if sensors are not sending data)
-            # Check what metric has been received
-            for k,v in values.items():
-                if k == EnergyMetric.TOTAL.value:
-                    self.last_values[k] = v[-1]
-                else:
-                    self.last_values['power'][k] = v[-1]
+            self.total_power = values[-1][JsonProperties.INFLUX_VALUE]
 
 def main():
     temp_analyzer = TemperatureAnalyzer()

@@ -4,6 +4,7 @@ from enum import StrEnum
 class JsonProperties(StrEnum):
     SENSORS_ROOT='sensors',
     ACTUATORS_ROOT='actuators',
+    ACTUATORS_CATEGORIES_ROOT='categories',
     STATE_ROOT='states',
     CONFIGURATION_ROOT='configuration',
     TEMPERATURE='temperature',
@@ -38,8 +39,8 @@ class JsonProperties(StrEnum):
     SMART_FRIDGE_REFILL_DELTA_RANGE='refill_delta_range',
     INFLUX_VALUE='_value',
     INFLUX_MEASUREMENT='_measurement',
-    PLANNER_DISHWASHER_SWITCH='dishwasher',
-    PLANNER_FRIDGE_SWITCH='fridge',
-    PLANNER_LIGHTS_SWITCH='lights',
-    PLANNER_THERMOSTAT_SWITCH='thermostat'
+    PLANNER_DISHWASHER_SWITCH='dishwashers',
+    PLANNER_FRIDGE_SWITCH='fridges',
+    PLANNER_LAMPS_SWITCH= 'lamps',
+    PLANNER_THERMOSTAT_SWITCH='thermostats'
 
