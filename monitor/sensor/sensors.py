@@ -5,13 +5,15 @@ import json
 import paho.mqtt.client as mqtt
 from utils.JsonProperties import JsonProperties
 from utils.JsonParsing import extract_values_from_message, encode_json_to_message
+from utils.Topics import Topics
+from utils.dictUtils import pretty
 
 # MQTT setup
 # = "172.30.0.101"
 mqtt_server = "localhost"
 mqtt_port = 1883
-mqtt_topic_pub = "/SmartHomeD&G/sensor"
-mqtt_topic_sub = "/SmartHomeD&G/simulation/#"
+mqtt_topic_pub = Topics.SENSOR_DATA.value
+mqtt_topic_sub = Topics.SIMULATION_DATA.value + "/#"
 
 # Sensors data, this is the object to modify to add/remove sensors
 sensors_info = {}
@@ -356,14 +358,6 @@ def main():
         if sensors and state:
             loop()  # start simulating
         time.sleep(0.1)
-
-def pretty(d, indent=0):
-   for key, value in d.items():
-      print('\t' * indent + str(key))
-      if isinstance(value, dict):
-         pretty(value, indent+1)
-      else:
-         print('\t' * (indent+1) + str(value))
 
 if __name__ == "__main__":
     main()

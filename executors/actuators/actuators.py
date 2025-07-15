@@ -4,14 +4,15 @@ from enum import IntEnum, StrEnum
 
 import paho.mqtt.client as mqtt
 from utils.JsonProperties import JsonProperties
-from utils.JsonParsing import extract_values_from_message
+from utils.JsonParsing import extract_values_from_message, encode_json_to_message
+from utils.Topics import Topics
 
 # MQTT setup
 # = "172.30.0.101"
 mqtt_server = "localhost"
 mqtt_port = 1883
 main_client_id = "actuators_state_client"
-actuators_state_topic = "/SmartHomeD&G/simulation/actuators"
+actuators_state_topic = Topics.ACTUATOR_DATA
 
 state = None
 old_state = None
@@ -30,10 +31,11 @@ class ActuatorStateType(StrEnum):
 
 class Actuator:
     client_id = None
-    config_topic = "/SmartHomeD&G/actuators/config"
-    env_state_topic = "/SmartHomeD&G/simulation/state"
-    topic_sub = "/SmartHomeD&G/actuators/#"
-    topic_pub = "/SmartHomeD&G/simulation/state"
+    config_topic = Topics.ACTUATORS + "/config"
+    env_state_topic = Topics.STATE_DATA
+    topic_sub = Topics.ACTUATORS
+    topic_pub = Topics.STATE_DATA
+    configuration = None
     state = None  # Tracks environment state
 
     def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server, port):
@@ -49,10 +51,56 @@ class Actuator:
         self.actuator_state = actuator_state
         self.automation_state = automation_state
 
+        # update the topic
+        self.topic_sub = self.topic_sub + "/" + actuator_id
+        self.start()
+
+    def start(self):
+        # connect to the broker
+        self.client.connect(self.server, self.port, 60)
+        print("Connected to MQTT broker")
+
+        self.client.loop_start()
+
+        # Retrieve configuration
+        topic = self.config_topic + f"/{self.client_id}"
+        self.client.subscribe(topic)
+        print(f'({self.client_id}) Subscribing to topic: {topic}')
+
+        # Retrieve the environment state
+        self.client.subscribe(self.env_state_topic)
+        print(f'({self.client_id}) Subscribing to topic: {self.env_state_topic}')
+
+        # subscribe to the actuator topic
+        self.client.subscribe(self.topic_sub)
+        print(f'({self.client_id}) Subscribing to topic: {self.topic_sub}')
+
+        self.client.on_message = self._on_message
+
+    '''To be implemented in subclasses'''
+    def set_state(self, new_state):
+        raise NotImplementedError()
+
+    '''To be implemented in subclasses'''
+    def set_automation_toggle_state(self, new_toggle_state):
+        raise NotImplementedError()
+
+    '''To be implemented in subclasses'''
+    def publish(self):
+        raise NotImplementedError()
+
     def _on_message(self, client, user_data, message):
         print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
         values = extract_values_from_message(message)
-        # update the state if the payload contains state info
+        if JsonProperties.CONFIGURATION_ROOT in values: #configuration message
+            self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
+        elif JsonProperties.STATE_ROOT in values: #state message
+            self.state = values[JsonProperties.STATE_ROOT]
+        else:
+            actuator_id = message.topic.split("/")[-1]
+            if actuator_id == self.actuator_id:
+                print('HIT')
+                self.set_state(values[JsonProperties.SINGLE_VALUE])
         return values
 
     def _on_subscribe(self, client, userdata, mid, reason_code_list, properties):
@@ -60,41 +108,6 @@ class Actuator:
 
     def _on_publish(self, client, userdata, mid, reason_code, properties):
         print(f'({self.client_id}) published')
-
-
-
-# class LightSwitch(Actuator):
-#     def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server="localhost", port=1883):
-#         super().__init__(actuator_id, room_id, actuator_state, automation_state, client_id, server, port)
-#
-#     def set_state(self, new_state):
-#         self.actuator_state = new_state
-#         self.publish()
-#
-#     def publish(self):
-#         self.client.publish(self.topic_pub, self.state, retain=True)
-#
-# class Window(Actuator):
-#     def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server="localhost", port=1883):
-#         super().__init__(actuator_id, room_id, actuator_state, automation_state, client_id, server, port)
-#
-#     def set_state(self, new_state):
-#         self.actuator_state = new_state
-#         self.publish()
-#
-#     def publish(self):
-#         self.client.publish(self.topic_pub, self.state, retain=True)
-#
-# class Shutter(Actuator):
-#     def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server="localhost", port=1883):
-#         super().__init__(actuator_id, room_id, actuator_state, automation_state, client_id, server, port)
-#
-#     def set_state(self, new_state):
-#         self.actuator_state = new_state
-#         self.publish()
-#
-#     def publish(self):
-#         self.client.publish(self.topic_pub, self.state, retain=True)
 
 class ToggleSwitch(Actuator):
     def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server="localhost", port=1883):
@@ -109,7 +122,8 @@ class ToggleSwitch(Actuator):
         self.automation_state = new_toggle_state
 
     def publish(self):
-        self.client.publish(self.topic_pub, self.state, retain=True)
+        if self.state:
+            self.client.publish(self.topic_pub, encode_json_to_message(dictionary={JsonProperties.STATE_ROOT : self.state}), retain=True)
 
 class SelectorSwitch(Actuator):
     def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server="localhost", port=1883):
@@ -124,7 +138,9 @@ class SelectorSwitch(Actuator):
         self.automation_state = new_toggle_state
 
     def publish(self):
-        self.client.publish(self.topic_pub, self.state, retain=True)
+        if self.state:
+            self.client.publish(self.topic_pub, encode_json_to_message(dictionary={JsonProperties.STATE_ROOT : self.state}), retain=True)
+
 
 def update_actuators(state):
     global old_state, actuators

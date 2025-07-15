@@ -7,6 +7,10 @@ from utils.JsonParsing import extract_values_from_message, encode_json_to_messag
 
 import paho.mqtt.client as mqtt
 
+from utils.Topics import Topics
+from utils.dictUtils import pretty
+
+
 class Level(IntEnum):
     NORMAL = 0
     WARNING = 1
@@ -45,10 +49,10 @@ windows_state = {
 
 class Planner:
     client_id = None
-    config_topic = "/SmartHomeD&G/planner/config"
-    env_state_topic = "/SmartHomeD&G/simulation/state"
-    topic_sub = "/SmartHomeD&G/planner"
-    topic_pub = "/SmartHomeD&G/executor"
+    config_topic = Topics.PLANNER_DATA + Topics.CONFIGURATION_SUBTOPIC
+    env_state_topic = Topics.STATE_DATA
+    topic_sub = Topics.PLANNER_DATA
+    topic_pub = Topics.EXECUTOR_DATA
     state = None # Tracks environment state
 
     def __init__(self, client_id, server, port):
@@ -99,10 +103,10 @@ class Planner:
 
 class TemperaturePlanner(Planner):
 
-    TOPIC_SUB = "/increase_temperature"
-    TOPIC_PUB = "/temperature_plan"
-    HEATING_SUBTOPIC = "/enable_heating"
-    SHUTTERS_SUBTOPIC = "/shutters_position"
+    TOPIC_SUB = Topics.TEMPERATURE_INCREASE_SUBTOPIC
+    TOPIC_PUB = Topics.TEMPERATURE_PLAN_SUBTOPIC
+    HEATING_SUBTOPIC = Topics.ENABLE_HEATING_SUBTOPIC
+    SHUTTERS_SUBTOPIC = Topics.SHUTTERS_POSITION_SUBTOPIC
 
     def __init__(self, client_id="temperature_planner", server="localhost", port=1883):
         super().__init__(client_id, server, port) # setup mqtt client and instance fields
@@ -122,7 +126,7 @@ class TemperaturePlanner(Planner):
 
         #initialize topics
         self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, encode_json_to_message(False), retain=True)
-        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.ANY)), retain=True)
+        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(Shutters.ANY.value), retain=True)
 
 
     def _on_message(self, client, user_data, message):
@@ -130,10 +134,11 @@ class TemperaturePlanner(Planner):
         values = super()._on_message(client, user_data, message)
 
         if values: # check if new data is received (also if it's true)
+            pretty(values)
             if JsonProperties.CONFIGURATION_ROOT in values:
                 self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
                 return
-            self.increase_temp = values[JsonProperties.SINGLE_VALUE]
+            self.increase_temp = values[JsonProperties.SINGLE_VALUE.value]
             if self.increase_temp: # increase temperature = True
                 # plan strategies for temperature increase
                 # 1. enable heating
@@ -141,19 +146,19 @@ class TemperaturePlanner(Planner):
                 # 2. open/close shutters depending on the time of the day
                 current_hour = dt.datetime.now().hour
                 if current_hour >= 17 or current_hour < 9: # night time
-                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.SHUT)), retain=True)
+                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(Shutters.SHUT.value), retain=True)
                 else: # day time
-                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.OPEN)), retain=True)
+                    self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(Shutters.OPEN.value), retain=True)
             else: # increase temperature = False
                 self.client.publish(self.topic_pub + self.HEATING_SUBTOPIC, encode_json_to_message(False), retain=True)
-                self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.ANY)), retain=True)
+                self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(Shutters.ANY.value), retain=True)
 
 class EnergyPlanner(Planner):
 
-    TOPIC_SUB = "/energy/#"
-    TOPIC_PUB = "/energy_plan"
-    SWITCHES_SUBTOPIC = "/switches"
-    SHUTTERS_SUBTOPIC = "/shutters_position"
+    TOPIC_SUB = Topics.ENERGY_LEVEL_SUBTOPIC
+    TOPIC_PUB = Topics.ENERGY_PLAN_SUBTOPIC
+    SWITCHES_SUBTOPIC = Topics.SWITCHES_SUBTOPIC
+    SHUTTERS_SUBTOPIC = Topics.SHUTTERS_POSITION_SUBTOPIC
 
     def __init__(self, client_id="energy_planner", server="localhost", port=1883):
         super().__init__(client_id, server, port) # setup mqtt client and instance fields
@@ -169,11 +174,10 @@ class EnergyPlanner(Planner):
 
         # this will contain states of all smart switches that turn on/off the connected apparels.
         # The actual effect depends on wether the apparel can be regulated like wash machines and fridges or just turned on/off like lights
-        # TODO: Una volta che avremo gli actuators, rendere il settaggio di questo oggetto automatico
         self.switches = {
                     JsonProperties.PLANNER_DISHWASHER_SWITCH: True,
                     JsonProperties.PLANNER_FRIDGE_SWITCH: True,
-                    JsonProperties.PLANNER_LIGHTS_SWITCH: True,
+                    JsonProperties.PLANNER_LAMPS_SWITCH: True,
                     JsonProperties.PLANNER_THERMOSTAT_SWITCH: True
                 }
 
@@ -182,7 +186,7 @@ class EnergyPlanner(Planner):
 
         #initialize topics
         self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, encode_json_to_message(dictionary=self.switches), retain=True)
-        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(str(Shutters.ANY)), retain=True)
+        self.client.publish(self.topic_pub + self.SHUTTERS_SUBTOPIC, encode_json_to_message(Shutters.ANY.value), retain=True)
 
 
     def _on_message(self, client, user_data, message):
@@ -193,7 +197,7 @@ class EnergyPlanner(Planner):
             if JsonProperties.CONFIGURATION_ROOT in values:
                 self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
                 return
-            energy_level = Level(values[JsonProperties.SINGLE_VALUE])
+            energy_level = Level(values[JsonProperties.SINGLE_VALUE.value])
             # Execute this block for WARNING and CRITICAL levels
             if energy_level >= Level.WARNING:
                 print('warning/critical')
@@ -205,7 +209,7 @@ class EnergyPlanner(Planner):
                     # nothing to do
                     pass
                 else:  # day time
-                    self.switches[JsonProperties.PLANNER_LIGHTS_SWITCH] = False
+                    self.switches[JsonProperties.PLANNER_LAMPS_SWITCH] = False
                 # if CRITICAL, also execute this block
                 if energy_level == Level.CRITICAL:
                     print('critical')
@@ -217,7 +221,7 @@ class EnergyPlanner(Planner):
                 self.switches = {
                     JsonProperties.PLANNER_DISHWASHER_SWITCH: True,
                     JsonProperties.PLANNER_FRIDGE_SWITCH: True,
-                    JsonProperties.PLANNER_LIGHTS_SWITCH: True,
+                    JsonProperties.PLANNER_LAMPS_SWITCH: True,
                     JsonProperties.PLANNER_THERMOSTAT_SWITCH: True
                 }
             self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, encode_json_to_message(dictionary=self.switches), retain=True)

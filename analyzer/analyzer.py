@@ -7,6 +7,9 @@ import threading
 
 import paho.mqtt.client as mqtt
 
+from utils.Topics import Topics
+
+
 class Level(IntEnum):
     NORMAL = 0
     WARNING = 1
@@ -14,9 +17,9 @@ class Level(IntEnum):
 
 class Analyzer:
     client_id = None
-    config_topic = "/SmartHomeD&G/analyzer/config"
-    topic_sub = "/SmartHomeD&G/analyzer"
-    topic_pub = "/SmartHomeD&G/planner"
+    config_topic = Topics.ANALYZER_DATA + Topics.CONFIGURATION_SUBTOPIC
+    topic_sub = Topics.ANALYZER_DATA
+    topic_pub = Topics.PLANNER_DATA
     ANALYSIS_INTERVAL = 10.0 #seconds
 
     def __init__(self, client_id, server, port):
@@ -68,7 +71,7 @@ class TemperatureAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self._on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/temperature/#"
+        self.topic_sub = self.topic_sub + Topics.TEMPERATURE_SUBTOPIC + "/#"
 
         #analyzer specific fields
         self.temperature = 0.0
@@ -77,7 +80,7 @@ class TemperatureAnalyzer(Analyzer):
         super().start() # connect to broker, retrieve config and subscribe to topics
 
         #initialize topics
-        self.client.publish(self.topic_pub + "/increase_temperature", encode_json_to_message(False), retain=True)
+        self.client.publish(self.topic_pub + Topics.TEMPERATURE_INCREASE_SUBTOPIC, encode_json_to_message(False), retain=True)
 
     def _schedule_analysis(self):
         """Runs analyze() every 10 seconds in a separate thread."""
@@ -87,9 +90,9 @@ class TemperatureAnalyzer(Analyzer):
     def _analyze(self):
         if self.temperature <= self.configuration[JsonProperties.MIN_TEMPERATURE]:
             # tell planner to increase temperature
-            self.client.publish(self.topic_pub + "/increase_temperature", encode_json_to_message(True), retain=True)
+            self.client.publish(self.topic_pub + Topics.TEMPERATURE_INCREASE_SUBTOPIC, encode_json_to_message(True), retain=True)
         elif self.temperature >= self.configuration[JsonProperties.MIN_TEMPERATURE] + self.configuration[JsonProperties.WORKING_THRESHOLD]:
-            self.client.publish(self.topic_pub + "/increase_temperature", encode_json_to_message(False), retain=True)
+            self.client.publish(self.topic_pub + Topics.TEMPERATURE_INCREASE_SUBTOPIC, encode_json_to_message(False), retain=True)
 
     def _on_message(self, client, user_data, message):
         super()._on_message(client, user_data, message)
@@ -116,7 +119,7 @@ class EnergyAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self._on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + "/energy/total_kw"
+        self.topic_sub = self.topic_sub + Topics.TOTAL_ENERGY_SUBTOPIC
 
         # analyzer specific fields
         self.energy_level = Level.NORMAL
@@ -126,7 +129,7 @@ class EnergyAnalyzer(Analyzer):
         super().start()
 
         # initialize topics
-        self.client.publish(self.topic_pub + "/energy_level", encode_json_to_message(str(self.energy_level)), retain=True) #0: OK, 1: high, 2: above limit
+        self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(self.energy_level.value), retain=True) #0: OK, 1: high, 2: above limit
 
     def _schedule_analysis(self):
         """Runs analyze() every 10 seconds in a separate thread."""
@@ -135,15 +138,15 @@ class EnergyAnalyzer(Analyzer):
 
     def _analyze(self):
         if self.total_power <= self.configuration['warning_threshold_kw']:
-            self.client.publish(self.topic_pub + "/energy_level", encode_json_to_message(str(Level.NORMAL)),
+            self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.NORMAL.value),
                                 retain=True)
             self.energy_level = Level.NORMAL
         elif self.total_power <= self.configuration['max_total_kw']:
-            self.client.publish(self.topic_pub + "/energy_level", encode_json_to_message(str(Level.WARNING)),
+            self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.WARNING.value),
                                 retain=True)
             self.energy_level = Level.WARNING
         else:
-            self.client.publish(self.topic_pub + "/energy_level", encode_json_to_message(str(Level.CRITICAL)),
+            self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.CRITICAL.value),
                                 retain=True)
             self.energy_level = Level.CRITICAL
 
@@ -151,8 +154,8 @@ class EnergyAnalyzer(Analyzer):
         super()._on_message(client, user_data, message)
         values = extract_values_from_message(message, True)
         # Configuration message?
-        if 'configuration' in values:
-            self.configuration = values['configuration']
+        if JsonProperties.CONFIGURATION_ROOT in values:
+            self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
             # start the analysis loop
             self._schedule_analysis()
             return
