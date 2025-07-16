@@ -33,10 +33,10 @@
             "c260fb0e3295fd80",
             "274ac2c48bdcb6d5"
         ],
-        "x": 994,
+        "x": 794,
         "y": 159,
-        "w": 992,
-        "h": 402
+        "w": 1152,
+        "h": 362
     },
     {
         "id": "c46509ea1b2d8f12",
@@ -49,14 +49,6 @@
         "nodes": [
             "4ec86d32c18d72a7",
             "eaf74ef210b83cc2",
-            "3b035bcd0357046a",
-            "45b88026b7b7ec79",
-            "b724841ba4d5d5c6",
-            "a4436ca70d42ed78",
-            "54c702c1e475a2ba",
-            "e273b5831dc89801",
-            "30951266efd5c437",
-            "774aed2d8aeb26e7",
             "51e59edd57f80611",
             "39cad1b3de2f9502",
             "30551fdae7dbe478",
@@ -66,10 +58,10 @@
             "2363fecfea3f66f7",
             "69cdd640f41afcac"
         ],
-        "x": 14,
+        "x": 74,
         "y": 159,
-        "w": 952,
-        "h": 462
+        "w": 712,
+        "h": 362
     },
     {
         "id": "59e5a13999ca63ab",
@@ -89,8 +81,8 @@
             "4bdd524eebd62b13",
             "9dfe64aa545246fa"
         ],
-        "x": 14,
-        "y": 639,
+        "x": 74,
+        "y": 539,
         "w": 1432,
         "h": 142
     },
@@ -336,8 +328,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 150,
-        "y": 340,
+        "x": 210,
+        "y": 240,
         "wires": [
             [
                 "39cad1b3de2f9502"
@@ -358,160 +350,10 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 555,
-        "y": 300,
+        "x": 615,
+        "y": 200,
         "wires": [],
         "l": false
-    },
-    {
-        "id": "3b035bcd0357046a",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "575f0b6b213a240c",
-        "order": 8,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "TEMPERATURE",
-        "label": "°C",
-        "format": "{{value}}",
-        "min": "-10",
-        "max": "50",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 810,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "45b88026b7b7ec79",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "575f0b6b213a240c",
-        "order": 9,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "LIGHT",
-        "label": "LUX",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "300",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 770,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "b724841ba4d5d5c6",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "55277096f27f8c4f",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "ENERGY",
-        "label": "kWh",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "10000",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 780,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "a4436ca70d42ed78",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "55277096f27f8c4f",
-        "order": 10,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "FRIDGE_TEMP",
-        "label": "°C",
-        "format": "{{value}}",
-        "min": "-10",
-        "max": "15",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 800,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "54c702c1e475a2ba",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "d80d5173b7311e0a",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "FRIDGE_LOAD",
-        "label": "Groceries",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "150",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#2cec13"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 800,
-        "y": 360,
-        "wires": []
     },
     {
         "id": "8ac1a2f68bd47fcc",
@@ -526,8 +368,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 885,
-        "y": 680,
+        "x": 945,
+        "y": 580,
         "wires": [],
         "l": false
     },
@@ -544,8 +386,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1000,
-        "y": 720,
+        "x": 1060,
+        "y": 620,
         "wires": [
             [
                 "3829096d8cc5e9e4",
@@ -565,8 +407,8 @@
         "syntax": "mustache",
         "template": "Hello!\nThis is smart home system reporting!\n\nThe energy grid level has reached critical threshold:\n\n<ul>\n    <li>Critical threshold: <b>{{flow.max_total_kw}} kW</b></li>\n    <li>Energy consumption registered: {{flow.total_kw}} kW</li>\n</ul>",
         "output": "str",
-        "x": 780,
-        "y": 720,
+        "x": 840,
+        "y": 620,
         "wires": [
             [
                 "953790de6e536d24",
@@ -588,8 +430,8 @@
         "tls": false,
         "name": "dario.dercole@student.univaq.it",
         "dname": "",
-        "x": 1250,
-        "y": 680,
+        "x": 1310,
+        "y": 580,
         "wires": []
     },
     {
@@ -606,8 +448,8 @@
         "tls": false,
         "name": "giovanni.spaziani@student.univaq.it",
         "dname": "",
-        "x": 1270,
-        "y": 740,
+        "x": 1330,
+        "y": 640,
         "wires": []
     },
     {
@@ -622,7 +464,7 @@
         "once": false,
         "onceDelay": "3",
         "topic": "",
-        "x": 1090,
+        "x": 890,
         "y": 220,
         "wires": [
             [
@@ -645,8 +487,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1710,
-        "y": 380,
+        "x": 1510,
+        "y": 340,
         "wires": []
     },
     {
@@ -671,8 +513,8 @@
         "topic": "",
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
-        "x": 1280,
-        "y": 380,
+        "x": 1080,
+        "y": 340,
         "wires": [
             [
                 "d08ef2268e982688"
@@ -694,8 +536,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1770,
-        "y": 460,
+        "x": 1570,
+        "y": 420,
         "wires": []
     },
     {
@@ -720,103 +562,13 @@
         "topic": "",
         "payload": "{\"configuration\":{\"max_total_kw\":3,\"warning_threshold_kw\":2.5}}",
         "payloadType": "json",
-        "x": 1170,
-        "y": 460,
+        "x": 970,
+        "y": 420,
         "wires": [
             [
                 "efe45f8d89a7a7b0"
             ]
         ]
-    },
-    {
-        "id": "e273b5831dc89801",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "d80d5173b7311e0a",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "DISHWASHER_POWER",
-        "label": "Watt",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "1500",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#2cec13"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 830,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "30951266efd5c437",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "76abae67c4b97895",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "FRIDGE_POWER",
-        "label": "Watt",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "300",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#2cec13"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 810,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "774aed2d8aeb26e7",
-        "type": "ui_gauge",
-        "z": "99285b04ab31eeb3",
-        "d": true,
-        "g": "c46509ea1b2d8f12",
-        "name": "",
-        "group": "76abae67c4b97895",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "LAMP_POWER",
-        "label": "Watt",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "150",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#2cec13"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 800,
-        "y": 480,
-        "wires": []
     },
     {
         "id": "708ce20633e474fa",
@@ -830,7 +582,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1310,
+        "x": 1110,
         "y": 220,
         "wires": [
             [
@@ -853,7 +605,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1375,
+        "x": 1175,
         "y": 260,
         "wires": [],
         "l": false
@@ -874,7 +626,7 @@
         "expiry": "",
         "broker": "a928ba0.2d1f748",
         "x": 1840,
-        "y": 320,
+        "y": 260,
         "wires": []
     },
     {
@@ -890,7 +642,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1560,
+        "x": 1360,
         "y": 200,
         "wires": [
             [
@@ -920,8 +672,8 @@
         "topic": "",
         "payload": "{\"sensors\":{\"temperature\":{\"livingroom_temp_1\":{\"room\":\"livingroom\",\"data_type\":\"float\",\"starting_value\":22,\"delta_range\":[-0.1,0.1],\"lower_limit\":15,\"lower_limit_correction\":[0,0.2],\"upper_limit\":25,\"upper_limit_correction\":[-0.2,0]}},\"light\":{\"livingroom_light_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":10000},\"kitchen_light_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":9500},\"bathroom_light_1\":{\"room\":\"bathroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":7000},\"bedroom_light_1\":{\"room\":\"bedroom\",\"data_type\":\"int\",\"starting_value\":10,\"lux_per_lamp\":60,\"lux_from_sun\":7000}},\"energy\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":2,\"delta_range\":[-1,3]},\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"data_type\":\"int\",\"starting_value\":8,\"delta_range\":[-1,7]},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":1000,\"delta_range\":[-200,500]},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"data_type\":\"int\",\"starting_value\":150,\"delta_range\":[-50,150]}},\"smart_appliance\":{\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"values\":{\"load\":{\"data_type\":\"int\",\"starting_value\":50,\"open_delta_range\":[-3,3],\"refill_threshold\":7,\"refill_delta_range\":[3,46]},\"temp\":{\"data_type\":\"float\",\"starting_value\":4,\"delta_range\":[-0.1,0],\"open_delta_range\":[0,2],\"refill_threshold\":7,\"refill_delta_range\":[1,4],\"lower_limit\":2,\"lower_limit_correction\":[0,0.1],\"upper_limit\":10,\"upper_limit_correction\":[-0.2,0]}}}}}}",
         "payloadType": "json",
-        "x": 200,
-        "y": 420,
+        "x": 260,
+        "y": 320,
         "wires": [
             [
                 "c00e4019eed03f58"
@@ -943,8 +695,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 470,
-        "y": 420,
+        "x": 530,
+        "y": 320,
         "wires": []
     },
     {
@@ -969,8 +721,8 @@
         "topic": "",
         "payload": "{\"states\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1}},\"smart_appliances\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"state\":1},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"state\":1}}}}",
         "payloadType": "json",
-        "x": 190,
-        "y": 500,
+        "x": 250,
+        "y": 400,
         "wires": [
             [
                 "9e5ddaebea5cee5e"
@@ -992,8 +744,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 460,
-        "y": 500,
+        "x": 520,
+        "y": 400,
         "wires": []
     },
     {
@@ -1011,8 +763,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 620,
-        "y": 340,
+        "x": 680,
+        "y": 240,
         "wires": []
     },
     {
@@ -1028,8 +780,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
-        "y": 340,
+        "x": 450,
+        "y": 240,
         "wires": [
             [
                 "51e59edd57f80611",
@@ -1050,7 +802,7 @@
         "stream": false,
         "addname": "topic",
         "property": "payload",
-        "x": 1760,
+        "x": 1560,
         "y": 200,
         "wires": [
             [
@@ -1071,7 +823,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1750,
+        "x": 1550,
         "y": 260,
         "wires": [
             [
@@ -1094,8 +846,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1895,
-        "y": 260,
+        "x": 1715,
+        "y": 240,
         "wires": [],
         "l": false
     },
@@ -1112,7 +864,7 @@
         "stream": false,
         "addname": "topic",
         "property": "payload",
-        "x": 1560,
+        "x": 1360,
         "y": 260,
         "wires": [
             [
@@ -1135,8 +887,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1620,
-        "y": 520,
+        "x": 1420,
+        "y": 480,
         "wires": []
     },
     {
@@ -1161,8 +913,8 @@
         "topic": "",
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
-        "x": 1180,
-        "y": 520,
+        "x": 980,
+        "y": 480,
         "wires": [
             [
                 "274ac2c48bdcb6d5"
@@ -1191,8 +943,8 @@
         "topic": "",
         "payload": "{\"actuators\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":1,\"automation_enabled\":1},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0,\"automation_enabled\":1},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0,\"automation_enabled\":1},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0,\"automation_enabled\":1}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0,\"automation_enabled\":1},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0,\"automation_enabled\":1},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0,\"automation_enabled\":1},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0,\"automation_enabled\":1},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0,\"automation_enabled\":1}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1,\"automation_enabled\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1,\"automation_enabled\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1,\"automation_enabled\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1,\"automation_enabled\":1}},\"smart_appliances\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"state_type\":\"toggle\",\"state\":1,\"automation_enabled\":1},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"state_type\":\"toggle\",\"state\":1,\"automation_enabled\":1},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"state_type\":\"multiple\",\"state\":1,\"automation_enabled\":1}}},\"categories\":{\"switches\":{\"lamps\":[\"*\"],\"fridges\":[\"kitchen_fridge_1\"],\"dishwashers\":[\"kitchen_dishwasher_1\"],\"thermostats\":[\"livingroom_thermostat_1\"]}}}",
         "payloadType": "json",
-        "x": 200,
-        "y": 580,
+        "x": 260,
+        "y": 480,
         "wires": [
             [
                 "2363fecfea3f66f7"
@@ -1214,8 +966,8 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 510,
-        "y": 580,
+        "x": 570,
+        "y": 480,
         "wires": []
     },
     {
@@ -1232,8 +984,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 190,
-        "y": 720,
+        "x": 250,
+        "y": 620,
         "wires": [
             [
                 "4bdd524eebd62b13"
@@ -1263,8 +1015,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 530,
-        "y": 680,
+        "x": 590,
+        "y": 580,
         "wires": [
             [],
             [
@@ -1277,7 +1029,7 @@
         "type": "function",
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
-        "name": "function 1",
+        "name": "flow context",
         "func": "flow.set('max_total_kw', msg.payload['configuration']['max_total_kw'])\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
@@ -1285,8 +1037,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1440,
-        "y": 460,
+        "x": 1250,
+        "y": 420,
         "wires": [
             [
                 "bdeb025c06e44332"
@@ -1316,8 +1068,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 530,
-        "y": 740,
+        "x": 590,
+        "y": 640,
         "wires": [
             [],
             [
