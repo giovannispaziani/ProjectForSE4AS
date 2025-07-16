@@ -8,8 +8,7 @@ from utils.JsonParsing import extract_values_from_message, encode_json_to_messag
 from utils.Topics import Topics
 
 # MQTT setup
-# = "172.30.0.101"
-mqtt_server = "localhost"
+mqtt_server = "172.30.0.101"
 mqtt_port = 1883
 main_client_id = "actuators_state_client"
 actuators_state_topic = Topics.ACTUATOR_DATA
@@ -110,7 +109,7 @@ class Actuator:
         print(f'({self.client_id}) published')
 
 class ToggleSwitch(Actuator):
-    def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server="localhost", port=1883):
+    def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server=mqtt_server, port=mqtt_port):
             super().__init__(actuator_id, room_id, actuator_state, automation_state, client_id, server, port)
 
     def set_state(self, new_state):
@@ -126,7 +125,7 @@ class ToggleSwitch(Actuator):
             self.client.publish(self.topic_pub, encode_json_to_message(dictionary={JsonProperties.STATE_ROOT : self.state}), retain=True)
 
 class SelectorSwitch(Actuator):
-    def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server="localhost", port=1883):
+    def __init__(self, actuator_id, room_id, actuator_state, automation_state, client_id, server=mqtt_server, port=mqtt_port):
             super().__init__(actuator_id, room_id, actuator_state, automation_state, client_id, server, port)
 
     def set_state(self, new_state):

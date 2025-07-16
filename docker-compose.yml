@@ -77,13 +77,57 @@ services:
   sensor:
     container_name: se4as-project-sensor
     build:
-      context: ./monitor/sensor/
+      context: ./monitor/sensors/
       dockerfile: Dockerfile
     depends_on:
       - mosquitto
     networks:
       se4as-project-network:
         ipv4_address: 172.30.0.106
+
+  actuator:
+    container_name: se4as-project-actuator
+    build:
+      context: ./executors/actuators/
+      dockerfile: Dockerfile
+    depends_on:
+      - mosquitto
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.107
+
+  executor:
+    container_name: se4as-project-executor
+    build:
+      context: ./executors/
+      dockerfile: Dockerfile
+    depends_on:
+      - mosquitto
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.108
+
+  planner:
+    container_name: se4as-project-planner
+    build:
+      context: ./planner/
+      dockerfile: Dockerfile
+    depends_on:
+      - mosquitto
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.109
+
+  analyzer:
+    container_name: se4as-project-analyzer
+    build:
+      context: ./analyzer/
+      dockerfile: Dockerfile
+    depends_on:
+      - mosquitto
+    networks:
+      se4as-project-network:
+        ipv4_address: 172.30.0.110
 
 networks:
   se4as-project-network:

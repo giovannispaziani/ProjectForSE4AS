@@ -9,8 +9,7 @@ from utils.Topics import Topics
 from utils.dictUtils import pretty
 
 # MQTT setup
-# = "172.30.0.101"
-mqtt_server = "localhost"
+mqtt_server = "172.30.0.101"
 mqtt_port = 1883
 mqtt_topic_pub = Topics.SENSOR_DATA.value
 mqtt_topic_sub = Topics.SIMULATION_DATA.value + "/#"

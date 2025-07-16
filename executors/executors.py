@@ -11,6 +11,9 @@ import paho.mqtt.client as mqtt
 from utils.Topics import Topics
 from utils.dictUtils import pretty
 
+# MQTT setup
+mqtt_server = "172.30.0.101"
+mqtt_port = 1883
 
 class SwitchCategory(StrEnum):
     LAMPS = 'lamps',
@@ -84,7 +87,7 @@ class Executor:
         print(f'({self.client_id}) published')
 
 class TemperaturePlanExecutor(Executor):
-    def __init__(self, client_id="temperature_plan_executor", server="localhost", port=1883):
+    def __init__(self, client_id="temperature_plan_executor", server=mqtt_server, port=mqtt_port):
         super().__init__(client_id, server, port)  # setup mqtt client and instance fields
 
         # set up callbacks and topic strings
@@ -118,7 +121,7 @@ class TemperaturePlanExecutor(Executor):
 
 
 class EnergyPlanExecutor(Executor):
-    def __init__(self, client_id="energy_plan_executor", server="localhost", port=1883):
+    def __init__(self, client_id="energy_plan_executor", server=mqtt_server, port=mqtt_port):
         super().__init__(client_id, server, port)  # setup mqtt client and instance fields
 
         # set up callbacks and topic strings
