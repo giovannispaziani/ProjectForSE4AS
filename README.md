@@ -5,8 +5,29 @@
 </p>
 
 ### Members names and contacts:
-1) Dario D'Ercole - (288643) - dario.dercole@student.univaq.it
-2) Giovanni Spaziani - (295397) - giovanni.spaziani@student.univaq.it
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Name</strong></td>
+      <td><strong>Surname</strong></td>
+      <td><strong>Matr.</strong></td>
+      <td><strong>Contact</strong></td>
+    </tr>
+    <tr>
+      <td>Dario</td>
+      <td>D'Ercole</td>
+      <td>288643</td>
+      <td><a href="mailto:dario.dercole@student.univaq.it">dario.dercole@student.univaq.it</a></td>
+    </tr>
+    <tr>
+      <td>Giovanni</td>
+      <td>Spaziani</td>
+      <td>295397</td>
+      <td><a href="mailto:giovanni.spaziani@student.univaq.it">giovanni.spaziani@student.univaq.it</a></td>
+    </tr>
+  </tbody>
+</table>
 
 #### Built with: [![Python][Python.com]][Python-url] [![Docker][Docker.com]][Docker-url] [![InfluxDB][InfluxDB.com]][InfluxDB-url] [![NodeRED][NodeRED.com]][NodeRED-url] [![MQTT][MQTT.com]][MQTT-url] [![Grafana][Grafana.com]][Grafana-url] [![Telegraf][Telegraf.com]][Telegraf-url]
 
@@ -76,48 +97,24 @@ Before starting with the project setup, ensure the following prerequisites are m
 
 <ins>**Note**: each component runs in a separate Docker container, which provides isolation, scalability, and easy deployment. The dockerization of each component also simplifies version control, dependency management, and environment consistency across different platforms.</ins>
 
+## Usage
 
+1. Ensure Python and Docker are installed on your machine. Visit:
+   - [Python's official website](https://www.python.org/) for installation instructions.
+   - [Docker's official website](https://www.docker.com/get-started) for installation instructions.
 
+2. Clone this repository:
+   ```sh
+   git clone https://github.com/giovannispaziani/ProjectForSE4AS.git
+   ```
+3. Run the containers:
+   ```sh
+   docker-compose up
+   ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Acknowledgments
+* [Dario](https://github.com/Lindbrum)
+* [Giovanni](https://github.com/giovannispaziani)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [Python.com]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white  
