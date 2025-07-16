@@ -322,6 +322,7 @@ def calculate_kw():
     for name,energy_sensor in sensors[JsonProperties.ENERGY.value].items():
         if name != JsonProperties.TOTAL_KW:
             total_energy += energy_sensor[JsonProperties.SINGLE_VALUE.value] / 1000.0
+            #total_energy += 2
 
 
     total_kw[JsonProperties.SINGLE_VALUE.value] = total_energy

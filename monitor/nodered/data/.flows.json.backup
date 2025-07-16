@@ -28,12 +28,15 @@
             "69a4edec5388ccba",
             "4e4bc5e9bbd431f4",
             "69346df0a8d62419",
-            "e9c565322b3d5627"
+            "e9c565322b3d5627",
+            "efe45f8d89a7a7b0",
+            "c260fb0e3295fd80",
+            "274ac2c48bdcb6d5"
         ],
-        "x": 974,
+        "x": 994,
         "y": 159,
-        "w": 962,
-        "h": 342
+        "w": 992,
+        "h": 402
     },
     {
         "id": "c46509ea1b2d8f12",
@@ -67,6 +70,29 @@
         "y": 159,
         "w": 952,
         "h": 462
+    },
+    {
+        "id": "59e5a13999ca63ab",
+        "type": "group",
+        "z": "99285b04ab31eeb3",
+        "name": "Email report",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "8ac1a2f68bd47fcc",
+            "953790de6e536d24",
+            "f7e5fb872702f20b",
+            "3829096d8cc5e9e4",
+            "fee896c385f0e5d5",
+            "e4a2307dd294face",
+            "4bdd524eebd62b13",
+            "9dfe64aa545246fa"
+        ],
+        "x": 14,
+        "y": 639,
+        "w": 1432,
+        "h": 142
     },
     {
         "id": "a928ba0.2d1f748",
@@ -488,134 +514,10 @@
         "wires": []
     },
     {
-        "id": "12ecebe8cef6c1d6",
-        "type": "inject",
-        "z": "99285b04ab31eeb3",
-        "name": "Test email data",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"_value\": 4500}, {\"_value\": 4600}]",
-        "payloadType": "json",
-        "x": 440,
-        "y": 1440,
-        "wires": [
-            [
-                "7cf77d0392859c23",
-                "b35c7d8a1d3470c2"
-            ]
-        ]
-    },
-    {
-        "id": "7cf77d0392859c23",
-        "type": "mqtt out",
-        "z": "99285b04ab31eeb3",
-        "name": "",
-        "topic": "data/test",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a928ba0.2d1f748",
-        "x": 620,
-        "y": 1440,
-        "wires": []
-    },
-    {
-        "id": "87fdd9a04115344d",
-        "type": "influxdb in",
-        "z": "99285b04ab31eeb3",
-        "influxdb": "6ddbd751be509e35",
-        "name": "Last hour energy consumption",
-        "query": "from(bucket: \"Iot-project\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mqtt_consumer\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> filter(fn: (r) => r[\"host\"] == \"iot-app-container\")\n  |> filter(fn: (r) => r[\"topic\"] == \"/energy\")\n  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-        "rawOutput": false,
-        "precision": "",
-        "retentionPolicy": "",
-        "org": "Iot-23-24",
-        "x": 390,
-        "y": 1400,
-        "wires": [
-            [
-                "6ec8c9bf04165dde",
-                "b35c7d8a1d3470c2"
-            ]
-        ]
-    },
-    {
-        "id": "6ec8c9bf04165dde",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "name": "debug 32",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 575,
-        "y": 1360,
-        "wires": [],
-        "l": false
-    },
-    {
-        "id": "b8fd3d525c576a1e",
-        "type": "inject",
-        "z": "99285b04ab31eeb3",
-        "name": "",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 190,
-        "y": 1400,
-        "wires": [
-            [
-                "87fdd9a04115344d"
-            ]
-        ]
-    },
-    {
-        "id": "b35c7d8a1d3470c2",
-        "type": "function",
-        "z": "99285b04ab31eeb3",
-        "name": "convert to ints",
-        "func": "let min = Math.round(msg.payload[0]._value);\nlet max = Math.round(msg.payload[1]._value);\nlet diff = max - min;\nlet payload = {\"min\": min, \"diff\": diff};\nlet msg2 = {\"payload\": payload};\nmsg = msg2;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 640,
-        "y": 1400,
-        "wires": [
-            [
-                "8ac1a2f68bd47fcc",
-                "f7e5fb872702f20b"
-            ]
-        ]
-    },
-    {
         "id": "8ac1a2f68bd47fcc",
         "type": "debug",
         "z": "99285b04ab31eeb3",
+        "g": "59e5a13999ca63ab",
         "name": "debug 33",
         "active": false,
         "tosidebar": true,
@@ -625,7 +527,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 885,
-        "y": 1400,
+        "y": 680,
         "wires": [],
         "l": false
     },
@@ -633,8 +535,9 @@
         "id": "953790de6e536d24",
         "type": "function",
         "z": "99285b04ab31eeb3",
+        "g": "59e5a13999ca63ab",
         "name": "Format payload",
-        "func": "let topic = \"Hourly energy report from Node-RED\";\nlet body = msg.payload;\nmsg.topic = topic;\nmsg.payload = body;\nreturn msg;",
+        "func": "let topic = \"Smart Home: You are consuming lot of energy!\";\nlet body = msg.payload;\nmsg.topic = topic;\nmsg.payload = body;\nflow.set('last_email', Date.now())\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -642,7 +545,7 @@
         "finalize": "",
         "libs": [],
         "x": 1000,
-        "y": 1440,
+        "y": 720,
         "wires": [
             [
                 "3829096d8cc5e9e4",
@@ -654,15 +557,16 @@
         "id": "f7e5fb872702f20b",
         "type": "template",
         "z": "99285b04ab31eeb3",
+        "g": "59e5a13999ca63ab",
         "name": "Email template",
         "field": "payload",
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "Hello!\nThis is your hourly energy consumption report.\n\n<ul>\n    <li>Total energy consumed thus far: {{payload.min}} kWh</li>\n    <li>Energy consumed in the last hour: {{payload.diff}} kWh</li>\n</ul>",
+        "template": "Hello!\nThis is smart home system reporting!\n\nThe energy grid level has reached critical threshold:\n\n<ul>\n    <li>Critical threshold: <b>{{flow.max_total_kw}} kW</b></li>\n    <li>Energy consumption registered: {{flow.total_kw}} kW</li>\n</ul>",
         "output": "str",
-        "x": 800,
-        "y": 1440,
+        "x": 780,
+        "y": 720,
         "wires": [
             [
                 "953790de6e536d24",
@@ -674,7 +578,7 @@
         "id": "3829096d8cc5e9e4",
         "type": "e-mail",
         "z": "99285b04ab31eeb3",
-        "d": true,
+        "g": "59e5a13999ca63ab",
         "server": "smtp.gmail.com",
         "port": "465",
         "authtype": "BASIC",
@@ -684,15 +588,15 @@
         "tls": false,
         "name": "dario.dercole@student.univaq.it",
         "dname": "",
-        "x": 1230,
-        "y": 1420,
+        "x": 1250,
+        "y": 680,
         "wires": []
     },
     {
         "id": "fee896c385f0e5d5",
         "type": "e-mail",
         "z": "99285b04ab31eeb3",
-        "d": true,
+        "g": "59e5a13999ca63ab",
         "server": "smtp.gmail.com",
         "port": "465",
         "authtype": "BASIC",
@@ -702,8 +606,8 @@
         "tls": false,
         "name": "giovanni.spaziani@student.univaq.it",
         "dname": "",
-        "x": 1250,
-        "y": 1460,
+        "x": 1270,
+        "y": 740,
         "wires": []
     },
     {
@@ -718,7 +622,7 @@
         "once": false,
         "onceDelay": "3",
         "topic": "",
-        "x": 1070,
+        "x": 1090,
         "y": 220,
         "wires": [
             [
@@ -741,7 +645,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1690,
+        "x": 1710,
         "y": 380,
         "wires": []
     },
@@ -767,7 +671,7 @@
         "topic": "",
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
-        "x": 1260,
+        "x": 1280,
         "y": 380,
         "wires": [
             [
@@ -790,7 +694,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1670,
+        "x": 1770,
         "y": 460,
         "wires": []
     },
@@ -816,11 +720,11 @@
         "topic": "",
         "payload": "{\"configuration\":{\"max_total_kw\":3,\"warning_threshold_kw\":2.5}}",
         "payloadType": "json",
-        "x": 1270,
+        "x": 1170,
         "y": 460,
         "wires": [
             [
-                "bdeb025c06e44332"
+                "efe45f8d89a7a7b0"
             ]
         ]
     },
@@ -926,7 +830,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1290,
+        "x": 1310,
         "y": 220,
         "wires": [
             [
@@ -949,7 +853,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1355,
+        "x": 1375,
         "y": 260,
         "wires": [],
         "l": false
@@ -969,7 +873,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1820,
+        "x": 1840,
         "y": 320,
         "wires": []
     },
@@ -986,7 +890,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1540,
+        "x": 1560,
         "y": 200,
         "wires": [
             [
@@ -1063,7 +967,7 @@
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"states\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1}},\"smart_appliances\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"state\":0},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"state\":0}}}}",
+        "payload": "{\"states\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1}},\"smart_appliances\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"state\":1},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"state\":1},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"state\":1}}}}",
         "payloadType": "json",
         "x": 190,
         "y": 500,
@@ -1146,7 +1050,7 @@
         "stream": false,
         "addname": "topic",
         "property": "payload",
-        "x": 1740,
+        "x": 1760,
         "y": 200,
         "wires": [
             [
@@ -1160,14 +1064,14 @@
         "z": "99285b04ab31eeb3",
         "g": "fb950f3a0b286899",
         "name": "Build analyzer topic",
-        "func": "let topic = \"/SmartHomeD&G/analyzer\";\nconst keys = Object.keys(msg.payload);\nlet obj = msg.payload[keys[0]]\n//Perform depth-first search of the measurement name\nwhile(!Object.hasOwn(obj, '_measurement')){\n    const keys = Object.keys(obj);\n    obj = obj[keys[0]];\n}\ntopic = `${topic}/${obj['_measurement']}/${obj['room']}/${obj['sensor']}`;\n// if(obj['value_name']){\n//     topic = `${topic}/${obj['value_name']}`;\n// }\nmsg.topic = topic\nreturn msg;",
+        "func": "let topic = \"/SmartHomeD&G/analyzer\";\nconst keys = Object.keys(msg.payload);\nlet obj = msg.payload[keys[0]]\n//Perform depth-first search of the measurement name\nwhile(!Object.hasOwn(obj, '_measurement')){\n    const keys = Object.keys(obj);\n    obj = obj[keys[0]];\n}\ntopic = `${topic}/${obj['_measurement']}/${obj['room']}/${obj['sensor']}`;\n// if(obj['value_name']){\n//     topic = `${topic}/${obj['value_name']}`;\n// }\nmsg.topic = topic\n\n// Save total energy consumption in flow context\nif(obj['sensor'] == 'total_kw'){\n    flow.set(\"total_kw\", obj['_value'])\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1730,
+        "x": 1750,
         "y": 260,
         "wires": [
             [
@@ -1190,7 +1094,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1875,
+        "x": 1895,
         "y": 260,
         "wires": [],
         "l": false
@@ -1208,7 +1112,7 @@
         "stream": false,
         "addname": "topic",
         "property": "payload",
-        "x": 1540,
+        "x": 1560,
         "y": 260,
         "wires": [
             [
@@ -1220,6 +1124,7 @@
         "id": "274ac2c48bdcb6d5",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
         "name": "",
         "topic": "/SmartHomeD&G/planner/config/temperature_planner",
         "qos": "",
@@ -1230,14 +1135,15 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1600,
-        "y": 620,
+        "x": 1620,
+        "y": 520,
         "wires": []
     },
     {
         "id": "c260fb0e3295fd80",
         "type": "inject",
         "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
         "name": "temperature planner configuration",
         "props": [
             {
@@ -1255,8 +1161,8 @@
         "topic": "",
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
-        "x": 1160,
-        "y": 620,
+        "x": 1180,
+        "y": 520,
         "wires": [
             [
                 "274ac2c48bdcb6d5"
@@ -1311,5 +1217,112 @@
         "x": 510,
         "y": 580,
         "wires": []
+    },
+    {
+        "id": "e4a2307dd294face",
+        "type": "mqtt in",
+        "z": "99285b04ab31eeb3",
+        "g": "59e5a13999ca63ab",
+        "name": "",
+        "topic": "/SmartHomeD&G/planner/energy_level",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "a928ba0.2d1f748",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 720,
+        "wires": [
+            [
+                "4bdd524eebd62b13"
+            ]
+        ]
+    },
+    {
+        "id": "4bdd524eebd62b13",
+        "type": "switch",
+        "z": "99285b04ab31eeb3",
+        "g": "59e5a13999ca63ab",
+        "name": "energy level check",
+        "property": "payload.value",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "2",
+                "vt": "str"
+            },
+            {
+                "t": "gte",
+                "v": "2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 530,
+        "y": 680,
+        "wires": [
+            [],
+            [
+                "9dfe64aa545246fa"
+            ]
+        ]
+    },
+    {
+        "id": "efe45f8d89a7a7b0",
+        "type": "function",
+        "z": "99285b04ab31eeb3",
+        "g": "fb950f3a0b286899",
+        "name": "function 1",
+        "func": "flow.set('max_total_kw', msg.payload['configuration']['max_total_kw'])\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 460,
+        "wires": [
+            [
+                "bdeb025c06e44332"
+            ]
+        ]
+    },
+    {
+        "id": "9dfe64aa545246fa",
+        "type": "switch",
+        "z": "99285b04ab31eeb3",
+        "g": "59e5a13999ca63ab",
+        "name": "avoid email spam",
+        "property": "$millis() - ($number($flowContext('last_email') ? $flowContext('last_email') : 0))",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "60000",
+                "vt": "str"
+            },
+            {
+                "t": "gte",
+                "v": "60000",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 530,
+        "y": 740,
+        "wires": [
+            [],
+            [
+                "f7e5fb872702f20b"
+            ]
+        ]
     }
 ]

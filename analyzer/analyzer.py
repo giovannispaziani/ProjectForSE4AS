@@ -8,6 +8,7 @@ import threading
 import paho.mqtt.client as mqtt
 
 from utils.Topics import Topics
+from utils.dictUtils import pretty
 
 
 class Level(IntEnum):
@@ -96,7 +97,7 @@ class TemperatureAnalyzer(Analyzer):
 
     def _on_message(self, client, user_data, message):
         super()._on_message(client, user_data, message)
-        values = extract_values_from_message(message)
+        values = extract_values_from_message(message, False)
 
         if JsonProperties.CONFIGURATION_ROOT in values:
             self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
@@ -119,7 +120,7 @@ class EnergyAnalyzer(Analyzer):
         # set up callbacks and topic strings
         self.client.on_message = self._on_message
         self.client.on_subscribe = self.on_subscribe
-        self.topic_sub = self.topic_sub + Topics.TOTAL_ENERGY_SUBTOPIC
+        self.topic_sub = self.topic_sub + Topics.ENERGY_SUBTOPIC + "/#"
 
         # analyzer specific fields
         self.energy_level = Level.NORMAL
@@ -137,6 +138,7 @@ class EnergyAnalyzer(Analyzer):
         threading.Timer(self.ANALYSIS_INTERVAL, self._schedule_analysis).start()
 
     def _analyze(self):
+        print(self.total_power)
         if self.total_power <= self.configuration['warning_threshold_kw']:
             self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.NORMAL.value),
                                 retain=True)
