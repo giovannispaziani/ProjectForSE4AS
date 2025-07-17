@@ -342,7 +342,7 @@
         "z": "99285b04ab31eeb3",
         "g": "c46509ea1b2d8f12",
         "name": "debug 26",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,

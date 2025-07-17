@@ -11,6 +11,7 @@ from utils.dictUtils import pretty
 # MQTT setup
 #mqtt_server = "172.30.0.101"
 mqtt_server = "172.30.0.101"
+#mqtt_server = "localhost"
 mqtt_port = 1883
 mqtt_topic_pub = Topics.SENSOR_DATA.value
 mqtt_topic_sub = Topics.SIMULATION_DATA.value + "/#"
@@ -19,7 +20,7 @@ mqtt_topic_sub = Topics.SIMULATION_DATA.value + "/#"
 sensors_info = {}
 
 # This contains the list of simulated sensors with names and current value
-# we add the total energy consumption sensor directly here
+# we add the total energy consumption sensors directly here
 sensors = {
     JsonProperties.ENERGY.value : {
         JsonProperties.TOTAL_KW : {
@@ -35,11 +36,11 @@ total_kw = sensors[JsonProperties.ENERGY.value][JsonProperties.TOTAL_KW]  # Tota
 state = {}
 
 
-# Simulated sensor data
-# temperature = 22.0  # Temperature sensor (thermostat)
+# Simulated sensors data
+# temperature = 22.0  # Temperature sensors (thermostat)
 # light_intensity = 0  # Light intensity based on lamps
 # energy = 0.0  # Total energy consumed in kWh
-# fridge_temp = 4.0  # Refrigerator sensor
+# fridge_temp = 4.0  # Refrigerator sensors
 # fridge_load = 50  # Refrigerator load
 #
 # # Power consumption of each device in Watts
@@ -49,9 +50,9 @@ state = {}
 # lamp_power = 8  # Each lamp power (8 W per lamp)
 # active_lamps = 5  # Number of lamps initially active
 
-# temperature = 0.0  # Temperature sensor (thermostat)
+# temperature = 0.0  # Temperature sensors (thermostat)
 # light_intensity = 0  # Light intensity based on lamps
-# fridge_temp = 0.0  # Refrigerator sensor
+# fridge_temp = 0.0  # Refrigerator sensors
 # fridge_load = 0  # Refrigerator load
 
 # Power consumption of each device in Watts
@@ -116,7 +117,7 @@ def on_subscribe(client, userdata, mid, reason_code_list, properties):
     print(f'Subscribed successfully')
 
 def on_publish(client, userdata, mid, reason_code, properties):
-    print(f'Publish: {reason_code}')
+    print(f'Publish on topic {properties}: {reason_code}')
 
 def init():
     # parse sensors info to force float typing on float values
@@ -275,9 +276,9 @@ def update_sensors(elapsed_time):
     # Update power values
     current_info = sensors_info[JsonProperties.ENERGY.value]
     for sensor_name, sensor_properties in sensors[JsonProperties.ENERGY.value].items():
-        if sensor_name == JsonProperties.TOTAL_KW: #skip for the total energy sensor
+        if sensor_name == JsonProperties.TOTAL_KW: #skip for the total energy sensors
             continue
-        # check if there is a state attached to this sensor (on/off)
+        # check if there is a state attached to this sensors (on/off)
         state_value = 1
         if 'linked_state' in sensor_properties:
             state_value = sensor_properties['linked_state'][JsonProperties.STATE_VALUE.value]
@@ -334,7 +335,7 @@ def loop():
     while True:
         current_time = time.time()
 
-        # Update sensor values
+        # Update sensors values
         if current_time - previous_sensors_update_time >= sensors_update_interval:
             update_sensors(sensors_update_interval)
             previous_sensors_update_time = current_time

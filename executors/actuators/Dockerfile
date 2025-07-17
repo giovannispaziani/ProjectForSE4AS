@@ -1,4 +1,9 @@
-FROM ubuntu:latest
-LABEL authors="Giovanni Spaziani"
+FROM python:3.13
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+
+COPY . .
+
+RUN pip install paho-mqtt
+
+CMD ["python", "actuators.py"]
