@@ -109,7 +109,14 @@ Before starting with the project setup, ensure the following prerequisites are m
    ```
 3. Run the containers:
    ```sh
-   docker-compose up
+   docker compose up
+   ```
+
+4. Once started, you can "play" with the services via containers.
+
+5. Stop and eliminate the containers:
+   ```sh
+   docker compose down
    ```
 
 ## Acknowledgments
