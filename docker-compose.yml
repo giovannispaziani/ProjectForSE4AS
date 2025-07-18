@@ -64,7 +64,7 @@ services:
 
   grafana:
     restart: always
-    image: grafana/grafana-oss:latest
+    image: grafana/grafana-oss:12.0.2
     container_name: se4as-project-grafana
     volumes:
       - $PWD/monitor/grafana/data:/var/lib/grafana:rw
@@ -72,6 +72,8 @@ services:
       - influxdb
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     networks:
       se4as-project-network:
         ipv4_address: 172.30.0.105
