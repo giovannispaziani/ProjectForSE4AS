@@ -1,7 +1,7 @@
 # Smart home - Project for Software Engineering for Autonomous Systems (A.Y. 24-25).
 
 <p align="center">
-  <img src="Docs/Logo.png" width="50%" alt="Logo">
+  <img src="Images/Logo.png" width="50%" alt="Logo">
 </p>
 
 ### Members names and contacts:
@@ -41,7 +41,7 @@ During the project, various smart devices will be introduced and managed, includ
 ## Architecture diagram
 
 <p align="center">
-  <img src="Docs/Diagram.jpg" width="65%" alt="Diagram">
+  <img src="Images/Diagram.jpg" width="65%" alt="Diagram">
 </p>
 
 ## Prerequisites
