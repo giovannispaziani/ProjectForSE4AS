@@ -9,12 +9,10 @@ from utils.Topics import Topics
 from utils.dictUtils import pretty
 
 # MQTT setup
-#mqtt_server = "172.30.0.101"
 mqtt_server = "172.30.0.101"
-#mqtt_server = "localhost"
 mqtt_port = 1883
 mqtt_topic_pub = Topics.SENSOR_DATA.value
-mqtt_topic_sub = Topics.SIMULATION_DATA.value + "/#"
+mqtt_topic_sub = Topics.SIMULATION_DATA.value + "/#" # sensors and environment state topics
 
 # Sensors data, this is the object to modify to add/remove sensors
 sensors_info = {}
@@ -34,26 +32,6 @@ total_kw = sensors[JsonProperties.ENERGY.value][JsonProperties.TOTAL_KW]  # Tota
 
 # Status of the home (lights, windows...)
 state = {}
-
-
-# Simulated sensors data
-# temperature = 22.0  # Temperature sensors (thermostat)
-# light_intensity = 0  # Light intensity based on lamps
-# energy = 0.0  # Total energy consumed in kWh
-# fridge_temp = 4.0  # Refrigerator sensors
-# fridge_load = 50  # Refrigerator load
-#
-# # Power consumption of each device in Watts
-# fridge_power = 150  # Fridge (150 W)
-# dishwasher_power = 1000  # Dishwasher (1000 W)
-# thermostat_power = 2  # Thermostat (2 W)
-# lamp_power = 8  # Each lamp power (8 W per lamp)
-# active_lamps = 5  # Number of lamps initially active
-
-# temperature = 0.0  # Temperature sensors (thermostat)
-# light_intensity = 0  # Light intensity based on lamps
-# fridge_temp = 0.0  # Refrigerator sensors
-# fridge_load = 0  # Refrigerator load
 
 # Power consumption of each device in Watts
 nominal_fridge_power = 0
@@ -89,19 +67,20 @@ def connect_mqtt():
     client.connect(mqtt_server, mqtt_port, 60)
     client.loop_start()
     print("Connected to MQTT broker")
+
     # setup callbacks
     client.on_subscribe = on_subscribe
     client.on_message = on_message
     client.on_publish = on_publish
 
-    # subscribe to simulated state topic
+    # subscribe to simulated sensors and environment state topics
     client.subscribe(mqtt_topic_sub)
 
 def on_message(client, user_data, message):
-    global sensors_info, state,sensor_state_mappings
+    global sensors_info, state
 
     print(f'Received message: ', message.payload.decode('utf-8'))
-    payload = extract_values_from_message(message)
+    payload = extract_values_from_message(message, False)
     # setup initial sensors if it's initializer
     if JsonProperties.SENSORS_ROOT.value in payload:
         sensors_info = payload[JsonProperties.SENSORS_ROOT.value]
@@ -192,7 +171,7 @@ def setup_state():
     pretty(sensors, 1)
 
 def publish_data():
-    # Iterate on the sensors
+    # Iterate on the sensors and publish
     topic = None
     value = None
     for sensor_type,sensor_list in sensors.items():
@@ -273,7 +252,7 @@ def update_sensors(elapsed_time):
     if total_lights_on == 0:
         print("All lights are off.")
 
-    # Update power values
+    # Update energy consumption values
     current_info = sensors_info[JsonProperties.ENERGY.value]
     for sensor_name, sensor_properties in sensors[JsonProperties.ENERGY.value].items():
         if sensor_name == JsonProperties.TOTAL_KW: #skip for the total energy sensors
@@ -295,7 +274,7 @@ def update_sensors(elapsed_time):
     fridge_load = sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_LOAD.value][JsonProperties.SINGLE_VALUE.value]
     fridge_temp = sensors[JsonProperties.SMART_APPLIANCE.value]["kitchen_fridge_1"][JsonProperties.MULTIPLE_VALUES][JsonProperties.SMART_FRIDGE_TEMPERATURE.value][JsonProperties.SINGLE_VALUE.value]
 
-    # Check wether simulating fridge being open or not
+    # Check whether simulating fridge being open or not
     if current_time - previous_fridge_time >= fridge_interval:
         print("Fridge opened.")
         fridge_load += random.randint(load_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][0], load_info[JsonProperties.SMART_FRIDGE_OPEN_DELTA_RANGE.value][1])
@@ -331,26 +310,20 @@ def calculate_kw():
 
 def loop():
     global last_publish_time, previous_sensors_update_time, previous_energy_reading_time
-
     while True:
         current_time = time.time()
-
         # Update sensors values
         if current_time - previous_sensors_update_time >= sensors_update_interval:
             update_sensors(sensors_update_interval)
             previous_sensors_update_time = current_time
-
         # Update energy readings
         if current_time - previous_energy_reading_time >= energy_reading_interval:
             calculate_kw()
             previous_energy_reading_time = current_time
-
         # Publish data
         if current_time - last_publish_time > publish_interval:
             publish_data()
             last_publish_time = current_time
-
-
         time.sleep(0.1)
 
 def main():

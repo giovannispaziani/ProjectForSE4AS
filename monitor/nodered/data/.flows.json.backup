@@ -17,26 +17,17 @@
         },
         "nodes": [
             "820d0254027143de",
-            "d08ef2268e982688",
-            "c9a71f1c79ee850e",
-            "bdeb025c06e44332",
-            "27fa2ccb71482fa2",
             "708ce20633e474fa",
-            "aa8db65cf8d49931",
             "9da49b95aeeae627",
             "8e10011ddb497877",
             "69a4edec5388ccba",
             "4e4bc5e9bbd431f4",
-            "69346df0a8d62419",
-            "e9c565322b3d5627",
-            "efe45f8d89a7a7b0",
-            "c260fb0e3295fd80",
-            "274ac2c48bdcb6d5"
+            "e9c565322b3d5627"
         ],
         "x": 794,
         "y": 159,
-        "w": 1152,
-        "h": 362
+        "w": 992,
+        "h": 142
     },
     {
         "id": "c46509ea1b2d8f12",
@@ -72,7 +63,6 @@
             "label": true
         },
         "nodes": [
-            "8ac1a2f68bd47fcc",
             "953790de6e536d24",
             "f7e5fb872702f20b",
             "3829096d8cc5e9e4",
@@ -82,9 +72,31 @@
             "9dfe64aa545246fa"
         ],
         "x": 74,
-        "y": 539,
-        "w": 1432,
-        "h": 142
+        "y": 559,
+        "w": 772,
+        "h": 182
+    },
+    {
+        "id": "5eb8641c3e368ff9",
+        "type": "group",
+        "z": "99285b04ab31eeb3",
+        "name": "Configurations",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "c9a71f1c79ee850e",
+            "d08ef2268e982688",
+            "bdeb025c06e44332",
+            "27fa2ccb71482fa2",
+            "274ac2c48bdcb6d5",
+            "c260fb0e3295fd80",
+            "efe45f8d89a7a7b0"
+        ],
+        "x": 794,
+        "y": 319,
+        "w": 992,
+        "h": 202
     },
     {
         "id": "a928ba0.2d1f748",
@@ -356,24 +368,6 @@
         "l": false
     },
     {
-        "id": "8ac1a2f68bd47fcc",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "59e5a13999ca63ab",
-        "name": "debug 33",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 945,
-        "y": 580,
-        "wires": [],
-        "l": false
-    },
-    {
         "id": "953790de6e536d24",
         "type": "function",
         "z": "99285b04ab31eeb3",
@@ -386,8 +380,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1060,
-        "y": 620,
+        "x": 400,
+        "y": 680,
         "wires": [
             [
                 "3829096d8cc5e9e4",
@@ -407,12 +401,11 @@
         "syntax": "mustache",
         "template": "Hello!\nThis is smart home system reporting!\n\nThe energy grid level has reached critical threshold:\n\n<ul>\n    <li>Critical threshold: <b>{{flow.max_total_kw}} kW</b></li>\n    <li>Energy consumption registered: {{flow.total_kw}} kW</li>\n</ul>",
         "output": "str",
-        "x": 840,
-        "y": 620,
+        "x": 220,
+        "y": 680,
         "wires": [
             [
-                "953790de6e536d24",
-                "8ac1a2f68bd47fcc"
+                "953790de6e536d24"
             ]
         ]
     },
@@ -430,8 +423,8 @@
         "tls": false,
         "name": "dario.dercole@student.univaq.it",
         "dname": "",
-        "x": 1310,
-        "y": 580,
+        "x": 650,
+        "y": 660,
         "wires": []
     },
     {
@@ -448,8 +441,8 @@
         "tls": false,
         "name": "giovanni.spaziani@student.univaq.it",
         "dname": "",
-        "x": 1330,
-        "y": 640,
+        "x": 670,
+        "y": 700,
         "wires": []
     },
     {
@@ -476,7 +469,7 @@
         "id": "d08ef2268e982688",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
+        "g": "5eb8641c3e368ff9",
         "name": "",
         "topic": "/SmartHomeD&G/analyzer/config/temperature_analyzer",
         "qos": "",
@@ -487,15 +480,15 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1510,
-        "y": 340,
+        "x": 1550,
+        "y": 360,
         "wires": []
     },
     {
         "id": "c9a71f1c79ee850e",
         "type": "inject",
         "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
+        "g": "5eb8641c3e368ff9",
         "name": "temperature analyzer configuration",
         "props": [
             {
@@ -513,8 +506,8 @@
         "topic": "",
         "payload": "{\"configuration\":{\"min_temp\":18,\"working_threshold\":1}}",
         "payloadType": "json",
-        "x": 1080,
-        "y": 340,
+        "x": 980,
+        "y": 360,
         "wires": [
             [
                 "d08ef2268e982688"
@@ -525,7 +518,7 @@
         "id": "bdeb025c06e44332",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
+        "g": "5eb8641c3e368ff9",
         "name": "",
         "topic": "/SmartHomeD&G/analyzer/config/energy_analyzer",
         "qos": "",
@@ -544,7 +537,7 @@
         "id": "27fa2ccb71482fa2",
         "type": "inject",
         "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
+        "g": "5eb8641c3e368ff9",
         "name": "energy analyzer configuration",
         "props": [
             {
@@ -582,33 +575,13 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Se4as-24-25",
-        "x": 1110,
+        "x": 1070,
         "y": 220,
         "wires": [
             [
-                "aa8db65cf8d49931",
                 "8e10011ddb497877"
             ]
         ]
-    },
-    {
-        "id": "aa8db65cf8d49931",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1175,
-        "y": 260,
-        "wires": [],
-        "l": false
     },
     {
         "id": "9da49b95aeeae627",
@@ -625,7 +598,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1840,
+        "x": 1680,
         "y": 260,
         "wires": []
     },
@@ -642,7 +615,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1360,
+        "x": 1300,
         "y": 200,
         "wires": [
             [
@@ -802,7 +775,7 @@
         "stream": false,
         "addname": "topic",
         "property": "payload",
-        "x": 1560,
+        "x": 1500,
         "y": 200,
         "wires": [
             [
@@ -823,33 +796,13 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1550,
+        "x": 1490,
         "y": 260,
         "wires": [
             [
-                "9da49b95aeeae627",
-                "69346df0a8d62419"
+                "9da49b95aeeae627"
             ]
         ]
-    },
-    {
-        "id": "69346df0a8d62419",
-        "type": "debug",
-        "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
-        "name": "influx debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1715,
-        "y": 240,
-        "wires": [],
-        "l": false
     },
     {
         "id": "e9c565322b3d5627",
@@ -864,7 +817,7 @@
         "stream": false,
         "addname": "topic",
         "property": "payload",
-        "x": 1360,
+        "x": 1300,
         "y": 260,
         "wires": [
             [
@@ -876,7 +829,7 @@
         "id": "274ac2c48bdcb6d5",
         "type": "mqtt out",
         "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
+        "g": "5eb8641c3e368ff9",
         "name": "",
         "topic": "/SmartHomeD&G/planner/config/temperature_planner",
         "qos": "",
@@ -887,7 +840,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 1420,
+        "x": 1560,
         "y": 480,
         "wires": []
     },
@@ -895,7 +848,7 @@
         "id": "c260fb0e3295fd80",
         "type": "inject",
         "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
+        "g": "5eb8641c3e368ff9",
         "name": "temperature planner configuration",
         "props": [
             {
@@ -943,7 +896,7 @@
         "topic": "",
         "payload": "{\"actuators\":{\"windows\":{\"livingroom_window_1\":{\"room\":\"livingroom\",\"state\":1,\"automation_enabled\":1},\"kitchen_window_1\":{\"room\":\"kitchen\",\"state\":0,\"automation_enabled\":1},\"bathroom_window_1\":{\"room\":\"bathroom\",\"state\":0,\"automation_enabled\":1},\"bedroom_window_1\":{\"room\":\"bedroom\",\"state\":0,\"automation_enabled\":1}},\"lamps\":{\"livingroom_lamp_1\":{\"room\":\"livingroom\",\"state\":0,\"automation_enabled\":1},\"livingroom_lamp_2\":{\"room\":\"livingroom\",\"state\":0,\"automation_enabled\":1},\"kitchen_lamp_1\":{\"room\":\"kitchen\",\"state\":0,\"automation_enabled\":1},\"bathroom_lamp_1\":{\"room\":\"bathroom\",\"state\":0,\"automation_enabled\":1},\"bedroom_lamp_1\":{\"room\":\"bedroom\",\"state\":0,\"automation_enabled\":1}},\"shutters\":{\"livingroom_shutter_1\":{\"room\":\"livingroom\",\"state\":1,\"automation_enabled\":1},\"kitchen_shutter_1\":{\"room\":\"kitchen\",\"state\":1,\"automation_enabled\":1},\"bathroom_shutter_1\":{\"room\":\"bathroom\",\"state\":1,\"automation_enabled\":1},\"bedroom_shutter_1\":{\"room\":\"bedroom\",\"state\":1,\"automation_enabled\":1}},\"smart_appliances\":{\"livingroom_thermostat_1\":{\"room\":\"livingroom\",\"state_type\":\"toggle\",\"state\":1,\"automation_enabled\":1},\"kitchen_fridge_1\":{\"room\":\"kitchen\",\"state_type\":\"toggle\",\"state\":1,\"automation_enabled\":1},\"kitchen_dishwasher_1\":{\"room\":\"kitchen\",\"state_type\":\"multiple\",\"state\":1,\"automation_enabled\":1}}},\"categories\":{\"switches\":{\"lamps\":[\"*\"],\"fridges\":[\"kitchen_fridge_1\"],\"dishwashers\":[\"kitchen_dishwasher_1\"],\"thermostats\":[\"livingroom_thermostat_1\"]}}}",
         "payloadType": "json",
-        "x": 260,
+        "x": 240,
         "y": 480,
         "wires": [
             [
@@ -966,7 +919,7 @@
         "correl": "",
         "expiry": "",
         "broker": "a928ba0.2d1f748",
-        "x": 570,
+        "x": 550,
         "y": 480,
         "wires": []
     },
@@ -985,7 +938,7 @@
         "rh": 0,
         "inputs": 0,
         "x": 250,
-        "y": 620,
+        "y": 600,
         "wires": [
             [
                 "4bdd524eebd62b13"
@@ -1015,8 +968,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 590,
-        "y": 580,
+        "x": 510,
+        "y": 600,
         "wires": [
             [],
             [
@@ -1028,7 +981,7 @@
         "id": "efe45f8d89a7a7b0",
         "type": "function",
         "z": "99285b04ab31eeb3",
-        "g": "fb950f3a0b286899",
+        "g": "5eb8641c3e368ff9",
         "name": "flow context",
         "func": "flow.set('max_total_kw', msg.payload['configuration']['max_total_kw'])\nreturn msg;",
         "outputs": 1,
@@ -1068,8 +1021,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 590,
-        "y": 640,
+        "x": 710,
+        "y": 600,
         "wires": [
             [],
             [

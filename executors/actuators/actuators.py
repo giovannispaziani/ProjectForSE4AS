@@ -90,15 +90,12 @@ class Actuator:
 
     def _on_message(self, client, user_data, message):
         print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
-        values = extract_values_from_message(message)
-        if JsonProperties.CONFIGURATION_ROOT in values: #configuration message
-            self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
-        elif JsonProperties.STATE_ROOT in values: #state message
+        values = extract_values_from_message(message, False)
+        if JsonProperties.STATE_ROOT in values: #state message
             self.state = values[JsonProperties.STATE_ROOT]
         else:
             actuator_id = message.topic.split("/")[-1]
             if actuator_id == self.actuator_id:
-                print('HIT')
                 self.set_state(values[JsonProperties.SINGLE_VALUE])
         return values
 
@@ -155,12 +152,11 @@ def update_actuators(state):
                     actuators[appliance_id] = ToggleSwitch(appliance_id, appliance_info[JsonProperties.ROOM], appliance_info[JsonProperties.STATE_VALUE], appliance_info[JsonProperties.AUTOMATION_TOGGLE_VALUE], appliance_id)
                 elif appliance_info[JsonProperties.STATE_TYPE] == ActuatorStateType.MULTIPLE:
                     actuators[appliance_id] = SelectorSwitch(appliance_id, appliance_info[JsonProperties.ROOM], appliance_info[JsonProperties.STATE_VALUE], appliance_info[JsonProperties.AUTOMATION_TOGGLE_VALUE], appliance_id)
-    print(actuators)
     old_state = state
 
 def update_actuators_state(mqtt_message):
     global state
-    state = extract_values_from_message(mqtt_message)[JsonProperties.ACTUATORS_ROOT]
+    state = extract_values_from_message(mqtt_message, False)[JsonProperties.ACTUATORS_ROOT]
 
 def main():
     global state

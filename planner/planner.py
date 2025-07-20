@@ -90,7 +90,7 @@ class Planner:
 
     def _on_message(self, client, user_data, message):
         print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
-        values = extract_values_from_message(message)
+        values = extract_values_from_message(message, False)
         # update the state if the payload contains state info
         if JsonProperties.STATE_ROOT in values:
             self.state = values[JsonProperties.STATE_ROOT]
@@ -220,7 +220,6 @@ class EnergyPlanner(Planner):
                     self.switches[JsonProperties.PLANNER_FRIDGE_SWITCH] = False
                 self.client.publish(self.topic_pub + self.SWITCHES_SUBTOPIC, encode_json_to_message(dictionary=self.switches), retain=True)
             else:
-                print('normal')
                 self.switches = {
                     JsonProperties.PLANNER_DISHWASHER_SWITCH: True,
                     JsonProperties.PLANNER_FRIDGE_SWITCH: True,

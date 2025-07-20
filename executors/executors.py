@@ -68,7 +68,7 @@ class Executor:
 
     def _on_message(self, client, user_data, message):
         print(f'({self.client_id}) Received message: ', message.payload.decode('utf-8'))
-        values = extract_values_from_message(message, True)
+        values = extract_values_from_message(message, False)
         # update the state if the payload contains state info
         if JsonProperties.STATE_ROOT in values:
             self.state = values[JsonProperties.STATE_ROOT]
@@ -107,11 +107,8 @@ class TemperaturePlanExecutor(Executor):
     def _on_message(self, client, user_data, message):
         old_plan = self.temperature_plan.copy()
         value,topic = super()._on_message(client, user_data, message)
-        print(f"{self.actuators}, {value}, {topic}")
         if self.actuators and value and topic:
-            print("========DENTRO TEMPERATURE PLAN=======")
             self.temperature_plan[topic.split("/")[-1]] = value
-            pretty(self.temperature_plan)
             if 'enable_heating' in self.temperature_plan and 'enable_heating' in old_plan and self.temperature_plan['enable_heating'] != old_plan['enable_heating']:
                 self.client.publish(self.topic_pub + '/livingroom_thermostat_1', encode_json_to_message(dictionary=self.temperature_plan['enable_heating']), retain=True)
 
@@ -141,11 +138,8 @@ class EnergyPlanExecutor(Executor):
     def _on_message(self, client, user_data, message):
         old_plan = copy.deepcopy(self.energy_plan)
         value, topic = super()._on_message(client, user_data, message)
-        print(f"{self.actuators}, {value}, {topic}")
         if self.actuators and value and topic:
-            print("========DENTRO ENERGY PLAN=======")
             self.energy_plan[topic.split("/")[-1]] = value
-            pretty(self.energy_plan)
 
             if 'shutters_position' in self.energy_plan and 'shutters_position' in old_plan and self.energy_plan['shutters_position'] != old_plan['shutters_position']:
                 for shutter_id, shutter in self.actuators['shutters'].items():

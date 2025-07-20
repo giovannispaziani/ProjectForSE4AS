@@ -141,7 +141,6 @@ class EnergyAnalyzer(Analyzer):
         threading.Timer(self.ANALYSIS_INTERVAL, self._schedule_analysis).start()
 
     def _analyze(self):
-        print(self.total_power)
         if self.total_power <= self.configuration['warning_threshold_kw']:
             self.client.publish(self.topic_pub + Topics.ENERGY_LEVEL_SUBTOPIC, encode_json_to_message(Level.NORMAL.value),
                                 retain=True)
@@ -157,7 +156,7 @@ class EnergyAnalyzer(Analyzer):
 
     def _on_message(self, client, user_data, message):
         super()._on_message(client, user_data, message)
-        values = extract_values_from_message(message, True)
+        values = extract_values_from_message(message, False)
         # Configuration message?
         if JsonProperties.CONFIGURATION_ROOT in values:
             self.configuration = values[JsonProperties.CONFIGURATION_ROOT]
